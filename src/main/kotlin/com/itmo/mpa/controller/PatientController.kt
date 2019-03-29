@@ -3,30 +3,30 @@ package com.itmo.mpa.controller
 import com.itmo.mpa.controller.request.PatientRequest
 import com.itmo.mpa.controller.request.StatusRequest
 import com.itmo.mpa.controller.responce.PatientResponse
+import com.itmo.mpa.service.PatientService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
-@RestController("patients")
-class PatientController {
+@RestController
+@RequestMapping("patients")
+class PatientController(private val patientService: PatientService) {
 
     @PostMapping
-    fun create(@Valid @RequestBody patientRequest: PatientRequest) {
-        throw NotImplementedError()
-    }
+    fun create(@Valid @RequestBody patientRequest: PatientRequest) = patientService.createPatient(patientRequest)
 
     @GetMapping
-    fun getAll(): List<PatientResponse> {
-        throw NotImplementedError()
-    }
+    fun getAll(): List<PatientResponse> = patientService.findAll()
 
     @GetMapping("{id}")
-    fun getById(@PathVariable id: String): ResponseEntity<PatientResponse> {
-        throw NotImplementedError()
+    fun getById(@PathVariable id: Int): ResponseEntity<PatientResponse> {
+        val patient = patientService.findPatient(id) ?: return ResponseEntity.notFound().build()
+        return ResponseEntity.ok(patient)
     }
 
     @PatchMapping("{id}/status")
-    fun changePatientStatus(@PathVariable id: String, @Valid @RequestBody statusRequest: StatusRequest) {
-        throw NotImplementedError()
-    }
+    fun changePatientStatus(
+            @PathVariable id: Int,
+            @Valid @RequestBody statusRequest: StatusRequest
+    ) = patientService.changeStatus(id, statusRequest)
 }
