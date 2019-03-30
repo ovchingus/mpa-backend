@@ -2,7 +2,7 @@ package com.itmo.mpa.service
 
 import com.itmo.mpa.controller.request.PatientRequest
 import com.itmo.mpa.controller.request.StatusRequest
-import com.itmo.mpa.controller.responce.PatientResponse
+import com.itmo.mpa.controller.response.PatientResponse
 import com.itmo.mpa.repository.PatientRepository
 import com.itmo.mpa.service.mapping.toDto
 import com.itmo.mpa.service.mapping.toModel

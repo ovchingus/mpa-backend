@@ -2,7 +2,7 @@ package com.itmo.mpa.controller
 
 import com.itmo.mpa.controller.request.PatientRequest
 import com.itmo.mpa.controller.request.StatusRequest
-import com.itmo.mpa.controller.responce.PatientResponse
+import com.itmo.mpa.controller.response.PatientResponse
 import com.itmo.mpa.service.PatientService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
