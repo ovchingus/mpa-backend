@@ -10,6 +10,8 @@ class PatientStubRepository : PatientRepository {
 
     private val storage = HashMap<Int, Patient>()
 
+    private var identityCounter = 0
+
     override fun findAll(): Iterable<Patient> = storage.values
 
     override fun findById(id: Int): Optional<Patient> = Optional.ofNullable(storage[id])
@@ -17,9 +19,9 @@ class PatientStubRepository : PatientRepository {
     override fun <S : Patient> save(patient: S): S {
         val id = patient.id
         if (id == null) {
-            val newId = storage.size + 1
-            storage[newId] = patient
-            patient.id = newId
+            identityCounter++
+            storage[identityCounter] = patient
+            patient.id = identityCounter
         } else {
             storage[id] = patient
         }
