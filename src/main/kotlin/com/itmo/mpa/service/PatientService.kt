@@ -10,7 +10,7 @@ interface PatientService {
 
     fun findAll(): List<PatientResponse>
 
-    fun findPatient(id: Int): PatientResponse?
+    fun findPatient(id: Long): PatientResponse?
 
-    fun changeStatus(id: Int, statusRequest: StatusRequest)
+    fun changeStatus(id: Long, statusRequest: StatusRequest)
 }

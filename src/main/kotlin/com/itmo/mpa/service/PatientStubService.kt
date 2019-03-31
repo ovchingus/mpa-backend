@@ -11,21 +11,22 @@ import org.springframework.stereotype.Service
 @Service
 class PatientStubService(private val patientRepository: PatientRepository) : PatientService {
 
+
     override fun createPatient(patientRequest: PatientRequest) {
+        println(patientRequest.toModel().age)
         patientRepository.save(patientRequest.toModel())
     }
 
     override fun findAll(): List<PatientResponse> = patientRepository.findAll().map { it.toDto() }
 
-    override fun findPatient(id: Int): PatientResponse? {
+    override fun findPatient(id: Long): PatientResponse? {
         return patientRepository.findById(id)
                 .map { it.toDto() }
                 .orElse(null)
     }
 
-    override fun changeStatus(id: Int, statusRequest: StatusRequest) {
+    override fun changeStatus(id: Long, statusRequest: StatusRequest) {
         val patient = patientRepository.findById(id).orElseThrow { NotFoundException("Patient $id not found") }
-        patient.status = statusRequest.toModel()
         patientRepository.save(patient)
     }
 }

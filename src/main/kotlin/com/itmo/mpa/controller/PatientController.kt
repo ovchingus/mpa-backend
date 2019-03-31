@@ -25,7 +25,7 @@ class PatientController(private val patientService: PatientService) {
 
     @ApiOperation("Find patient by id")
     @GetMapping("{id}")
-    fun getById(@PathVariable id: Int): ResponseEntity<PatientResponse> {
+    fun getById(@PathVariable id: Long): ResponseEntity<PatientResponse> {
         val patient = patientService.findPatient(id) ?: return ResponseEntity.notFound().build()
         return ResponseEntity.ok(patient)
     }
@@ -33,7 +33,7 @@ class PatientController(private val patientService: PatientService) {
     @ApiOperation("Change patient`s status")
     @PatchMapping("{id}/status")
     fun changePatientStatus(
-            @PathVariable id: Int,
+            @PathVariable id: Long,
             @Valid @RequestBody statusRequest: StatusRequest
     ) = patientService.changeStatus(id, statusRequest)
 }
