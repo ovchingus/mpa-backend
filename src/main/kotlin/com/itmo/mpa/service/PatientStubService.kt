@@ -13,7 +13,6 @@ class PatientStubService(private val patientRepository: PatientRepository) : Pat
 
 
     override fun createPatient(patientRequest: PatientRequest) {
-        println(patientRequest.toModel().age)
         patientRepository.save(patientRequest.toModel())
     }
 
