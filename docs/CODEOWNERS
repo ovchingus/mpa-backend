@@ -1,0 +1,5 @@
+*.kt    @AntipovAndrey
+*.gradle    @AntipovAndrey
+
+Dockerfile @woainikk
+docker-compose.yml @woainikk
