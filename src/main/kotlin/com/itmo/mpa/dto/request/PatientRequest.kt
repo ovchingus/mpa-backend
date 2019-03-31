@@ -1,4 +1,4 @@
-package com.itmo.mpa.controller.request
+package com.itmo.mpa.dto.request
 
 import javax.validation.constraints.Max
 import javax.validation.constraints.Min

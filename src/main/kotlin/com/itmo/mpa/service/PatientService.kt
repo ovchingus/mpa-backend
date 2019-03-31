@@ -1,8 +1,8 @@
 package com.itmo.mpa.service
 
-import com.itmo.mpa.controller.request.PatientRequest
-import com.itmo.mpa.controller.request.StatusRequest
-import com.itmo.mpa.controller.response.PatientResponse
+import com.itmo.mpa.dto.request.PatientRequest
+import com.itmo.mpa.dto.request.StatusRequest
+import com.itmo.mpa.dto.response.PatientResponse
 
 interface PatientService {
 
