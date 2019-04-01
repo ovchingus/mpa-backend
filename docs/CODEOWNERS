@@ -3,3 +3,5 @@
 
 Dockerfile @woainikk
 docker-compose.yml @woainikk
+
+*.java @PABchik
