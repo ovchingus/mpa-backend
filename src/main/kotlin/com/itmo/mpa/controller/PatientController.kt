@@ -31,9 +31,9 @@ class PatientController(private val patientService: PatientService) {
     }
 
     @ApiOperation("Change patient`s status")
-    @PatchMapping("{id}/status")
+    @PatchMapping("{patientId}/status/{statusId}")
     fun changePatientStatus(
-            @PathVariable id: Long,
-            @Valid @RequestBody statusRequest: StatusRequest
-    ) = patientService.changeStatus(id, statusRequest)
+            @PathVariable patientId: Long,
+            @PathVariable statusId: Long
+    ) = patientService.changeStatus(patientId, statusId)
 }

@@ -24,10 +24,7 @@ class Patient {
     @Column(name = "age", nullable = false)
     var age: Int = 0
 
-    @Column(name = "status", nullable = false)
-    lateinit var status: String
-
     @ManyToOne
     @JoinColumn(name = "status_id")
-    var statusId: Status? = null
+    var status: Status? = null
 }
