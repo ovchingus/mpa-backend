@@ -1,6 +1,6 @@
 package com.itmo.mpa.service.mapping
 
-import com.itmo.mpa.dto.StatusDto
+import com.itmo.mpa.dto.StatusRequest
 import com.itmo.mpa.dto.request.PatientRequest
 import com.itmo.mpa.dto.response.PatientResponse
 import com.itmo.mpa.entity.Patient
@@ -13,4 +13,4 @@ fun PatientRequest.toEntity(statusEntity: Status?) = Patient().let {
     it
 }
 
-fun Patient.toDto(statusDto: StatusDto?) = PatientResponse(id, name, statusDto)
+fun Patient.toDto(statusDto: StatusRequest?) = PatientResponse(id, name, statusDto)
