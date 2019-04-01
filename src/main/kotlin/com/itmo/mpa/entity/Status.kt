@@ -6,12 +6,10 @@ import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.Table
-import javax.persistence.JoinColumn
-import javax.persistence.ManyToOne
 
 @Entity
-@Table(name = "patient")
-class Patient {
+@Table(name = "status")
+class Status {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,13 +19,7 @@ class Patient {
     @Column(name = "name", nullable = false)
     lateinit var name: String
 
-    @Column(name = "age", nullable = false)
-    var age: Int = 0
+    @Column(name = "description", nullable = false)
+    lateinit var description: String
 
-    @Column(name = "status", nullable = false)
-    lateinit var status: String
-
-    @ManyToOne
-    @JoinColumn(name = "status_id")
-    var statusId: Status? = null
 }

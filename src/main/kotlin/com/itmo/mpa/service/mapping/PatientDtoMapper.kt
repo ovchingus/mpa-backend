@@ -4,10 +4,11 @@ import com.itmo.mpa.dto.request.PatientRequest
 import com.itmo.mpa.dto.response.PatientResponse
 import com.itmo.mpa.entity.Patient
 
-fun PatientRequest.toModel() = Patient().let {
+fun PatientRequest.toEntity() = Patient().let {
     it.age = age!!
     it.name = name!!
     it.status = status
+    it
 }
 
-fun Patient.toDto() = PatientResponse(0, name)
+fun Patient.toDto() = PatientResponse(id, name, null)

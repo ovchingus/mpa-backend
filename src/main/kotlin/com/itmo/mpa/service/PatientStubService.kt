@@ -5,7 +5,7 @@ import com.itmo.mpa.dto.request.StatusRequest
 import com.itmo.mpa.dto.response.PatientResponse
 import com.itmo.mpa.repository.PatientRepository
 import com.itmo.mpa.service.mapping.toDto
-import com.itmo.mpa.service.mapping.toModel
+import com.itmo.mpa.service.mapping.toEntity
 import org.springframework.stereotype.Service
 
 @Service
@@ -13,7 +13,7 @@ class PatientStubService(private val patientRepository: PatientRepository) : Pat
 
 
     override fun createPatient(patientRequest: PatientRequest) {
-        patientRepository.save(patientRequest.toModel())
+        patientRepository.save(patientRequest.toEntity())
     }
 
     override fun findAll(): List<PatientResponse> = patientRepository.findAll().map { it.toDto() }
