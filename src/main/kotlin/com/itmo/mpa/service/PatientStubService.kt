@@ -13,7 +13,8 @@ class PatientStubService(private val patientRepository: PatientRepository, priva
 
 
     override fun createPatient(patientRequest: PatientRequest) {
-        val status = statusRepository.findById(patientRequest.statusId).orElse(null)
+
+        val status = patientRequest.statusId?.let { statusRepository.findById(patientRequest.statusId).orElse(null) }
         patientRepository.save(patientRequest.toEntity(status))
     }
 

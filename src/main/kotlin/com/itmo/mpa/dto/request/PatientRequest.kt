@@ -15,6 +15,6 @@ data class PatientRequest(
         @field:Max(120)
         val age: Int?,
 
-        @field:NotNull
-        val statusId: Long
+        @field:NotEmpty
+        val statusId: Long?
 )
