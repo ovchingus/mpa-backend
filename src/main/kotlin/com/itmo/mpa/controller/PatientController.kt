@@ -1,7 +1,6 @@
 package com.itmo.mpa.controller
 
 import com.itmo.mpa.dto.request.PatientRequest
-import com.itmo.mpa.dto.request.StatusRequest
 import com.itmo.mpa.dto.response.PatientResponse
 import com.itmo.mpa.service.PatientService
 import io.swagger.annotations.Api

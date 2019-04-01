@@ -1,9 +1,12 @@
 package com.itmo.mpa.dto.request
 
-import javax.validation.constraints.NotEmpty
+import org.jetbrains.annotations.NotNull
 
 data class StatusRequest(
 
-        @field:NotEmpty
-        val status: String
+        @NotNull
+        val name: String,
+
+        @NotNull
+        val description: String
 )
