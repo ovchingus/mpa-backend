@@ -1,3 +1,3 @@
-package com.itmo.mpa.controller.response
+package com.itmo.mpa.dto.response
 
 data class StatusResponse(val status: String)
