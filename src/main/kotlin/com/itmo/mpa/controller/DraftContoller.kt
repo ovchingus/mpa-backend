@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @Api(value = "/draft")
 @RequestMapping("draft")
-class StatusController(private val statusService: StatusService) {
+class DraftContoller(private val statusService: StatusService) {
 
     @ApiOperation("Commit draft")
     @PostMapping
@@ -26,8 +26,8 @@ class StatusController(private val statusService: StatusService) {
     }
 
     @ApiOperation("Get current draft")
-    @GetMapping("{id}")
-    fun getStatusDraftById(@PathVariable id: Int) : ResponseEntity<DraftResponse> {
+    @GetMapping("{id}/patients/status/draft")
+    fun getStatusDraftByPatientId(@PathVariable id: Int) : ResponseEntity<DraftResponse> {
         val draft = statusService.findStatusDraft(id) ?: return ResponseEntity.notFound().build()
         return ResponseEntity.ok(draft)
     }
