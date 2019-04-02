@@ -6,5 +6,5 @@ import com.itmo.mpa.model.Status
 
 fun StatusRequest.toModel() = Status(status)
 
-fun Status.toDto() = StatusResponse(status, draft?.toDto())
+fun Status.toDto() = StatusResponse(status)
 
