@@ -4,9 +4,9 @@ import org.jetbrains.annotations.NotNull
 
 data class StatusRequest(
 
-        @NotNull
+        @field:NotNull
         val name: String,
 
-        @NotNull
+        @field:NotNull
         val description: String
 )
