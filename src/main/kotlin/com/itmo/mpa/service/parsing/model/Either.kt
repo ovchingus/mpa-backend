@@ -10,7 +10,12 @@ sealed class Either<L : Comparable<L>, R : Comparable<R>> : Comparable<Either<L,
                     is Textual -> this.value.toString().compareTo(other.value.toString())
                 }
             }
-            is Textual -> other.compareTo(this)
+            is Textual -> {
+                when (other) {
+                    is Numerical -> this.value.toString().compareTo(other.value.toString())
+                    is Textual -> this.value.toString().compareTo(other.value.toString())
+                }
+            }
         }
     }
 
@@ -21,11 +26,16 @@ sealed class Either<L : Comparable<L>, R : Comparable<R>> : Comparable<Either<L,
         return when (this) {
             is Numerical -> {
                 when (other) {
-                    is Numerical<*> -> this.value == other.value
-                    is Textual<*> -> this.value.toString() == other.value.toString()
+                    is Numerical<*, *> -> this.value == other.value
+                    is Textual<*, *> -> this.value.toString() == other.value.toString()
                 }
             }
-            is Textual -> other == this
+            is Textual -> {
+                when (other) {
+                    is Numerical<*, *> -> this.value.toString() == other.value.toString()
+                    is Textual<*, *> -> this.value.toString() == other.value.toString()
+                }
+            }
         }
     }
 
@@ -35,10 +45,17 @@ sealed class Either<L : Comparable<L>, R : Comparable<R>> : Comparable<Either<L,
             is Textual -> this.value.hashCode()
         }
     }
+
+    override fun toString(): String {
+        return when (this) {
+            is Numerical -> "N[${this.value}]"
+            is Textual -> "T[${this.value}]"
+        }
+    }
 }
 
-class Numerical<T>(val value: T) : Either<T, Nothing>()
+class Numerical<T, F : Comparable<F>>(val value: T) : Either<T, F>()
         where T : Comparable<T>, T : Number
 
-class Textual<T>(val value: T) : Either<Nothing, T>()
+class Textual<F : Comparable<F>, T>(val value: T) : Either<F, T>()
         where T : Comparable<T>, T : CharSequence
