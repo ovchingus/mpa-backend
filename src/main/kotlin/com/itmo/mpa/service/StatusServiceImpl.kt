@@ -5,8 +5,10 @@ import com.itmo.mpa.dto.response.DraftResponse
 import com.itmo.mpa.dto.response.StatusResponse
 import com.itmo.mpa.repository.PatientRepository
 import com.itmo.mpa.service.mapping.toDto
+import org.springframework.stereotype.Service
 import java.util.*
 
+@Service
 class StatusServiceImpl(private val patientRepository: PatientRepository) : StatusService {
 
     override fun createStatus(statusRequest: StatusRequest) {
