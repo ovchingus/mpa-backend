@@ -42,8 +42,21 @@ class Parser {
         return true
     }
 
-    private fun partition(expression: String, leading: Int, following: Int): Int {
-        //todo not implemented
-        return 0
+    fun partition(leading: Int,
+                  following: Int,
+                  openBracketsOnPrefix: List<Int>,
+                  closeBracketsOnSuffix: List<Int>): Int {
+        val x = openBracketsOnPrefix[openBracketsOnPrefix.size - 1] - openBracketsOnPrefix[leading]
+        var l = leading
+        var r = following
+        while (r - l > 1) {
+            val middle = (l + r) / 2
+            if (closeBracketsOnSuffix[middle] >= x) {
+                l = middle
+            } else {
+                r = middle
+            }
+        }
+        return l
     }
 }
