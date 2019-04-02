@@ -5,7 +5,9 @@ import org.springframework.stereotype.Component
 @Component
 class Parser {
 
-    fun parse(expression: String) : Boolean {
+    private val supportedOperations = Operations.values().map { it.token }
+
+    fun parse(expression: String): Boolean {
         val openBracketsOnPrefix = ArrayList<Int>()
         val closeBracketsOnSuffix = ArrayList<Int>()
 
@@ -34,13 +36,13 @@ class Parser {
     private fun parse(expression: String,
                       leading: Int,
                       following: Int,
-                      openBracketsOnPrefix : List<Int>,
-                      closeBracketsOnSuffix : List<Int>) : Boolean {
+                      openBracketsOnPrefix: List<Int>,
+                      closeBracketsOnSuffix: List<Int>): Boolean {
         //todo not implemented
         return true
     }
 
-    private fun partition(expression: String, leading: Int, following: Int) : Int {
+    private fun partition(expression: String, leading: Int, following: Int): Int {
         //todo not implemented
         return 0
     }

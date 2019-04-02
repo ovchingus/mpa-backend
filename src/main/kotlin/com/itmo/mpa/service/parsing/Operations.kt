@@ -1,42 +1,11 @@
 package com.itmo.mpa.service.parsing
 
-enum class Operations {
+enum class Operations(val token: String) {
 
-    NOT {
-        override fun getValue(): String {
-            return "not"
-        }
-    },
-
-    AND {
-        override fun getValue(): String {
-            return "and"
-        }
-    },
-
-    OR {
-        override fun getValue(): String {
-            return "or"
-        }
-    },
-
-    GT {
-        override fun getValue(): String {
-            return "gt"
-        }
-    },
-
-    LT {
-        override fun getValue(): String {
-            return "lt"
-        }
-    },
-
-    EQ {
-        override fun getValue(): String {
-            return "eq"
-        }
-    };
-
-    abstract fun getValue() : String
+    NOT("not"),
+    AND("and"),
+    OR("or"),
+    GT("gt"),
+    LT("lt"),
+    EQ("eq");
 }
