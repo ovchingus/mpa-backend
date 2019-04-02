@@ -1,11 +1,14 @@
 package com.itmo.mpa.controller
 
+import com.itmo.mpa.dto.request.DraftRequest
+import com.itmo.mpa.dto.request.PatientRequest
 import com.itmo.mpa.dto.response.DraftResponse
 import com.itmo.mpa.service.StatusService
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 @RestController
 @Api(value = "/draft")
@@ -13,16 +16,16 @@ import org.springframework.web.bind.annotation.*
 class DraftContoller(private val statusService: StatusService) {
 
     @ApiOperation("Commit draft")
-    @PostMapping
+    @PostMapping("{id}/patients/status/draft")
     //TODO: смотрите в описание issue, этот метод делает две вещи
-    fun commitDraft() {
-
+    fun commitDraft(@PathVariable id: Int) {
+        statusService.commitDraft(id)
     }
 
     @ApiOperation("Create draft")
-    @PutMapping
-    fun createDraft() {
-
+    @PutMapping("{id}")
+    fun createDraft(@PathVariable id: Int, @Valid @RequestBody draftRequest: DraftRequest) {
+        statusService.createDraft(id, draftRequest)
     }
 
     @ApiOperation("Get current draft")
