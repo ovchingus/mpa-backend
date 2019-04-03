@@ -11,5 +11,4 @@ interface PatientService {
 
     fun findPatient(id: Long): PatientResponse?
 
-    fun changeStatus(patientId: Long, statusId: Long)
 }

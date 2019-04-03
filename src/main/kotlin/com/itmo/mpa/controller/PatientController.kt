@@ -16,8 +16,7 @@ class PatientController(private val patientService: PatientService) {
 
     @ApiOperation("Create patient")
     @PostMapping
-    fun create(
-            @Valid @RequestBody patientRequest: PatientRequest
+    fun create( @Valid @RequestBody patientRequest: PatientRequest
     ) = patientService.createPatient(patientRequest)
 
     @ApiOperation("Get all patients")
@@ -31,10 +30,4 @@ class PatientController(private val patientService: PatientService) {
         return ResponseEntity.ok(patient)
     }
 
-    @ApiOperation("Change patient`s status")
-    @PatchMapping("{patientId}/status/{statusId}")
-    fun changePatientStatus(
-            @PathVariable patientId: Long,
-            @PathVariable statusId: Long
-    ) = patientService.changeStatus(patientId, statusId)
 }

@@ -18,6 +18,6 @@ class Patient {
     var age: Int = 0
 
     @OneToOne
-    @JoinColumn(name = "status_id")
+    @JoinColumn(name = "status_id", referencedColumnName = "id")
     var status: Status? = null
 }

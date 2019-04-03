@@ -8,7 +8,7 @@ class Status {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, insertable = false, updatable = false)
     var id: Long = 0
 
     @Column(name = "name", nullable = false)
@@ -18,6 +18,6 @@ class Status {
     lateinit var description: String
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(referencedColumnName = "id")
     var patient: Patient? = null
 }
