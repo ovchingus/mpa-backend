@@ -18,6 +18,6 @@ class Status {
     lateinit var description: String
 
     @ManyToOne
-    @JoinColumn(referencedColumnName = "id")
+    @JoinColumn(name = "patient_id")
     var patient: Patient? = null
 }

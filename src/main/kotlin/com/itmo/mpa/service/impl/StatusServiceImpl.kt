@@ -4,8 +4,11 @@ import com.itmo.mpa.dto.request.DraftRequest
 import com.itmo.mpa.dto.response.DraftResponse
 import com.itmo.mpa.entity.Draft
 import com.itmo.mpa.entity.Patient
+import com.itmo.mpa.entity.Status
 import com.itmo.mpa.repository.DraftRepository
 import com.itmo.mpa.repository.PatientRepository
+import com.itmo.mpa.repository.StatusRepository
+import com.itmo.mpa.service.NoPendingDraftException
 import com.itmo.mpa.service.NotFoundException
 import com.itmo.mpa.service.StatusService
 import com.itmo.mpa.service.mapping.toEntity
@@ -16,13 +19,22 @@ import org.springframework.stereotype.Service
 @Service
 class StatusServiceImpl(
         private val patientRepository: PatientRepository,
-        private val draftRepository: DraftRepository
+        private val draftRepository: DraftRepository,
+        private val statusRepository: StatusRepository
 ) : StatusService {
 
     override fun commitDraft(patientId: Long) {
-        // todo
-        //val draft = draftRepository.findById(patientId).orElseThrow { NotFoundException("Draft for patient with id $patientId not found") }
-        //patientRepository.findById(patientId).get().status = Status(draft.draft)
+        val (draft, patient) = findDraftWithPatient(patientId)
+        if (draft == null) throw NoPendingDraftException(patientId)
+        val status = Status().apply {
+            name = draft.name
+            description = draft.description
+        }
+        draftRepository.delete(draft)
+        status.patient = patient
+        statusRepository.save(status)
+        patient.status = status
+        patientRepository.save(patient)
     }
 
     override fun rewriteDraft(patientId: Long, draftRequest: DraftRequest) {
@@ -39,7 +51,8 @@ class StatusServiceImpl(
     }
 
     private fun findDraftWithPatient(patientId: Long): Pair<Draft?, Patient> {
-        val patient = patientRepository.findByIdOrNull(patientId) ?: throw NotFoundException("Patient $patientId not found")
+        val patient = patientRepository.findByIdOrNull(patientId)
+                ?: throw NotFoundException("Patient $patientId not found")
         return Pair(draftRepository.findDraftByPatient(patient), patient)
     }
 }
