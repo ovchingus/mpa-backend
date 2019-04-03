@@ -9,6 +9,4 @@ fun StatusRequest.toEntity() = Status().also {
     it.description = description!!
 }
 
-fun Status.toRequest() = StatusRequest(name, description)
-
 fun Status.toResponse() = StatusResponse(name)
