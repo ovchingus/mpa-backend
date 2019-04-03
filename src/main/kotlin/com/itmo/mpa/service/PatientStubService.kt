@@ -6,6 +6,7 @@ import com.itmo.mpa.repository.PatientRepository
 import com.itmo.mpa.repository.StatusRepository
 import com.itmo.mpa.service.mapping.toDto
 import com.itmo.mpa.service.mapping.toEntity
+import com.itmo.mpa.service.mapping.toResponse
 import org.springframework.stereotype.Service
 
 @Service
@@ -18,10 +19,10 @@ class PatientStubService(private val patientRepository: PatientRepository, priva
         patientRepository.save(patientRequest.toEntity(status))
     }
 
-    override fun findAll(): List<PatientResponse> = patientRepository.findAll().map { it.toDto(it.status?.toDto()) }
+    override fun findAll(): List<PatientResponse> = patientRepository.findAll().map { it.toDto(it.status?.toResponse()) }
 
     override fun findPatient(id: Long): PatientResponse? = patientRepository.findById(id)
-            .map { it.toDto(it.status?.toDto()) }
+            .map { it.toDto(it.status?.toResponse()) }
             .orElse(null)
 
     override fun changeStatus(patientId: Long, statusId: Long) {
