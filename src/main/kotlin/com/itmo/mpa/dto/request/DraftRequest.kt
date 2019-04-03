@@ -1,9 +1,12 @@
 package com.itmo.mpa.dto.request
 
-import javax.validation.constraints.NotEmpty
+import org.jetbrains.annotations.NotNull
 
 data class DraftRequest(
 
-        @field:NotEmpty
-        val draft: String?
+        @field:NotNull
+        val name: String?,
+
+        @field:NotNull
+        val description: String?
 )
