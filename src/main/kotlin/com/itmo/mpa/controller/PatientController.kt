@@ -16,7 +16,8 @@ class PatientController(private val patientService: PatientService) {
 
     @ApiOperation("Create patient")
     @PostMapping
-    fun create( @Valid @RequestBody patientRequest: PatientRequest
+    fun create(
+            @Valid @RequestBody patientRequest: PatientRequest
     ) = patientService.createPatient(patientRequest)
 
     @ApiOperation("Get all patients")
@@ -29,5 +30,4 @@ class PatientController(private val patientService: PatientService) {
         val patient = patientService.findPatient(id) ?: return ResponseEntity.notFound().build()
         return ResponseEntity.ok(patient)
     }
-
 }

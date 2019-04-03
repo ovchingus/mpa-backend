@@ -4,6 +4,7 @@ import com.itmo.mpa.dto.request.PatientRequest
 import com.itmo.mpa.dto.response.PatientResponse
 import com.itmo.mpa.repository.PatientRepository
 import com.itmo.mpa.repository.StatusRepository
+import com.itmo.mpa.service.NotFoundException
 import com.itmo.mpa.service.PatientService
 import com.itmo.mpa.service.mapping.toEntity
 import com.itmo.mpa.service.mapping.toResponse
@@ -18,7 +19,9 @@ class PatientServiceImpl(
 
     override fun createPatient(patientRequest: PatientRequest) {
         val patient = if (patientRequest.statusId != null) {
-            patientRequest.toEntity(statusEntity = statusRepository.findByIdOrNull(patientRequest.statusId))
+            val status = statusRepository.findByIdOrNull(patientRequest.statusId)
+                    ?: throw NotFoundException("Status ${patientRequest.statusId} not found")
+            patientRequest.toEntity(status)
         } else {
             patientRequest.toEntity()
         }
@@ -28,5 +31,4 @@ class PatientServiceImpl(
     override fun findAll(): List<PatientResponse> = patientRepository.findAll().map { it.toResponse() }
 
     override fun findPatient(id: Long): PatientResponse? = patientRepository.findByIdOrNull(id)?.toResponse()
-
 }
