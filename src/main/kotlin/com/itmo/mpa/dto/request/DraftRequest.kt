@@ -5,5 +5,5 @@ import javax.validation.constraints.NotEmpty
 data class DraftRequest(
 
         @field:NotEmpty
-        val draft: String
+        val draft: String?
 )
