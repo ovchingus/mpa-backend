@@ -1,3 +1,3 @@
 package com.itmo.mpa.dto.response
 
-data class StatusResponse(val status: String)
+data class StatusResponse(val name: String, val description: String)
