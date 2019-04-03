@@ -12,13 +12,15 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class StatusServiceImpl(private val patientRepository: PatientRepository, private val draftRepository: DraftRepository) : StatusService {
+class StatusServiceImpl(
+        private val patientRepository: PatientRepository,
+        private val draftRepository: DraftRepository
+) : StatusService {
 
     override fun commitDraft(id: Int) {
-        val draft = draftRepository.findById(id).orElseThrow { NotFoundException("Draft for patient with id $id not found")  }
+        val draft = draftRepository.findById(id).orElseThrow { NotFoundException("Draft for patient with id $id not found") }
         patientRepository.findById(id).get().status = Status(draft.draft)
     }
-
 
     override fun createDraft(id: Int, draftRequest: DraftRequest) {
         val draft = draftRequest.toModel()
