@@ -16,20 +16,20 @@ import javax.validation.Valid
 class DraftContoller(private val statusService: StatusService) {
 
     @ApiOperation("Commit draft")
-    @PostMapping("{id}/patients/status/draft")
+    @PostMapping("patients/{id}/status/draft")
     //TODO: смотрите в описание issue, этот метод делает две вещи
     fun commitDraft(@PathVariable id: Int) {
         statusService.commitDraft(id)
     }
 
     @ApiOperation("Create draft")
-    @PutMapping("{id}")
+    @PutMapping("patients/{id}/status/draft")
     fun createDraft(@PathVariable id: Int, @Valid @RequestBody draftRequest: DraftRequest) {
         statusService.createDraft(id, draftRequest)
     }
 
     @ApiOperation("Get current draft")
-    @GetMapping("{id}/patients/status/draft")
+    @GetMapping("patients/{id}/status/draft")
     fun getStatusDraftByPatientId(@PathVariable id: Int) : ResponseEntity<DraftResponse> {
         val draft = statusService.findStatusDraft(id) ?: return ResponseEntity.notFound().build()
         return ResponseEntity.ok(draft)
