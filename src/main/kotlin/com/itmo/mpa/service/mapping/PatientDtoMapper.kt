@@ -5,7 +5,7 @@ import com.itmo.mpa.dto.response.PatientResponse
 import com.itmo.mpa.entity.Patient
 import com.itmo.mpa.entity.Status
 
-fun PatientRequest.toEntity(statusEntity: Status?) = Patient().also {
+fun PatientRequest.toEntity(statusEntity: Status? = null) = Patient().also {
     it.age = age!!
     it.name = name!!
     it.status = statusEntity

@@ -20,5 +20,4 @@ class Status {
     @ManyToOne
     @JoinColumn(name = "id")
     var patient: Patient? = null
-
 }

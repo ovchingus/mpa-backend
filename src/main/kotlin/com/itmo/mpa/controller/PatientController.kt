@@ -16,7 +16,9 @@ class PatientController(private val patientService: PatientService) {
 
     @ApiOperation("Create patient")
     @PostMapping
-    fun create(@Valid @RequestBody patientRequest: PatientRequest) = patientService.createPatient(patientRequest)
+    fun create(
+            @Valid @RequestBody patientRequest: PatientRequest
+    ) = patientService.createPatient(patientRequest)
 
     @ApiOperation("Get all patients")
     @GetMapping
