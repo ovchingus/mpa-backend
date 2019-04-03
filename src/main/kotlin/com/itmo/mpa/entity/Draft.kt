@@ -3,8 +3,8 @@ package com.itmo.mpa.entity
 import javax.persistence.*
 
 @Entity
-@Table(name = "status")
-class Status {
+@Table(name = "drafts")
+class Draft {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +17,7 @@ class Status {
     @Column(name = "description", nullable = false)
     lateinit var description: String
 
-    @ManyToOne
-    @JoinColumn(name = "patient_id")
-    var patient: Patient? = null
+    @OneToOne
+    @JoinColumn(name = "status_id")
+    lateinit var patient: Patient
 }
