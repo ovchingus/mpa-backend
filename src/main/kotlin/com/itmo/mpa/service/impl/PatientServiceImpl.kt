@@ -3,7 +3,6 @@ package com.itmo.mpa.service.impl
 import com.itmo.mpa.dto.request.PatientRequest
 import com.itmo.mpa.dto.response.PatientResponse
 import com.itmo.mpa.repository.PatientRepository
-import com.itmo.mpa.repository.StatusRepository
 import com.itmo.mpa.service.PatientService
 import com.itmo.mpa.service.mapping.toEntity
 import com.itmo.mpa.service.mapping.toResponse
@@ -12,8 +11,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class PatientServiceImpl(
-        private val patientRepository: PatientRepository,
-        private val statusRepository: StatusRepository
+        private val patientRepository: PatientRepository
 ) : PatientService {
 
     override fun createPatient(patientRequest: PatientRequest) {
