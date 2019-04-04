@@ -2,6 +2,8 @@ package com.itmo.mpa.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import springfox.documentation.builders.PathSelectors
 import springfox.documentation.builders.RequestHandlerSelectors
 import springfox.documentation.service.ApiInfo
@@ -13,7 +15,7 @@ import java.util.*
 
 @Configuration
 @EnableSwagger2
-class SpringFoxConfig {
+class SpringFoxConfig : WebMvcConfigurer {
 
     @Bean
     fun apiDocket(): Docket {
@@ -22,6 +24,14 @@ class SpringFoxConfig {
                 .apis(RequestHandlerSelectors.basePackage("com.itmo.mpa.controller"))
                 .paths(PathSelectors.any())
                 .build()
+                .apiInfo(getApiInfo())
+    }
+
+    override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
+        registry.addResourceHandler("swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/")
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
     private fun getApiInfo(): ApiInfo {
