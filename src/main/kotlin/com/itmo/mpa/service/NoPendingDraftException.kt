@@ -1,3 +1,3 @@
 package com.itmo.mpa.service
 
-class NoPendingDraftException(patientId: Long) : RuntimeException(patientId.toString())
+class NoPendingDraftException(patientId: Long) : NotFoundException("No current draft for patient $patientId found")
