@@ -2,6 +2,7 @@ package com.itmo.mpa.controller
 
 import com.itmo.mpa.dto.request.PatientRequest
 import com.itmo.mpa.dto.response.PatientResponse
+import com.itmo.mpa.service.PatientNotFoundException
 import com.itmo.mpa.service.PatientService
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
@@ -27,7 +28,8 @@ class PatientController(private val patientService: PatientService) {
     @ApiOperation("Find patient by id")
     @GetMapping("{id}")
     fun getById(@PathVariable id: Long): ResponseEntity<PatientResponse> {
-        val patient = patientService.findPatient(id) ?: return ResponseEntity.notFound().build()
+        val patient = patientService.findPatient(id)
+                ?: throw PatientNotFoundException(id)
         return ResponseEntity.ok(patient)
     }
 }

@@ -2,6 +2,7 @@ package com.itmo.mpa.controller
 
 import com.itmo.mpa.dto.request.DraftRequest
 import com.itmo.mpa.dto.response.DraftResponse
+import com.itmo.mpa.service.NoPendingDraftException
 import com.itmo.mpa.service.StatusService
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
@@ -33,7 +34,8 @@ class DraftController(private val statusService: StatusService) {
     @ApiOperation("Get current draft")
     @GetMapping("{patientId}/status/draft")
     fun getDraftByPatientId(@PathVariable patientId: Long): ResponseEntity<DraftResponse> {
-        val draft = statusService.findDraft(patientId) ?: return ResponseEntity.notFound().build()
+        val draft = statusService.findDraft(patientId)
+                ?: throw NoPendingDraftException(patientId)
         return ResponseEntity.ok(draft)
     }
 }
