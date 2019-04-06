@@ -6,6 +6,7 @@ import com.itmo.mpa.service.NoPendingDraftException
 import com.itmo.mpa.service.StatusService
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
@@ -24,6 +25,7 @@ class DraftController(private val statusService: StatusService) {
 
     @ApiOperation("Create draft")
     @PutMapping("{patientId}/status/draft")
+    @ResponseStatus(HttpStatus.CREATED)
     fun createDraft(
             @PathVariable patientId: Long,
             @Valid @RequestBody draftRequest: DraftRequest
