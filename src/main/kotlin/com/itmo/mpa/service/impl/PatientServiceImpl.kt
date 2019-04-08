@@ -6,6 +6,7 @@ import com.itmo.mpa.repository.PatientRepository
 import com.itmo.mpa.service.PatientService
 import com.itmo.mpa.service.mapping.toEntity
 import com.itmo.mpa.service.mapping.toResponse
+import org.slf4j.LoggerFactory
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -14,9 +15,12 @@ class PatientServiceImpl(
         private val patientRepository: PatientRepository
 ) : PatientService {
 
+    val logger = LoggerFactory.getLogger(javaClass) //++++++++++++++++++++++++++++++++++++++++++++
+
     override fun createPatient(patientRequest: PatientRequest) {
         val patient = patientRequest.toEntity()
         patientRepository.save(patient)
+        logger.info("createPatient( $patientRequest ) returns null") //++++++++++++++++++++++++
     }
 
     override fun findAll(): List<PatientResponse> = patientRepository.findAll().map { it.toResponse() }
