@@ -15,12 +15,12 @@ class PatientServiceImpl(
         private val patientRepository: PatientRepository
 ) : PatientService {
 
-    val logger = LoggerFactory.getLogger(javaClass) //++++++++++++++++++++++++++++++++++++++++++++
+    val logger = LoggerFactory.getLogger(javaClass)
 
     override fun createPatient(patientRequest: PatientRequest) {
         val patient = patientRequest.toEntity()
         patientRepository.save(patient)
-        logger.info("createPatient( $patientRequest ) returns null") //++++++++++++++++++++++++
+        logger.info("createPatient( $patientRequest ) returns patient created")
     }
 
     override fun findAll(): List<PatientResponse> = patientRepository.findAll().map { it.toResponse() }

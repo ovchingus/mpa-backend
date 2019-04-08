@@ -13,6 +13,7 @@ import com.itmo.mpa.service.NotFoundException
 import com.itmo.mpa.service.StatusService
 import com.itmo.mpa.service.mapping.toEntity
 import com.itmo.mpa.service.mapping.toResponse
+import org.slf4j.LoggerFactory
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -22,6 +23,8 @@ class StatusServiceImpl(
         private val draftRepository: DraftRepository,
         private val statusRepository: StatusRepository
 ) : StatusService {
+
+    val logger = LoggerFactory.getLogger(javaClass)
 
     override fun commitDraft(patientId: Long) {
         val (draft, patient) = findDraftWithPatient(patientId)
@@ -35,6 +38,7 @@ class StatusServiceImpl(
         statusRepository.save(status)
         patient.status = status
         patientRepository.save(patient)
+        logger.info("commitDraf( patientId: $patientId ) returns draft commited")
     }
 
     override fun rewriteDraft(patientId: Long, draftRequest: DraftRequest) {
@@ -43,16 +47,20 @@ class StatusServiceImpl(
             draftRepository.delete(oldDraft)
         }
         draftRepository.save(draftRequest.toEntity(patient))
+        logger.info("rewriteDraft(patientId: $patientId, draftRequest: $draftRequest) returns draft rewrited")
     }
 
     override fun findDraft(patientId: Long): DraftResponse? {
         val (draft) = findDraftWithPatient(patientId)
+        logger.info("findDraft(patientId: $patientId) returns $draft")
         return draft?.toResponse()
     }
 
     private fun findDraftWithPatient(patientId: Long): Pair<Draft?, Patient> {
         val patient = patientRepository.findByIdOrNull(patientId)
                 ?: throw NotFoundException("Patient $patientId not found")
-        return Pair(draftRepository.findDraftByPatient(patient), patient)
+        val draft = Pair(draftRepository.findDraftByPatient(patient), patient) //???
+        logger.info("findDraftWithPatient(patientId: $patientId) returns $draft")
+        return draft
     }
 }
