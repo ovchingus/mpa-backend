@@ -11,4 +11,4 @@ fun PatientRequest.toEntity(statusEntity: Status? = null) = Patient().also {
     it.status = statusEntity
 }
 
-fun Patient.toResponse() = PatientResponse(id, name, status?.toResponse())
+fun Patient.toResponse() = PatientResponse(id, name, age, status?.toResponse())
