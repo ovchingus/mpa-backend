@@ -27,4 +27,9 @@ class Status {
 
     @Column(name = "isDraft") //mb is nullable = false?
     var isDraft: Boolean = true //mb must be false?
+
+    @ManyToOne
+    @JoinColumn(name = "states_id")
+    @Column(name = "stateId")
+    lateinit var stateId: States
 }
