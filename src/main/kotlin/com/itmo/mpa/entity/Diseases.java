@@ -9,7 +9,7 @@ public class Diseases {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "DiseaseId", nullable = false, updatable = false)
-    private int diseaseId;
+    private long diseaseId;
 
     @Column(name = "Name", nullable = false)
     private String name;
