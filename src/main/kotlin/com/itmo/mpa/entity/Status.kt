@@ -1,5 +1,6 @@
 package com.itmo.mpa.entity
 
+import java.util.*
 import javax.persistence.*
 
 @Entity
@@ -20,4 +21,10 @@ class Status {
     @ManyToOne
     @JoinColumn(name = "patient_id")
     var patient: Patient? = null
+
+    @Column(name = "submittedOn") //mb is nullable = false?
+    lateinit var submittedOn: Date
+
+    @Column(name = "isDraft") //mb is nullable = false?
+    var isDraft: Boolean = true //mb must be false?
 }
