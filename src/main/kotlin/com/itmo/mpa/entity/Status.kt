@@ -31,5 +31,5 @@ class Status {
     @ManyToOne
     @JoinColumn(name = "states_id")
     @Column(name = "stateId")
-    lateinit var stateId: States
+    lateinit var stateId: State
 }

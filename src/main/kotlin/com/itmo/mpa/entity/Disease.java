@@ -4,26 +4,18 @@ package com.itmo.mpa.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "states")
-public class States {
+@Table(name = "diseases")
+public class Disease {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, updatable = false)
     private long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "Name", nullable = false)
     private String name;
 
-    @Column(name = "DiseaseId")
-    private long diseaseId;
-
-    @ManyToOne
-    @JoinColumn(name = "diseases_id")
-    @Column(name = "Disease")
-    private Diseases disease;
-
-    public States() {
+    public Disease() {
     }
 
     public long getId() {
@@ -40,13 +32,5 @@ public class States {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public long getDiseaseId() {
-        return diseaseId;
-    }
-
-    public void setDiseaseId(long diseaseId) {
-        this.diseaseId = diseaseId;
     }
 }
