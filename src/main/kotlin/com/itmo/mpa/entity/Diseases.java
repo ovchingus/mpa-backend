@@ -4,6 +4,7 @@ package com.itmo.mpa.entity;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "Diseases")
 public class Diseases {
 
     @Id
