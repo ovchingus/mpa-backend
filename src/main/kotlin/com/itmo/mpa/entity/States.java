@@ -4,7 +4,7 @@ package com.itmo.mpa.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "States")
+@Table(name = "states")
 public class States {
 
     @Id
@@ -17,6 +17,11 @@ public class States {
 
     @Column(name = "DiseaseId")
     private long diseaseId;
+
+    @ManyToOne
+    @JoinColumn(name = "diseases_id")
+    @Column(name = "Disease")
+    private Diseases disease;
 
     public States() {
     }
