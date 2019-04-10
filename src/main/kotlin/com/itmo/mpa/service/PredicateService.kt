@@ -1,6 +1,6 @@
-package com.itmo.mpa.service.parsing
+package com.itmo.mpa.service
 
-import com.itmo.mpa.service.parsing.model.Either
+import com.itmo.mpa.service.impl.parsing.model.Either
 
 interface PredicateService {
 

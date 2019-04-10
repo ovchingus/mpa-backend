@@ -1,4 +1,4 @@
-package com.itmo.mpa.service.parsing
+package com.itmo.mpa.service.impl.parsing
 
 enum class Operation(
         val token: String,

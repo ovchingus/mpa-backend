@@ -2,8 +2,8 @@ package com.itmo.mpa.controller
 
 import com.itmo.mpa.dto.request.PatientRequest
 import com.itmo.mpa.dto.response.PatientResponse
-import com.itmo.mpa.service.PatientNotFoundException
 import com.itmo.mpa.service.PatientService
+import com.itmo.mpa.service.exception.PatientNotFoundException
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.http.HttpStatus

@@ -1,7 +1,8 @@
-package com.itmo.mpa.service.parsing
+package com.itmo.mpa.service.impl.parsing
 
-import com.itmo.mpa.service.parsing.model.Either
-import com.itmo.mpa.service.parsing.model.evaluate
+import com.itmo.mpa.service.PredicateService
+import com.itmo.mpa.service.impl.parsing.model.Either
+import com.itmo.mpa.service.impl.parsing.model.evaluate
 import org.springframework.stereotype.Service
 
 @Service
