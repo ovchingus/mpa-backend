@@ -1,2 +1,8 @@
 # mpa-backend
-Coffee driven development
+
+## Run Docker
+
+```bash
+./gradlew bootJar
+docker-compose up
+```
