@@ -20,7 +20,6 @@ public class State {
 
     @ManyToOne
     @JoinColumn(name = "diseases_id")
-    @Column(name = "Disease")
     private Disease disease;
 
     public State() {

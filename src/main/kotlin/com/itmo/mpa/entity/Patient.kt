@@ -1,5 +1,6 @@
 package com.itmo.mpa.entity
 
+import java.time.Instant
 import java.util.*
 import javax.persistence.*
 
@@ -19,7 +20,7 @@ class Patient {
     var age: Int = 0
 
     @Column(name = "BirthDate", nullable = false)
-    lateinit var birthDate: Date
+    lateinit var birthDate: Instant
 
     @OneToOne
     @JoinColumn(name = "status_id")

@@ -22,14 +22,13 @@ class Status {
     @JoinColumn(name = "patient_id")
     var patient: Patient? = null
 
-    @Column(name = "submittedOn") //mb is nullable = false?
+    @Column(name = "submittedOn", nullable = false)
     lateinit var submittedOn: Date
 
-    @Column(name = "isDraft") //mb is nullable = false?
-    var isDraft: Boolean = true //mb must be false?
+    @Column(name = "isDraft", nullable = false)
+    var isDraft: Boolean = true
 
     @ManyToOne
     @JoinColumn(name = "states_id")
-    @Column(name = "stateId")
     lateinit var stateId: State
 }
