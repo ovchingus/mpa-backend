@@ -9,7 +9,6 @@ interface PredicateService {
      *
      * @return a closure over parsed predicate which takes a list of arguments to test against
      * @param predicate to parse
-     * @param <T>
      */
-    fun parsePredicate(predicate: String): (List<Either<Int, String>>) -> Boolean
+    fun parsePredicate(predicate: String): (List<Either<Double, String>>) -> Boolean
 }
