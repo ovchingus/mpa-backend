@@ -23,8 +23,13 @@ class ParserTest {
     }
 
     @Test
-    fun `when predicate is malformed exception is thrown`() {
-        assertThrows<Exception> { parser.parse("eq(and)") }
+    fun `when predicate is logical and malformed exception is thrown`() {
+        assertThrows<UnexpectedTokenException> { parser.parse("and(and)") }
+    }
+
+    @Test
+    fun `when predicate is comparison and malformed exception is thrown`() {
+        assertThrows<UnexpectedTokenException> { parser.parse("eq(and)") }
     }
 
     @Test
