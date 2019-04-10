@@ -7,7 +7,9 @@ import org.springframework.stereotype.Component
 @Component
 class Parser {
 
-    private val supportedOperations = Operations.values().map { it.token }
+    private val supportedOperations = Operations.values()
+            .groupBy { it.token }
+            .mapValues { it.value.first() }
 
     fun parse(expression: String): BinaryExpression<Either<Double, String>> {
         val trimmedExpression = expression.filterNot { it -> it == ' ' }
@@ -20,35 +22,36 @@ class Parser {
 
         val resultExpression: BinaryExpression<Either<Double, String>>?
         var head = leading
-        var exprCandidate = ""
+        var expressionCandidate = ""
         while (true) {
-            exprCandidate += expression[head]
-            if (supportedOperations.contains(exprCandidate)) {
-                resultExpression = when (exprCandidate) {
-                    Operations.NOT.token -> Not(parseExpression(expression, head + 2, following - 1))
-                    Operations.AND.token, Operations.OR.token -> {
+            expressionCandidate += expression[head]
+
+            if (supportedOperations.contains(expressionCandidate)) {
+                val operation = supportedOperations[expressionCandidate]!!
+
+                resultExpression = when (operation) {
+                    Operations.NOT -> Not(parseExpression(expression, head + 2, following - 1))
+                    Operations.AND, Operations.OR -> {
                         val delimiter = partition(expression, head + 2, following)
-                        when (exprCandidate) {
-                            Operations.AND.token -> And(parseExpression(expression, head + 2, delimiter + 1),
-                                    parseExpression(expression, delimiter + 2, following - 1))
-                            Operations.OR.token -> Or(parseExpression(expression, head + 2, delimiter + 1),
-                                    parseExpression(expression, delimiter + 2, following - 1))
+                        val left = parseExpression(expression, head + 2, delimiter + 1)
+                        val right = parseExpression(expression, delimiter + 2, following - 1)
+                        when (operation) {
+                            Operations.AND -> And(left, right)
+                            Operations.OR -> Or(left, right)
                             else -> null
                         }
                     }
-                    Operations.EQ.token, Operations.GT.token, Operations.LT.token -> {
+                    Operations.EQ, Operations.GT, Operations.LT -> {
                         val delimiter = expression.indexOf(',', head + 2, false)
-                        when (exprCandidate) {
-                            Operations.EQ.token -> Equal(parseValue(expression, head + 2, delimiter),
-                                    parseValue(expression, delimiter + 1, following - 1))
-                            Operations.GT.token -> GreaterThan(parseValue(expression, head + 2, delimiter),
-                                    parseValue(expression, delimiter + 1, following - 1))
-                            Operations.LT.token -> LessThan(parseValue(expression, head + 2, delimiter),
-                                    parseValue(expression, delimiter + 1, following - 1))
+                        val left = parseValue(expression, head + 2, delimiter)
+                        val right = parseValue(expression, delimiter + 1, following - 1)
+                        when (operation) {
+                            Operations.EQ -> Equal(left, right)
+                            Operations.GT -> GreaterThan(left, right)
+                            Operations.LT -> LessThan(left, right)
                             else -> null
                         }
                     }
-                    else -> null
                 }
                 return resultExpression!!
             } else {
