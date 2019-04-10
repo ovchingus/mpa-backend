@@ -1,6 +1,6 @@
-package com.itmo.mpa.service.parsing
+package com.itmo.mpa.service.impl.parsing
 
-import com.itmo.mpa.service.parsing.model.*
+import com.itmo.mpa.service.impl.parsing.model.*
 
 import org.springframework.stereotype.Component
 

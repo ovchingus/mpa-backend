@@ -1,4 +1,4 @@
-package com.itmo.mpa.service.parsing.model
+package com.itmo.mpa.service.impl.parsing.model
 
 sealed class Either<L : Comparable<L>, R : Comparable<R>> : Comparable<Either<L, R>> {
 
