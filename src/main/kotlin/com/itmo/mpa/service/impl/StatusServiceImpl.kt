@@ -24,11 +24,16 @@ class StatusServiceImpl(
         private val statusRepository: StatusRepository
 ) : StatusService {
 
-    val logger = LoggerFactory.getLogger(javaClass)
+    private val logger = LoggerFactory.getLogger(javaClass)!!
 
     override fun commitDraft(patientId: Long) {
+        logInfo("commitDraft: create new status from draft for patient with id - $patientId")
+
         val (draft, patient) = findDraftWithPatient(patientId)
-        if (draft == null) throw NoPendingDraftException(patientId)
+        if (draft == null) {
+            logError("commitDraft: attempt to commit not existing draft")
+            throw NoPendingDraftException(patientId)
+        }
         val status = Status().apply {
             name = draft.name
             description = draft.description
@@ -38,27 +43,58 @@ class StatusServiceImpl(
         statusRepository.save(status)
         patient.status = status
         patientRepository.save(patient)
-        logger.info("commitDraf( patientId: $patientId ) returns draft commited")
     }
 
     override fun rewriteDraft(patientId: Long, draftRequest: DraftRequest) {
+        logInfo("rewriteDraft: change existing draft or create one for patient with id - $patientId, " +
+                "by draft request - $draftRequest")
+
         val (oldDraft, patient) = findDraftWithPatient(patientId)
         if (oldDraft != null) {
             draftRepository.delete(oldDraft)
         }
         draftRepository.save(draftRequest.toEntity(patient))
-        logger.info("rewriteDraft(patientId: $patientId, draftRequest: $draftRequest) returns draft rewrited")
     }
 
     override fun findDraft(patientId: Long): DraftResponse? {
+        logInfo("findDraft: find draft by patient id - $patientId")
         val (draft) = findDraftWithPatient(patientId)
-        logger.info("findDraft(patientId: $patientId) returns $draft")
+
+        if (draft != null) {
+            logInfo("findDraft: Result: ${draft.toResponse()}")
+        } else {
+            logWarn("findDraft: Result is null")
+        }
+
         return draft?.toResponse()
     }
 
     private fun findDraftWithPatient(patientId: Long): Pair<Draft?, Patient> {
         val patient = patientRepository.findByIdOrNull(patientId)
-                ?: throw PatientNotFoundException(patientId)
+
+        if (patient == null) {
+            logError("findDraft: cannot find patient with id - $patientId")
+            throw PatientNotFoundException(patientId)
+        }
+
         return Pair(draftRepository.findDraftByPatient(patient), patient)
+    }
+
+    private fun logInfo(msg: String) {
+        if (logger.isInfoEnabled) {
+            logger.info("STATUS_SERVICE: $msg")
+        }
+    }
+
+    private fun logWarn(msg: String) {
+        if (logger.isWarnEnabled) {
+            logger.warn("STATUS_SERVICE: $msg")
+        }
+    }
+
+    private fun logError(msg: String) {
+        if (logger.isErrorEnabled) {
+            logger.error("STATUS_SERVICE: $msg")
+        }
     }
 }
