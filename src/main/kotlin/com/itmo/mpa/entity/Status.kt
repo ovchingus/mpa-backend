@@ -12,12 +12,6 @@ class Status {
     @Column(name = "id", nullable = false, insertable = false, updatable = false)
     var id: Long = 0
 
-    @Column(name = "name", nullable = false)
-    lateinit var name: String
-
-    @Column(name = "description", nullable = false)
-    lateinit var description: String
-
     @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)
     lateinit var patient: Patient
