@@ -15,9 +15,6 @@ public class State {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "DiseaseId")
-    private long diseaseId;
-
     @ManyToOne
     @JoinColumn(name = "diseases_id")
     private Disease disease;
@@ -41,11 +38,5 @@ public class State {
         this.name = name;
     }
 
-    public long getDiseaseId() {
-        return diseaseId;
-    }
 
-    public void setDiseaseId(long diseaseId) {
-        this.diseaseId = diseaseId;
-    }
 }
