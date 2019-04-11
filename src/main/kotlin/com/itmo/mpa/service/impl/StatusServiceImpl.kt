@@ -8,9 +8,9 @@ import com.itmo.mpa.entity.Status
 import com.itmo.mpa.repository.DraftRepository
 import com.itmo.mpa.repository.PatientRepository
 import com.itmo.mpa.repository.StatusRepository
-import com.itmo.mpa.service.NoPendingDraftException
-import com.itmo.mpa.service.PatientNotFoundException
 import com.itmo.mpa.service.StatusService
+import com.itmo.mpa.service.exception.NoPendingDraftException
+import com.itmo.mpa.service.exception.PatientNotFoundException
 import com.itmo.mpa.service.mapping.toEntity
 import com.itmo.mpa.service.mapping.toResponse
 import org.springframework.data.repository.findByIdOrNull
