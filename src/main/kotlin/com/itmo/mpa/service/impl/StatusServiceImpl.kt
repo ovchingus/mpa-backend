@@ -8,9 +8,9 @@ import com.itmo.mpa.entity.Status
 import com.itmo.mpa.repository.DraftRepository
 import com.itmo.mpa.repository.PatientRepository
 import com.itmo.mpa.repository.StatusRepository
-import com.itmo.mpa.service.NoPendingDraftException
-import com.itmo.mpa.service.NotFoundException
 import com.itmo.mpa.service.StatusService
+import com.itmo.mpa.service.exception.NoPendingDraftException
+import com.itmo.mpa.service.exception.PatientNotFoundException
 import com.itmo.mpa.service.mapping.toEntity
 import com.itmo.mpa.service.mapping.toResponse
 import org.slf4j.LoggerFactory
@@ -58,9 +58,7 @@ class StatusServiceImpl(
 
     private fun findDraftWithPatient(patientId: Long): Pair<Draft?, Patient> {
         val patient = patientRepository.findByIdOrNull(patientId)
-                ?: throw NotFoundException("Patient $patientId not found")
-        val draft = Pair(draftRepository.findDraftByPatient(patient), patient) //???
-        logger.info("findDraftWithPatient(patientId: $patientId) returns $draft")
-        return draft
+                ?: throw PatientNotFoundException(patientId)
+        return Pair(draftRepository.findDraftByPatient(patient), patient)
     }
 }

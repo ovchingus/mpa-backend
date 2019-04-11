@@ -14,7 +14,8 @@ interface StatusService {
     fun commitDraft(patientId: Long)
 
     /**
-     *  Drops the last pending draft and use the given one for [patientId]
+     *  Drops the last pending draft and use the given one for [patientId].
+     *  If the draft doesn't exist saves the new one
      *  @throws NotFoundException if patient not found
      */
     fun rewriteDraft(patientId: Long, draftRequest: DraftRequest)
