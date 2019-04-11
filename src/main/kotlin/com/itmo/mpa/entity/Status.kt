@@ -1,6 +1,6 @@
 package com.itmo.mpa.entity
 
-import java.util.*
+import java.time.Instant
 import javax.persistence.*
 
 @Entity
@@ -19,16 +19,16 @@ class Status {
     lateinit var description: String
 
     @ManyToOne
-    @JoinColumn(name = "patient_id")
-    var patient: Patient? = null
+    @JoinColumn(name = "patient_id", nullable = false)
+    lateinit var patient: Patient
 
     @Column(name = "submittedOn", nullable = false)
-    lateinit var submittedOn: Date
+    lateinit var submittedOn: Instant
 
-    @Column(name = "isDraft", nullable = false)
-    var isDraft: Boolean = true
+    @Column(name = "draft", nullable = false)
+    var draft: Boolean = true
 
     @ManyToOne
     @JoinColumn(name = "states_id")
-    lateinit var state: State
+    var state: State? = null
 }

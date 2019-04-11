@@ -1,7 +1,6 @@
 package com.itmo.mpa.entity
 
 import java.time.Instant
-import java.util.*
 import javax.persistence.*
 
 @Entity
@@ -15,9 +14,6 @@ class Patient {
 
     @Column(name = "name", nullable = false)
     lateinit var name: String
-
-    @Column(name = "age", nullable = false)
-    var age: Int = 0
 
     @Column(name = "BirthDate", nullable = false)
     lateinit var birthDate: Instant

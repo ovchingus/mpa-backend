@@ -1,11 +1,9 @@
 package com.itmo.mpa.service.impl
 
-import com.itmo.mpa.dto.request.DraftRequest
-import com.itmo.mpa.dto.response.DraftResponse
-import com.itmo.mpa.entity.Draft
+import com.itmo.mpa.dto.request.StatusRequest
+import com.itmo.mpa.dto.response.StatusResponse
 import com.itmo.mpa.entity.Patient
 import com.itmo.mpa.entity.Status
-import com.itmo.mpa.repository.DraftRepository
 import com.itmo.mpa.repository.PatientRepository
 import com.itmo.mpa.repository.StatusRepository
 import com.itmo.mpa.service.NoPendingDraftException
@@ -15,44 +13,42 @@ import com.itmo.mpa.service.mapping.toEntity
 import com.itmo.mpa.service.mapping.toResponse
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import java.time.Instant
 
 @Service
 class StatusServiceImpl(
         private val patientRepository: PatientRepository,
-        private val draftRepository: DraftRepository,
         private val statusRepository: StatusRepository
 ) : StatusService {
 
-    override fun commitDraft(patientId: Long) {
-        val (draft, patient) = findDraftWithPatient(patientId)
-        if (draft == null) throw NoPendingDraftException(patientId)
-        val status = Status().apply {
-            name = draft.name
-            description = draft.description
-        }
-        draftRepository.delete(draft)
-        status.patient = patient
-        statusRepository.save(status)
-        patient.status = status
+    override fun commitDraft(patientId: Long): StatusResponse {
+        val (statusDraft, patient) = findDraftWithPatient(patientId)
+        if (statusDraft == null) throw NoPendingDraftException(patientId)
+        statusDraft.draft = false
+        statusRepository.save(statusDraft)
+        patient.status = statusDraft
         patientRepository.save(patient)
+        return statusDraft.toResponse()
     }
 
-    override fun rewriteDraft(patientId: Long, draftRequest: DraftRequest) {
+    override fun rewriteDraft(patientId: Long, statusDraftRequest: StatusRequest) {
         val (oldDraft, patient) = findDraftWithPatient(patientId)
         if (oldDraft != null) {
-            draftRepository.delete(oldDraft)
+            statusRepository.delete(oldDraft)
         }
-        draftRepository.save(draftRequest.toEntity(patient))
+        val status = statusDraftRequest.toEntity(patient)
+        status.submittedOn = Instant.now()
+        statusRepository.save(status)
     }
 
-    override fun findDraft(patientId: Long): DraftResponse? {
-        val (draft) = findDraftWithPatient(patientId)
-        return draft?.toResponse()
+    override fun findDraft(patientId: Long): StatusResponse? {
+        val (statusDraft) = findDraftWithPatient(patientId)
+        return statusDraft?.toResponse()
     }
 
-    private fun findDraftWithPatient(patientId: Long): Pair<Draft?, Patient> {
+    private fun findDraftWithPatient(patientId: Long): Pair<Status?, Patient> {
         val patient = patientRepository.findByIdOrNull(patientId)
                 ?: throw PatientNotFoundException(patientId)
-        return Pair(draftRepository.findDraftByPatient(patient), patient)
+        return Pair(statusRepository.findStatusByPatientAndDraft(patient, draft = true), patient)
     }
 }

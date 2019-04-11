@@ -1,7 +1,7 @@
 package com.itmo.mpa.controller
 
-import com.itmo.mpa.dto.request.DraftRequest
-import com.itmo.mpa.dto.response.DraftResponse
+import com.itmo.mpa.dto.request.StatusRequest
+import com.itmo.mpa.dto.response.StatusResponse
 import com.itmo.mpa.service.NoPendingDraftException
 import com.itmo.mpa.service.StatusService
 import io.swagger.annotations.Api
@@ -18,9 +18,8 @@ class DraftController(private val statusService: StatusService) {
 
     @ApiOperation("Commit draft")
     @PostMapping("{patientId}/status/draft")
-    //TODO: смотрите в описание issue, этот метод делает две вещи
-    fun commitDraft(@PathVariable patientId: Long) {
-        statusService.commitDraft(patientId)
+    fun commitDraft(@PathVariable patientId: Long): StatusResponse {
+        return statusService.commitDraft(patientId)
     }
 
     @ApiOperation("Create draft")
@@ -28,14 +27,14 @@ class DraftController(private val statusService: StatusService) {
     @ResponseStatus(HttpStatus.CREATED)
     fun createDraft(
             @PathVariable patientId: Long,
-            @Valid @RequestBody draftRequest: DraftRequest
+            @Valid @RequestBody draftRequest: StatusRequest
     ) {
         statusService.rewriteDraft(patientId, draftRequest)
     }
 
     @ApiOperation("Get current draft")
     @GetMapping("{patientId}/status/draft")
-    fun getDraftByPatientId(@PathVariable patientId: Long): ResponseEntity<DraftResponse> {
+    fun getDraftByPatientId(@PathVariable patientId: Long): ResponseEntity<StatusResponse> {
         val draft = statusService.findDraft(patientId)
                 ?: throw NoPendingDraftException(patientId)
         return ResponseEntity.ok(draft)
