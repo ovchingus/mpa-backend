@@ -9,13 +9,15 @@ import org.springframework.web.context.request.WebRequest
 @ControllerAdvice
 class ControllerLogger {
 
-    val logger = LoggerFactory.getLogger(javaClass)!!
+    private val logger = LoggerFactory.getLogger(javaClass)!!
 
     @InitBinder
     fun initLoggingBinder(binder: WebDataBinder, request: WebRequest) {
-        logger.info("Binder: ${binder.objectName}" +
+        logger.trace("Binder: ${binder.objectName}" +
                 "Request description: ${request.getDescription(true)} " +
                 "\n Parameters: ${request.parameterMap}" +
                 "\n Context path: ${request.contextPath}")
     }
+
+
 }
