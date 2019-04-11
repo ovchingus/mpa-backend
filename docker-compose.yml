@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    expose:
+      - 5432
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=mpa
+    volumes:
+      - /var/lib/postgresql/data
+
+  server:
+    image: mpa-server
+    build:
+      .
+    links:
+      - db
+    expose:
+      - 8080
+    environment:
+      - DB_HOST=jdbc:postgresql://db:5432/mpa
+      - DB_USER=user
+      - DB_PASSWORD=password
