@@ -1,7 +1,8 @@
 package com.itmo.mpa.dto.request
 
-import org.jetbrains.annotations.NotNull
+import javax.validation.constraints.NotEmpty
 
 data class StatusRequest(
-
+    @field:NotEmpty
+    val id: Long?
 )
