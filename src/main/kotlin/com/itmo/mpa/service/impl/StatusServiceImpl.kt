@@ -31,7 +31,7 @@ class StatusServiceImpl(
 
         val (draft, patient) = findDraftWithPatient(patientId)
         if (draft == null) {
-            logError("commitDraft: attempt to commit not existing draft")
+            logWarn("commitDraft: attempt to commit not existing draft")
             throw NoPendingDraftException(patientId)
         }
         val status = Status().apply {
@@ -60,11 +60,7 @@ class StatusServiceImpl(
         logInfo("findDraft: find draft by patient id - $patientId")
         val (draft) = findDraftWithPatient(patientId)
 
-        if (draft != null) {
-            logInfo("findDraft: Result: ${draft.toResponse()}")
-        } else {
-            logWarn("findDraft: Result is null")
-        }
+        logInfo("findDraft: Result: ${draft?.toResponse() ?: "null"}")
 
         return draft?.toResponse()
     }

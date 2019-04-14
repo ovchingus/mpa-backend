@@ -14,7 +14,7 @@ class PredicateServiceImpl(
     private val logger = LoggerFactory.getLogger(javaClass)!!
 
     override fun parsePredicate(predicate: String): (List<Either<Double, String>>) -> Boolean {
-        logInfo("parsePredicate: parses predicate - $predicate to return boolean result of it")
+        logInfo("parsePredicate: parses predicate - $predicate")
         val parsedExpression = parser.parse(predicate)
         return { parsedExpression.evaluate(it) }
     }
