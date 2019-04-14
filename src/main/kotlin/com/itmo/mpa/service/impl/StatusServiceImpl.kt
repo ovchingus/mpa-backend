@@ -32,6 +32,7 @@ class StatusServiceImpl(
             logWarn("commitDraft: attempt to commit not existing draft")
             throw NoPendingDraftException(patientId)
         }
+
         statusDraft.draft = false
         statusRepository.save(statusDraft)
         patient.status = statusDraft
