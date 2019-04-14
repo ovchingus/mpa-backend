@@ -11,5 +11,7 @@ data class PatientRequest(
 
         // TODO: fix formatting
         @field:NotNull
-        val birthDate: Instant?
+        val birthDate: Instant?,
+
+        val diseaseId: Long?
 )

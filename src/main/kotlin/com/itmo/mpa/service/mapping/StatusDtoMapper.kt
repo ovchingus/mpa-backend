@@ -6,9 +6,7 @@ import com.itmo.mpa.entity.Patient
 import com.itmo.mpa.entity.Status
 
 fun StatusRequest.toEntity(patient: Patient) = Status().also {
-    it.name = name!!
-    it.description = description!!
     it.patient = patient
 }
 
-fun Status.toResponse() = StatusResponse(id, name, description)
+fun Status.toResponse() = StatusResponse(id, submittedOn)

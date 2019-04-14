@@ -1,8 +1,9 @@
 package com.itmo.mpa.dto.request
 
-import javax.validation.constraints.NotEmpty
+import javax.validation.constraints.NotNull
 
 data class StatusRequest(
-    @field:NotEmpty
-    val id: Long?
+
+    @field:NotNull
+    val stateId: Long?
 )

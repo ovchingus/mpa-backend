@@ -2,8 +2,8 @@ package com.itmo.mpa.controller
 
 import com.itmo.mpa.dto.request.StatusRequest
 import com.itmo.mpa.dto.response.StatusResponse
-import com.itmo.mpa.service.NoPendingDraftException
 import com.itmo.mpa.service.StatusService
+import com.itmo.mpa.service.exception.NoPendingDraftException
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.http.HttpStatus
