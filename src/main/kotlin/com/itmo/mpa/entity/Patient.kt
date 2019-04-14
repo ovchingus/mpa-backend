@@ -18,6 +18,10 @@ class Patient {
     @Column(name = "BirthDate", nullable = false)
     lateinit var birthDate: Instant
 
+    @ManyToOne
+    @JoinColumn(name = "disease_id")
+    var disease: Disease? = null
+
     @OneToOne
     @JoinColumn(name = "status_id")
     var status: Status? = null

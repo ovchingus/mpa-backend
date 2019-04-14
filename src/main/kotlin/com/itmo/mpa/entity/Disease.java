@@ -1,6 +1,8 @@
 package com.itmo.mpa.entity;
 
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.persistence.*;
 
 @Entity
@@ -26,11 +28,12 @@ public class Disease {
         this.id = id;
     }
 
+    @NotNull
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(@NotNull String name) {
         this.name = name;
     }
 }
