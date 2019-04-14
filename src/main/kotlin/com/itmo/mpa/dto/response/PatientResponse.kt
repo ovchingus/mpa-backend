@@ -1,3 +1,11 @@
 package com.itmo.mpa.dto.response
 
-data class PatientResponse(val id: Long, val name: String, val age: Int, val status: StatusResponse?)
+import java.time.Instant
+
+data class PatientResponse(
+        val id: Long,
+        val name: String,
+        // TODO: fix formatting
+        val birthDate: Instant,
+        val status: StatusResponse?
+)

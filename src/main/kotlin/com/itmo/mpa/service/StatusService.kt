@@ -1,7 +1,7 @@
 package com.itmo.mpa.service
 
-import com.itmo.mpa.dto.request.DraftRequest
-import com.itmo.mpa.dto.response.DraftResponse
+import com.itmo.mpa.dto.request.StatusRequest
+import com.itmo.mpa.dto.response.StatusResponse
 
 interface StatusService {
 
@@ -11,18 +11,18 @@ interface StatusService {
      *  @throws NotFoundException if patient not found
      *  @throws NoPendingDraftException if no draft is pending for a patient
      */
-    fun commitDraft(patientId: Long)
+    fun commitDraft(patientId: Long) : StatusResponse
 
     /**
      *  Drops the last pending draft and use the given one for [patientId].
      *  If the draft doesn't exist saves the new one
      *  @throws NotFoundException if patient not found
      */
-    fun rewriteDraft(patientId: Long, draftRequest: DraftRequest)
+    fun rewriteDraft(patientId: Long, statusDraftRequest: StatusRequest)
 
     /**
-     *  Returns current draft draft by given [patientId]
+     *  Returns current status draft draft by given [patientId]
      *  @throws NotFoundException if patient not found
      */
-    fun findDraft(patientId: Long): DraftResponse?
+    fun findDraft(patientId: Long): StatusResponse?
 }
