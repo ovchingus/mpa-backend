@@ -75,20 +75,14 @@ class StatusServiceImpl(
     }
 
     private fun logInfo(msg: String) {
-        if (logger.isInfoEnabled) {
             logger.info("STATUS_SERVICE: $msg")
-        }
     }
 
     private fun logWarn(msg: String) {
-        if (logger.isWarnEnabled) {
             logger.warn("STATUS_SERVICE: $msg")
-        }
     }
 
     private fun logError(msg: String) {
-        if (logger.isErrorEnabled) {
             logger.error("STATUS_SERVICE: $msg")
-        }
     }
 }

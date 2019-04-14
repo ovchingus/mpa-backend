@@ -20,8 +20,6 @@ class PredicateServiceImpl(
     }
 
     private fun logInfo(msg: String) {
-        if (logger.isInfoEnabled) {
             logger.info("PREDICATE_SERVICE: $msg")
-        }
     }
 }
