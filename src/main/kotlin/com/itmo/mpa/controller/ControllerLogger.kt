@@ -13,10 +13,12 @@ class ControllerLogger {
 
     @InitBinder
     fun initLoggingBinder(binder: WebDataBinder, request: WebRequest) {
-        logger.trace("Binder: ${binder.objectName}" +
-                "Request description: ${request.getDescription(true)} " +
-                "\n Parameters: ${request.parameterMap}" +
-                "\n Context path: ${request.contextPath}")
+        logger.trace("""
+                    Binder: ${binder.objectName}
+                    Request description: ${request.getDescription(true)}
+                    Parameters: ${request.parameterMap}
+                    Context path: ${request.contextPath}
+                    """)
     }
 
 
