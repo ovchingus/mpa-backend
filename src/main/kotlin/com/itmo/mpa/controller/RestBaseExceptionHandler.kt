@@ -17,7 +17,7 @@ class RestBaseExceptionHandler : ResponseEntityExceptionHandler() {
 
     @ExceptionHandler(NotFoundException::class)
     fun handleException(exception: NotFoundException, request: WebRequest): ResponseEntity<Any> {
-
+        logger.error(exception.toString())
         val status = HttpStatus.NOT_FOUND
         return handleExceptionInternal(exception,
                 Error(exception.message, status.value()),
