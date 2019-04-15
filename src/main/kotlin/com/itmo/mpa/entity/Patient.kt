@@ -1,7 +1,5 @@
 package com.itmo.mpa.entity
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.itmo.mpa.util.MyCustomDeserializer
 import java.time.Instant
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -25,7 +23,6 @@ class Patient {
     @Column(name = "name", nullable = false)
     lateinit var name: String
 
-    @JsonDeserialize(using = MyCustomDeserializer::class)
     @Column(name = "birth_date", nullable = false)
     lateinit var birthDate: Instant
 
