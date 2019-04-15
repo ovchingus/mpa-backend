@@ -19,6 +19,9 @@ class Status {
     @Column(name = "submittedOn", nullable = false)
     lateinit var submittedOn: Instant
 
+    @OneToMany(mappedBy = "status", cascade = [CascadeType.ALL])
+    lateinit var diseaseAttributeValues: Set<DiseaseAttributeValue>
+
     @Column(name = "draft", nullable = false)
     var draft: Boolean = true
 
