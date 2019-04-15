@@ -1,7 +1,7 @@
 package com.itmo.mpa.dto.request
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.itmo.mpa.util.MyCustomSerializer
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.itmo.mpa.util.MyCustomDeserializer
 import java.time.Instant
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
@@ -12,7 +12,7 @@ data class PatientRequest(
         val name: String?,
 
         @field:NotNull
-        @JsonSerialize(using = MyCustomSerializer::class)
+        @JsonDeserialize(using = MyCustomDeserializer::class)
         val birthDate: Instant?,
 
         val diseaseId: Long?
