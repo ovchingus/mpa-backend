@@ -12,7 +12,7 @@ import java.time.Instant
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
-class MyCustomSerializer : JsonSerializer<Instant>() {
+class InstantSerializer : JsonSerializer<Instant>() {
 
     private val fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(ZoneOffset.UTC)
 
@@ -24,7 +24,7 @@ class MyCustomSerializer : JsonSerializer<Instant>() {
     }
 }
 
-class MyCustomDeserializer : JsonDeserializer<Instant>() {
+class InstantDeserializer : JsonDeserializer<Instant>() {
 
     private val fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(ZoneOffset.UTC)
 
