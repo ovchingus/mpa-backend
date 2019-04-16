@@ -2,7 +2,7 @@ package com.itmo.mpa.service
 
 import com.itmo.mpa.dto.request.PatientRequest
 import com.itmo.mpa.dto.response.PatientResponse
-import com.itmo.mpa.service.exception.NotFoundException
+import com.itmo.mpa.service.exception.PatientNotFoundException
 
 
 interface PatientService {
@@ -16,7 +16,7 @@ interface PatientService {
      *
      *  @param id patient id
      *  @return found patient
-     *  @throws NotFoundException if patient not found
+     *  @throws PatientNotFoundException if patient not found
      */
     fun findPatient(id: Long): PatientResponse
 }
