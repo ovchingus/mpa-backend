@@ -4,6 +4,7 @@ import com.itmo.mpa.dto.request.PatientRequest
 import com.itmo.mpa.dto.response.PatientResponse
 import com.itmo.mpa.repository.PatientRepository
 import com.itmo.mpa.service.PatientService
+import com.itmo.mpa.service.exception.PatientNotFoundException
 import com.itmo.mpa.service.mapping.toEntity
 import com.itmo.mpa.service.mapping.toResponse
 import org.slf4j.LoggerFactory
@@ -33,13 +34,12 @@ class PatientServiceImpl(
         return result
     }
 
-    override fun findPatient(id: Long): PatientResponse? {
+    override fun findPatient(id: Long): PatientResponse {
         logger.info("findPatient: find patient by id - $id")
 
         val result = patientRepository.findByIdOrNull(id)?.toResponse()
 
         logger.info("findPatient: result is $result")
-        return result
+        return result ?: throw PatientNotFoundException(id)
     }
-
 }

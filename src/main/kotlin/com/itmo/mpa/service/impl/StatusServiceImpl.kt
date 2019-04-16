@@ -53,14 +53,14 @@ class StatusServiceImpl(
         statusRepository.save(status)
     }
 
-    override fun findDraft(patientId: Long): StatusResponse? {
+    override fun findDraft(patientId: Long): StatusResponse {
         logger.info("findDraft: find draft by patient id - $patientId")
 
         val (statusDraft) = findDraftWithPatient(patientId)
 
         logger.info("findDraft: Result: ${statusDraft?.toResponse() ?: "null"}")
 
-        return statusDraft?.toResponse()
+        return statusDraft?.toResponse() ?: throw NoPendingDraftException(patientId)
     }
 
     private fun findDraftWithPatient(patientId: Long): Pair<Status?, Patient> {
