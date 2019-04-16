@@ -4,6 +4,7 @@ import com.itmo.mpa.service.exception.NotFoundException
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -11,9 +12,9 @@ import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
 
 @ControllerAdvice
-class RestBaseExceptionHandler : ResponseEntityExceptionHandler() {
-    data class Error(val message: String?, val status: Int)
+class RestExceptionHandler : ResponseEntityExceptionHandler() {
 
+    data class Error(val message: String?, val status: Int)
 
     @ExceptionHandler(NotFoundException::class)
     fun handleException(exception: NotFoundException, request: WebRequest): ResponseEntity<Any> {
@@ -24,6 +25,21 @@ class RestBaseExceptionHandler : ResponseEntityExceptionHandler() {
                 HttpHeaders(),
                 status,
                 request)
+    }
+
+    override fun handleHttpMessageNotReadable(
+            ex: HttpMessageNotReadableException,
+            headers: HttpHeaders,
+            status: HttpStatus,
+            request: WebRequest
+    ): ResponseEntity<Any> {
+        return handleExceptionInternal(
+                ex,
+                Error(ex.message, status.value()),
+                headers,
+                status,
+                request
+        )
     }
 
     /**
