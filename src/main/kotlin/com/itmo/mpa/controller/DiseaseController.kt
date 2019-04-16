@@ -14,12 +14,12 @@ import javax.validation.Valid
 @RequestMapping("/diseases")
 class DiseaseController(private val diseaseService: DiseaseService) {
 
-    @GetMapping("/getAll")
+    @GetMapping
     @ApiOperation("Get all diseases")
     fun getAllDiseases() : List<DiseaseResponse> = diseaseService.getAll()
 
 
-    @PostMapping("/create")
+    @PostMapping
     @ApiOperation("Create new disease")
     @ResponseStatus(HttpStatus.CREATED)
     fun create(@Valid @RequestBody diseaseRequest: DiseaseRequest) = diseaseService.createDisease(diseaseRequest)
