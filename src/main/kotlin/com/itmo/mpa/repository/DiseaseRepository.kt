@@ -1,6 +1,6 @@
 package com.itmo.mpa.repository
 
 import com.itmo.mpa.entity.Disease
-import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.repository.CrudRepository
 
-interface DiseaseRepository : JpaRepository<Disease, Long>
+interface DiseaseRepository : CrudRepository<Disease, Long>
