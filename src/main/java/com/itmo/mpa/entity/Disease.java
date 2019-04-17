@@ -1,27 +1,22 @@
 package com.itmo.mpa.entity;
 
-
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "states")
-public class State {
+@Table(name = "diseases")
+public class Disease {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, updatable = false)
     private long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "Name", nullable = false)
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "diseases_id")
-    private Disease disease;
-
-    public State() {
+    public Disease() {
     }
 
     public long getId() {
@@ -40,5 +35,4 @@ public class State {
     public void setName(@NotNull String name) {
         this.name = name;
     }
-
 }
