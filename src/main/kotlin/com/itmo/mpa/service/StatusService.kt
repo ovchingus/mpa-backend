@@ -30,7 +30,7 @@ interface StatusService {
     fun rewriteDraft(patientId: Long, statusDraftRequest: StatusRequest)
 
     /**
-     *  Returns current status draft draft by given [patientId]
+     *  Returns current status draft by given [patientId]
      *
      *  @param patientId patient id
      *  @return found draft
