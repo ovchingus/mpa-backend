@@ -11,6 +11,9 @@ class MpaApplicationTests {
 
     @Test
     fun contextLoads() {
+        /**
+         *  test successful context loading for now.
+         *  context loaded means that all dependencies are resolved and JPA entities created
+         */
     }
-
 }
