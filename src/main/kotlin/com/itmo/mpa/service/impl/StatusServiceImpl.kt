@@ -7,8 +7,10 @@ import com.itmo.mpa.entity.Status
 import com.itmo.mpa.repository.PatientRepository
 import com.itmo.mpa.repository.StatusRepository
 import com.itmo.mpa.service.StatusService
+import com.itmo.mpa.service.exception.NoCurrentStatusException
 import com.itmo.mpa.service.exception.NoPendingDraftException
 import com.itmo.mpa.service.exception.PatientNotFoundException
+import com.itmo.mpa.service.exception.StatusNotFoundException
 import com.itmo.mpa.service.mapping.toEntity
 import com.itmo.mpa.service.mapping.toResponse
 import org.slf4j.LoggerFactory
@@ -29,7 +31,6 @@ class StatusServiceImpl(
 
         val (statusDraft, patient) = findDraftWithPatient(patientId)
         if (statusDraft == null) {
-            logger.warn("commitDraft: attempt to commit not existing draft")
             throw NoPendingDraftException(patientId)
         }
 
@@ -53,24 +54,44 @@ class StatusServiceImpl(
         statusRepository.save(status)
     }
 
-    override fun findDraft(patientId: Long): StatusResponse? {
+    override fun findDraft(patientId: Long): StatusResponse {
         logger.info("findDraft: find draft by patient id - $patientId")
 
         val (statusDraft) = findDraftWithPatient(patientId)
 
         logger.info("findDraft: Result: ${statusDraft?.toResponse() ?: "null"}")
 
-        return statusDraft?.toResponse()
+        return statusDraft?.toResponse() ?: throw NoPendingDraftException(patientId)
+    }
+
+    override fun findCurrentStatus(patientId: Long): StatusResponse {
+        logger.info("findCurrentStatus: patientId {}", patientId)
+        val patient = findPatient(patientId)
+        return patient.status?.toResponse() ?: throw NoCurrentStatusException(patientId)
+    }
+
+    override fun findStatusById(patientId: Long, statusId: Long): StatusResponse {
+        logger.info("findStatusById: patientId {}, statusId {}", patientId, statusId)
+        val patient = findPatient(patientId)
+        val status = statusRepository.findStatusByPatientAndId(patient, statusId)
+                ?: throw StatusNotFoundException(patientId, statusId)
+        return status.toResponse()
+    }
+
+    override fun findAllForPatient(patientId: Long): List<StatusResponse> {
+        logger.info("findAllForPatient: {}", patientId)
+        val patient = findPatient(patientId)
+        return statusRepository.findStatusesByPatientOrderBySubmittedOnAsc(patient)
+                .map { it.toResponse() }
+    }
+
+    private fun findPatient(patientId: Long): Patient {
+        logger.info("findPatient: {}", patientId)
+        return patientRepository.findByIdOrNull(patientId) ?: throw PatientNotFoundException(patientId)
     }
 
     private fun findDraftWithPatient(patientId: Long): Pair<Status?, Patient> {
-        val patient = patientRepository.findByIdOrNull(patientId)
-
-        if (patient == null) {
-            logger.error("findDraft: cannot find patient with id - $patientId")
-            throw PatientNotFoundException(patientId)
-        }
-
+        val patient = patientRepository.findByIdOrNull(patientId) ?: throw PatientNotFoundException(patientId)
         return Pair(statusRepository.findStatusByPatientAndDraft(patient, draft = true), patient)
     }
 }
