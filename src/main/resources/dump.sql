@@ -68,6 +68,20 @@ create table medicine (
   name varchar(255)
 );
 
+create table medicine_for_diseases (
+  id          bigserial primary key,
+  medicine_id bigserial,
+  disease_id  bigserial,
+
+  constraint medicine_for_diseases_medicine_id_fkey foreign key (medicine_id)
+  references medicine (id)
+  on update no action on delete cascade,
+
+  constraint medicine_for_diseases_disease_id_fkey foreign key (disease_id)
+  references disease (id)
+  on update no action on delete cascade
+);
+
 create table prescription (
   id          bigserial primary key,
   status_id   bigserial,
@@ -91,5 +105,68 @@ create table association (
 
   constraint association_doctor_id_fkey foreign key (doctor_id)
   references doctor (id)
+  on update no action on delete cascade
+);
+
+create table contraindications (
+  id           bigserial primary key,
+  medicine_id  bigserial,
+  created_date timestamp,
+  predicate    text,
+  source       text,
+
+  constraint contraindications_medicine_id_fkey foreign key (medicine_id)
+  references medicine (id)
+  on update no action on delete cascade
+);
+
+create table active_substance (
+  id   bigserial primary key,
+  name varchar(512)
+);
+
+create table active_substance_in_medicine (
+  id                  bigserial primary key,
+  active_substance_id bigserial,
+  medicine_id         bigserial,
+  constraint active_substances_in_medicine_medicine_id_fkey foreign key (medicine_id)
+  references medicine (id)
+  on update no action on delete cascade,
+
+  constraint active_substances_in_medicine_substance_id_fkey foreign key (active_substance_id)
+  references active_substance (id)
+  on update no action on delete cascade
+);
+
+create table requirement_type (
+  id   bigserial primary key,
+  name varchar(255)
+);
+
+create table disease_attribute (
+  id                  bigserial primary key,
+  name                varchar(255),
+  type                varchar(255),
+  requirement_type_id bigserial,
+  requirement_id      bigserial,
+  is_required         boolean,
+
+  constraint disease_attribute_requirement_type_id_fkey foreign key (requirement_type_id)
+  references requirement_type (id)
+  on update no action on delete cascade
+);
+
+create table diseases_attribute_value (
+  id                   bigserial primary key,
+  status_id            bigserial,
+  disease_attribute_id bigserial,
+  value                text,
+
+  constraint diseases_attribute_value_disease_attribute_id_fkey foreign key (disease_attribute_id)
+  references disease_attribute (id)
+  on update no action on delete cascade,
+
+  constraint diseases_attribute_value_status_id_fkey foreign key (status_id)
+  references state (id)
   on update no action on delete cascade
 );
