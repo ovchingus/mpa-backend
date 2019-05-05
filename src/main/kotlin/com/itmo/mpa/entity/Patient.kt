@@ -28,7 +28,7 @@ class Patient {
 
     @ManyToOne
     @JoinColumn(name = "disease_id", nullable = true)
-    var disease: Disease? = null
+    lateinit var disease: Disease
 
     @OneToOne
     @JoinColumn(name = "status_id", nullable = true)
