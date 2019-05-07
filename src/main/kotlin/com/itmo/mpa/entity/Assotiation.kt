@@ -8,31 +8,25 @@ import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
-import javax.persistence.OneToOne
 import javax.persistence.Table
 
 @Entity
-@Table(name = "patient")
-class Patient {
+@Table(name = "association")
+class Assotiation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     var id: Long = 0
 
-    @Column(name = "name", nullable = false)
-    lateinit var name: String
+    @Column(name = "created_date", nullable = false)
+    lateinit var createdDate: Instant
 
-    @Column(name = "birth_date", nullable = false)
-    lateinit var birthDate: Instant
+    @Column(name = "predicate", nullable = false)
+    lateinit var predicate: String
 
-    @ManyToOne
-    @JoinColumn(name = "disease_id", nullable = true)
-    lateinit var disease: Disease
-
-    @OneToOne
-    @JoinColumn(name = "status_id", nullable = true)
-    var status: Status? = null
+    @Column(name = "text", nullable = false)
+    lateinit var text: String
 
     @ManyToOne
     @JoinColumn(name = "doctor_id", nullable = false)

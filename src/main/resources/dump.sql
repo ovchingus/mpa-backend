@@ -53,6 +53,7 @@ create table transition (
   id            bigserial primary key,
   state_from_id bigserial not null,
   state_to_id   bigserial not null,
+  predicate     text not null,
 
   constraint transition_state_from_id_fkey foreign key (state_from_id)
   references state (id)
