@@ -35,23 +35,19 @@ class Parser {
         var head = begin
         var expressionCandidate = ""
 
-        while (true) {
+        while (expression[head].isLetter()) {
             expressionCandidate += expression[head]
+            head++
+        }
 
-            if (!supportedOperations.contains(expressionCandidate)) {
-                head++
-                if (head == expression.length) throw UnexpectedTokenException(expression)
-                continue
-            }
+        val operation = supportedOperations[expressionCandidate]
+                ?: throw UnexpectedTokenException(expressionCandidate)
 
-            head += 2 // +1 for (, +1 for the nex char
-            val operation = supportedOperations.getValue(expressionCandidate)
-            val arguments = ParsingArguments(operation, expression, head, end - 1)
-            return when (operation.type) {
-                UnaryOperation -> parseUnary(arguments)
-                LogicalOperation -> parseLogical(arguments)
-                ComparisonOperation -> parseComparison(arguments)
-            }
+        val arguments = ParsingArguments(operation, expression, head + 1, end - 1)
+        return when (operation.type) {
+            UnaryOperation -> parseUnary(arguments)
+            LogicalOperation -> parseLogical(arguments)
+            ComparisonOperation -> parseComparison(arguments)
         }
     }
 
@@ -66,7 +62,9 @@ class Parser {
         return when (operation) {
             Operation.EQ -> Equal(left, right)
             Operation.GT -> GreaterThan(left, right)
+            Operation.GTE -> GreaterThanEqual(left, right)
             Operation.LT -> LessThan(left, right)
+            Operation.LTE -> LessThanEqual(left, right)
             else -> throw UnexpectedTokenException(operation.token)
         }
     }

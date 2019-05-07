@@ -11,7 +11,9 @@ enum class Operation(
     OR("or", LogicalOperation),
 
     GT("gt", ComparisonOperation),
+    GTE("gte", ComparisonOperation),
     LT("lt", ComparisonOperation),
+    LTE("lte", ComparisonOperation),
     EQ("eq", ComparisonOperation);
 }
 

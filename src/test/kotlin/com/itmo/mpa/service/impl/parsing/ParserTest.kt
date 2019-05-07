@@ -427,7 +427,7 @@ class ParserTest {
             //                       !((true) && false)
             //                       !(false)
             //                         true
-            val predicate = "not(and(or(lt(10, \$small_number), eq(\$language.top, java)), not(gt(\$big_number, -5))))"
+            val predicate = "not(and(or(lt(5, \$small_number), eq(\$language.top, java)), not(gte(\$big_number, 10))))"
 
             val lookupTable = mapOf(
                     "small_number" to 5.asValue(),
