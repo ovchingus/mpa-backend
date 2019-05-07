@@ -16,5 +16,5 @@ fun Patient.toResponse() = PatientResponse(
         name,
         birthDate,
         status?.toResponse(),
-        disease?.name
+        disease.name
 )
