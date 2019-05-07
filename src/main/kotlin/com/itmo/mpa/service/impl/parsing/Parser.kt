@@ -109,7 +109,7 @@ class Parser {
             following: Int
     ): Value<PredicateValue> {
         if (expression[leading] == '$') {
-            return UnknownValue(expression.subSequence(leading + 1, following).toString().toInt())
+            return UnknownValue(expression.subSequence(leading + 1, following).toString())
         }
         return KnownValue(PredicateValue(expression.subSequence(leading, following).toString()))
     }
