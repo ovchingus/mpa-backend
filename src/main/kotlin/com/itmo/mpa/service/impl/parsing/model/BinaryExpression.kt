@@ -14,24 +14,59 @@ class And<T : Comparable<T>>(val left: BinaryExpression<T>, val right: BinaryExp
 class Evaluated<T : Comparable<T>>(val value: Boolean) : BinaryExpression<T>()
 
 sealed class Value<T>
-class UnknownValue<T : Comparable<T>>(val number: Int) : Value<T>()
+class UnknownValue<T : Comparable<T>>(val symbolicName: String) : Value<T>()
 class KnownValue<T : Comparable<T>>(val value: T) : Value<T>()
 
 fun <T : Comparable<T>> BinaryExpression<T>.evaluate(parameters: List<T>): Boolean {
+    return evaluate { symbolicName ->
+        runCatching {
+            parameters[symbolicName.toInt()]
+        }.getOrElse {
+            throw ArgumentsCountMismatchException(parameters, it)
+        }
+    }
+}
+
+fun <T : Comparable<T>> BinaryExpression<T>.evaluate(resolver: (String) -> T): Boolean {
     return when (this) {
-        is Equal -> left.calculate(parameters) == right.calculate(parameters)
-        is LessThan -> left.calculate(parameters) < right.calculate(parameters)
-        is GreaterThan -> left.calculate(parameters) > right.calculate(parameters)
-        is Not -> !other.evaluate(parameters)
-        is Or -> left.evaluate(parameters) || right.evaluate(parameters)
-        is And -> left.evaluate(parameters) && right.evaluate(parameters)
+        is Equal -> left.resolve(resolver) == right.resolve(resolver)
+        is LessThan -> left.resolve(resolver) < right.resolve(resolver)
+        is GreaterThan -> left.resolve(resolver) > right.resolve(resolver)
+        is Not -> !other.evaluate(resolver)
+        is Or -> left.evaluate(resolver) || right.evaluate(resolver)
+        is And -> left.evaluate(resolver) && right.evaluate(resolver)
         is Evaluated -> value
     }
 }
 
-fun <T : Comparable<T>> Value<T>.calculate(parameters: List<T>): T {
+private fun <T : Comparable<T>> Value<T>.resolve(resolver: (String) -> T): T {
     return when (this) {
         is KnownValue -> value
-        is UnknownValue -> runCatching { parameters[number] }.getOrElse { throw ArgumentsCountMismatchException(parameters, it) }
+        is UnknownValue -> resolver(symbolicName)
+    }
+}
+
+/**
+ *  For debug purposes only
+ */
+fun BinaryExpression<*>.asString(): String {
+    return when (this) {
+        is Equal -> "Equal(${left.asString()}, ${right.asString()})"
+        is LessThan -> "LessThan(${left.asString()}, ${right.asString()})"
+        is GreaterThan -> "GreaterThan(${left.asString()}, ${right.asString()})"
+        is Not -> "Not(${other.asString()})"
+        is Or -> "Or(${left.asString()}, ${right.asString()})"
+        is And -> "And(${left.asString()}, ${right.asString()})"
+        is Evaluated -> value.toString()
+    }
+}
+
+/**
+ *  For debug purposes only
+ */
+private fun Value<*>.asString(): String {
+    return when (this) {
+        is KnownValue -> value.toString()
+        is UnknownValue -> "\$$symbolicName"
     }
 }

@@ -1,5 +1,6 @@
 package com.itmo.mpa.service.impl.parsing.model
 
+@Deprecated("Use PredicateValue when performing operations.")
 sealed class Either<L : Comparable<L>, R : Comparable<R>> : Comparable<Either<L, R>> {
 
     override operator fun compareTo(other: Either<L, R>): Int {

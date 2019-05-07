@@ -7,21 +7,32 @@ import org.springframework.stereotype.Component
 @Component
 class Parser {
 
+    companion object {
+
+        private const val ARGS_DELIMITER = ','
+        private const val REFERENCE_PREFIX = '$'
+    }
+
     private val supportedOperations = Operation.values()
             .groupBy { it.token }
             .mapValues { it.value.first() }
 
-    fun parse(expression: String): BinaryExpression<Either<Double, String>> {
-        val trimmedExpression = expression.filterNot { it -> it == ' ' }
+    fun parse(expression: String): BinaryExpression<PredicateValue> {
+        val trimmedExpression = expression.filterNot { it == ' ' }
         return parseExpression(trimmedExpression)
     }
 
+    /**
+     *   expression
+     *   |        |
+     *   begin    end
+     */
     private fun parseExpression(
             expression: String,
-            leading: Int = 0,
-            following: Int = expression.length
-    ): BinaryExpression<Either<Double, String>> {
-        var head = leading
+            begin: Int = 0,
+            end: Int = expression.length - 1
+    ): BinaryExpression<PredicateValue> {
+        var head = begin
         var expressionCandidate = ""
 
         while (true) {
@@ -33,8 +44,9 @@ class Parser {
                 continue
             }
 
-            val operation = supportedOperations[expressionCandidate]!!
-            val arguments = ParsingArguments(operation, expression, head, following)
+            head += 2 // +1 for (, +1 for the nex char
+            val operation = supportedOperations.getValue(expressionCandidate)
+            val arguments = ParsingArguments(operation, expression, head, end - 1)
             return when (operation.type) {
                 UnaryOperation -> parseUnary(arguments)
                 LogicalOperation -> parseLogical(arguments)
@@ -43,14 +55,13 @@ class Parser {
         }
     }
 
-    private fun parseComparison(args: ParsingArguments): BinaryExpression<Either<Double, String>> {
-        val (operation, expression, head, following) = args
+    private fun parseComparison(args: ParsingArguments): BinaryExpression<PredicateValue> {
+        val (operation, expression, begin, end) = args
 
-        val delimiter = expression.indexOf(',', head + 2, false)
-        if (delimiter < 0) throw UnexpectedTokenException(expression)
+        val delimiter = partitionIndex(expression, begin, end)
 
-        val left = parseValue(expression, head + 2, delimiter)
-        val right = parseValue(expression, delimiter + 1, following - 1)
+        val left = parseValue(expression, begin, delimiter - 1)
+        val right = parseValue(expression, delimiter + 1, end)
 
         return when (operation) {
             Operation.EQ -> Equal(left, right)
@@ -60,14 +71,13 @@ class Parser {
         }
     }
 
-    private fun parseLogical(args: ParsingArguments): BinaryExpression<Either<Double, String>> {
-        val (operation, expression, head, following) = args
+    private fun parseLogical(args: ParsingArguments): BinaryExpression<PredicateValue> {
+        val (operation, expression, begin, end) = args
 
-        val delimiter = partitionIndex(expression, head + 2, following)
-        if (delimiter > following) throw UnexpectedTokenException(expression)
+        val delimiter = partitionIndex(expression, begin, end)
 
-        val left = parseExpression(expression, head + 2, delimiter + 1)
-        val right = parseExpression(expression, delimiter + 2, following - 1)
+        val left = parseExpression(expression, begin, delimiter - 1)
+        val right = parseExpression(expression, delimiter + 1, end)
 
         return when (operation) {
             Operation.AND -> And(left, right)
@@ -76,45 +86,39 @@ class Parser {
         }
     }
 
-    private fun parseUnary(args: ParsingArguments): BinaryExpression<Either<Double, String>> {
-        val (operation, expression, head, following) = args
+    private fun parseUnary(args: ParsingArguments): BinaryExpression<PredicateValue> {
+        val (operation, expression, begin, end) = args
 
-        val argument = parseExpression(expression, head + 2, following - 1)
+        val argument = parseExpression(expression, begin, end)
         return when (operation) {
             Operation.NOT -> Not(argument)
             else -> throw UnexpectedTokenException(operation.token)
         }
     }
 
-    private fun partitionIndex(expression: String, leading: Int, following: Int): Int {
-
+    private fun partitionIndex(expression: String, begin: Int, end: Int): Int {
         var balance = 0
-        var result = leading
-        for (i in leading until following) {
+        for (i in begin until end) {
             if (expression[i] == '(') {
                 balance++
             } else if (expression[i] == ')') {
                 balance--
-            } else if (expression[i] == ',' && balance == 0) {
-                result = i - 1
-                break
+            } else if (expression[i] == ARGS_DELIMITER && balance == 0) {
+                return i
             }
         }
-        return result
+        throw UnexpectedTokenException(expression)
     }
 
     private fun parseValue(
             expression: String,
-            leading: Int,
-            following: Int
-    ): Value<Either<Double, String>> {
-        if (expression[leading] == '$') {
-            return UnknownValue(expression.subSequence(leading + 1, following).toString().toInt())
+            begin: Int,
+            end: Int
+    ): Value<PredicateValue> {
+        val inclusiveEnd = end + 1
+        if (expression[begin] == REFERENCE_PREFIX) {
+            return UnknownValue(expression.substring(begin + 1, inclusiveEnd))
         }
-        return try {
-            KnownValue(Numerical(expression.subSequence(leading, following).toString().toDouble()))
-        } catch (ex: NumberFormatException) {
-            KnownValue(Textual(expression.subSequence(leading, following).toString()))
-        }
+        return KnownValue(PredicateValue(expression.substring(begin, inclusiveEnd)))
     }
 }
