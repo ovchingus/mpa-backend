@@ -15,5 +15,6 @@ data class PatientRequest(
         @JsonDeserialize(using = InstantDeserializer::class)
         val birthDate: Instant?,
 
+        @field:NotNull
         val diseaseId: Long?
 )

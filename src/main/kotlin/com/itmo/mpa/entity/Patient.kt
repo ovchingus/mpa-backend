@@ -1,24 +1,11 @@
 package com.itmo.mpa.entity
 
 import java.time.Instant
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.persistence.JoinColumn
-import javax.persistence.ManyToOne
-import javax.persistence.OneToOne
-import javax.persistence.Table
+import javax.persistence.*
 
 @Entity
 @Table(name = "patient")
-class Patient {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    var id: Long = 0
+class Patient : LongIdEntity() {
 
     @Column(name = "name", nullable = false)
     lateinit var name: String
@@ -28,9 +15,13 @@ class Patient {
 
     @ManyToOne
     @JoinColumn(name = "disease_id", nullable = true)
-    var disease: Disease? = null
+    lateinit var disease: Disease
 
     @OneToOne
     @JoinColumn(name = "status_id", nullable = true)
     var status: Status? = null
+
+    @ManyToOne
+    @JoinColumn(name = "doctor_id", nullable = false)
+    lateinit var doctor: Doctor
 }

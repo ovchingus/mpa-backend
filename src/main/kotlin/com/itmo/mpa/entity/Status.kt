@@ -5,27 +5,28 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "status")
-class Status {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, insertable = false, updatable = false)
-    var id: Long = 0
+class Status : LongIdEntity()  {
 
     @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)
     lateinit var patient: Patient
 
-    @Column(name = "submittedOn", nullable = false)
+    @Column(name = "submit_date", nullable = false)
     lateinit var submittedOn: Instant
 
     @OneToMany(mappedBy = "status", cascade = [CascadeType.ALL])
     lateinit var diseaseAttributeValues: Set<DiseaseAttributeValue>
 
-    @Column(name = "draft", nullable = false)
+    @Column(name = "is_draft", nullable = false)
     var draft: Boolean = true
 
     @ManyToOne
-    @JoinColumn(name = "states_id")
-    var state: State? = null
+    @JoinColumn(name = "state_id", nullable = false)
+    lateinit var state: State
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+    @JoinTable(name = "prescription",
+            joinColumns = [JoinColumn(name = "status_id", nullable = false)],
+            inverseJoinColumns = [JoinColumn(name = "medicine_id", nullable = false)])
+    lateinit var medicines: Set<Medicine>
 }
