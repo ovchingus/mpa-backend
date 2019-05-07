@@ -2,6 +2,7 @@ package com.itmo.mpa.service.impl.parsing
 
 import com.itmo.mpa.service.impl.parsing.model.ArgumentsCountMismatchException
 import com.itmo.mpa.service.impl.parsing.model.PredicateValue
+import com.itmo.mpa.service.impl.parsing.model.asString
 import com.itmo.mpa.service.impl.parsing.model.evaluate
 import org.hamcrest.Matchers.`is`
 import org.junit.Assert.assertThat
@@ -31,7 +32,9 @@ class ParserTest {
 
     @Test
     fun `when predicate is comparison and malformed exception is thrown`() {
-        assertThrows<UnexpectedTokenException> { parser.parse("eq(and)") }
+        assertThrows<UnexpectedTokenException> {
+            println(parser.parse("eq(and)").asString())
+        }
     }
 
     @Test
@@ -417,6 +420,26 @@ class ParserTest {
                 parser.parse(predicate).evaluate(variables)
             }
         }
+
+        @Test
+        fun `test compound expression with symbolic references`() {
+            //                       !((false || true) && !(true))
+            //                       !((true) && false)
+            //                       !(false)
+            //                         true
+            val predicate = "not(and(or(lt(10, \$small_number), eq(\$language.top, java)), not(gt(\$big_number, -5))))"
+
+            val lookupTable = mapOf(
+                    "small_number" to 5.asValue(),
+                    "language.top" to "kotlin".asValue(),
+                    "big_number" to 10.asValue()
+            )
+
+            println(parser.parse(predicate).asString())
+            val shouldBeTrue = parser.parse(predicate).evaluate { symName -> lookupTable.getValue(symName) }
+            assertThat(shouldBeTrue, `is`(true))
+        }
+
     }
 
     private fun <T : Any> T.asValue(): PredicateValue {

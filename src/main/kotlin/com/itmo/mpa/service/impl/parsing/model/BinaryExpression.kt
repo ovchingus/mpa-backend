@@ -45,3 +45,28 @@ private fun <T : Comparable<T>> Value<T>.resolve(resolver: (String) -> T): T {
         is UnknownValue -> resolver(symbolicName)
     }
 }
+
+/**
+ *  For debug purposes only
+ */
+fun BinaryExpression<*>.asString(): String {
+    return when (this) {
+        is Equal -> "Equal(${left.asString()}, ${right.asString()})"
+        is LessThan -> "LessThan(${left.asString()}, ${right.asString()})"
+        is GreaterThan -> "GreaterThan(${left.asString()}, ${right.asString()})"
+        is Not -> "Not(${other.asString()})"
+        is Or -> "Or(${left.asString()}, ${right.asString()})"
+        is And -> "And(${left.asString()}, ${right.asString()})"
+        is Evaluated -> value.toString()
+    }
+}
+
+/**
+ *  For debug purposes only
+ */
+private fun Value<*>.asString(): String {
+    return when (this) {
+        is KnownValue -> value.toString()
+        is UnknownValue -> "\$$symbolicName"
+    }
+}
