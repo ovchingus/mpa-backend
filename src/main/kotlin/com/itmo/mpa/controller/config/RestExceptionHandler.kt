@@ -1,4 +1,4 @@
-package com.itmo.mpa.controller
+package com.itmo.mpa.controller.config
 
 import com.itmo.mpa.service.exception.NotFoundException
 import org.springframework.http.HttpHeaders

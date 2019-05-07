@@ -1,4 +1,4 @@
-package com.itmo.mpa.controller
+package com.itmo.mpa.controller.config
 
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.WebDataBinder
