@@ -1,6 +1,6 @@
 package com.itmo.mpa.service
 
-import com.itmo.mpa.service.impl.parsing.model.Either
+import com.itmo.mpa.service.impl.parsing.model.PredicateValue
 
 interface PredicateService {
 
@@ -10,5 +10,5 @@ interface PredicateService {
      * @return a closure over parsed predicate which takes a list of arguments to test against
      * @param predicate to parse
      */
-    fun parsePredicate(predicate: String): (List<Either<Double, String>>) -> Boolean
+    fun parsePredicate(predicate: String): (List<PredicateValue>) -> Boolean
 }

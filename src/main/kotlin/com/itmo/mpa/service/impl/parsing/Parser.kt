@@ -11,7 +11,7 @@ class Parser {
             .groupBy { it.token }
             .mapValues { it.value.first() }
 
-    fun parse(expression: String): BinaryExpression<Either<Double, String>> {
+    fun parse(expression: String): BinaryExpression<PredicateValue> {
         val trimmedExpression = expression.filterNot { it -> it == ' ' }
         return parseExpression(trimmedExpression)
     }
@@ -20,7 +20,7 @@ class Parser {
             expression: String,
             leading: Int = 0,
             following: Int = expression.length
-    ): BinaryExpression<Either<Double, String>> {
+    ): BinaryExpression<PredicateValue> {
         var head = leading
         var expressionCandidate = ""
 
@@ -43,7 +43,7 @@ class Parser {
         }
     }
 
-    private fun parseComparison(args: ParsingArguments): BinaryExpression<Either<Double, String>> {
+    private fun parseComparison(args: ParsingArguments): BinaryExpression<PredicateValue> {
         val (operation, expression, head, following) = args
 
         val delimiter = expression.indexOf(',', head + 2, false)
@@ -60,7 +60,7 @@ class Parser {
         }
     }
 
-    private fun parseLogical(args: ParsingArguments): BinaryExpression<Either<Double, String>> {
+    private fun parseLogical(args: ParsingArguments): BinaryExpression<PredicateValue> {
         val (operation, expression, head, following) = args
 
         val delimiter = partitionIndex(expression, head + 2, following)
@@ -76,7 +76,7 @@ class Parser {
         }
     }
 
-    private fun parseUnary(args: ParsingArguments): BinaryExpression<Either<Double, String>> {
+    private fun parseUnary(args: ParsingArguments): BinaryExpression<PredicateValue> {
         val (operation, expression, head, following) = args
 
         val argument = parseExpression(expression, head + 2, following - 1)
@@ -107,14 +107,10 @@ class Parser {
             expression: String,
             leading: Int,
             following: Int
-    ): Value<Either<Double, String>> {
+    ): Value<PredicateValue> {
         if (expression[leading] == '$') {
             return UnknownValue(expression.subSequence(leading + 1, following).toString().toInt())
         }
-        return try {
-            KnownValue(Numerical(expression.subSequence(leading, following).toString().toDouble()))
-        } catch (ex: NumberFormatException) {
-            KnownValue(Textual(expression.subSequence(leading, following).toString()))
-        }
+        return KnownValue(PredicateValue(expression.subSequence(leading, following).toString()))
     }
 }
