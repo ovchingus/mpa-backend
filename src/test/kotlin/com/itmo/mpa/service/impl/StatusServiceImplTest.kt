@@ -79,7 +79,7 @@ class StatusServiceImplTest {
                     patient = this@StatusServiceImplTest.patient
                     submittedOn = Instant.now()
                     diseaseAttributeValues = emptySet()
-                    isDraft = true
+                    draft = true
                 }
                 every { statusRepository.findStatusByPatientAndDraft(patient, draft = true) } returns statusDraft
                 every { statusRepository.save(statusDraft) } returns statusDraft
@@ -90,7 +90,7 @@ class StatusServiceImplTest {
             fun `on commit it turns to status`() {
                 statusServiceImpl.commitDraft(patient.id)
 
-                assertThat(statusDraft.isDraft, `is`(false))
+                assertThat(statusDraft.draft, `is`(false))
                 verify { statusRepository.save(statusDraft) }
                 assertThat(patient.status, `is`(statusDraft))
                 verify { patientRepository.save(patient) }

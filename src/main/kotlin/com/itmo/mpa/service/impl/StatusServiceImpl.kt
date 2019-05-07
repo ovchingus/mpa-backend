@@ -34,7 +34,7 @@ class StatusServiceImpl(
             throw NoPendingDraftException(patientId)
         }
 
-        statusDraft.isDraft = false
+        statusDraft.draft = false
         statusRepository.save(statusDraft)
         patient.status = statusDraft
         patientRepository.save(patient)

@@ -18,7 +18,7 @@ class Status : LongIdEntity()  {
     lateinit var diseaseAttributeValues: Set<DiseaseAttributeValue>
 
     @Column(name = "is_draft", nullable = false)
-    var isDraft: Boolean = true
+    var draft: Boolean = true
 
     @ManyToOne
     @JoinColumn(name = "state_id", nullable = false)
