@@ -5,7 +5,9 @@ sealed class BinaryExpression<T : Comparable<T>>
 
 class Equal<T : Comparable<T>>(val left: Value<T>, val right: Value<T>) : BinaryExpression<T>()
 class LessThan<T : Comparable<T>>(val left: Value<T>, val right: Value<T>) : BinaryExpression<T>()
+class LessThanEqual<T : Comparable<T>>(val left: Value<T>, val right: Value<T>) : BinaryExpression<T>()
 class GreaterThan<T : Comparable<T>>(val left: Value<T>, val right: Value<T>) : BinaryExpression<T>()
+class GreaterThanEqual<T : Comparable<T>>(val left: Value<T>, val right: Value<T>) : BinaryExpression<T>()
 
 class Or<T : Comparable<T>>(val left: BinaryExpression<T>, val right: BinaryExpression<T>) : BinaryExpression<T>()
 class Not<T : Comparable<T>>(val other: BinaryExpression<T>) : BinaryExpression<T>()
@@ -31,7 +33,9 @@ fun <T : Comparable<T>> BinaryExpression<T>.evaluate(resolver: (String) -> T): B
     return when (this) {
         is Equal -> left.resolve(resolver) == right.resolve(resolver)
         is LessThan -> left.resolve(resolver) < right.resolve(resolver)
+        is LessThanEqual -> left.resolve(resolver) <= right.resolve(resolver)
         is GreaterThan -> left.resolve(resolver) > right.resolve(resolver)
+        is GreaterThanEqual -> left.resolve(resolver) >= right.resolve(resolver)
         is Not -> !other.evaluate(resolver)
         is Or -> left.evaluate(resolver) || right.evaluate(resolver)
         is And -> left.evaluate(resolver) && right.evaluate(resolver)
@@ -53,7 +57,9 @@ fun BinaryExpression<*>.asString(): String {
     return when (this) {
         is Equal -> "Equal(${left.asString()}, ${right.asString()})"
         is LessThan -> "LessThan(${left.asString()}, ${right.asString()})"
+        is LessThanEqual -> "LessThanEqual(${left.asString()}, ${right.asString()})"
         is GreaterThan -> "GreaterThan(${left.asString()}, ${right.asString()})"
+        is GreaterThanEqual -> "GreaterThanEqual(${left.asString()}, ${right.asString()})"
         is Not -> "Not(${other.asString()})"
         is Or -> "Or(${left.asString()}, ${right.asString()})"
         is And -> "And(${left.asString()}, ${right.asString()})"
