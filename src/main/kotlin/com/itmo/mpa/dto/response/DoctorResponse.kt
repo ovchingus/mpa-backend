@@ -1,6 +1,6 @@
 package com.itmo.mpa.dto.response
 
-data class DiseaseResponse(
+data class DoctorResponse(
         val id: Long,
         val name: String
 )
