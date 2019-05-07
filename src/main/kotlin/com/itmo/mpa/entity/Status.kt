@@ -1,28 +1,11 @@
 package com.itmo.mpa.entity
 
 import java.time.Instant
-import javax.persistence.CascadeType
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.FetchType
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.persistence.JoinColumn
-import javax.persistence.JoinTable
-import javax.persistence.ManyToMany
-import javax.persistence.ManyToOne
-import javax.persistence.OneToMany
-import javax.persistence.Table
+import javax.persistence.*
 
 @Entity
 @Table(name = "status")
-class Status {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, insertable = false, updatable = false)
-    var id: Long = 0
+class Status : LongIdEntity()  {
 
     @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)
@@ -45,5 +28,5 @@ class Status {
     @JoinTable(name = "prescription",
             joinColumns = [JoinColumn(name = "status_id", nullable = false)],
             inverseJoinColumns = [JoinColumn(name = "medicine_id", nullable = false)])
-    lateinit var medicines: List<Medicine>
+    lateinit var medicines: Set<Medicine>
 }

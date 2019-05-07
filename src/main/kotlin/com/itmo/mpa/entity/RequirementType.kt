@@ -1,7 +1,7 @@
 package com.itmo.mpa.entity
 
-enum class RequirementType(val id: Int) {
+enum class RequirementType {
 
-    DISEASE(0),
-    STATE(1)
+    DISEASE,
+    STATE
 }
