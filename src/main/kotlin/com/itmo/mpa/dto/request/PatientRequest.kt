@@ -16,5 +16,8 @@ data class PatientRequest(
         val birthDate: Instant?,
 
         @field:NotNull
-        val diseaseId: Long?
+        val diseaseId: Long?,
+
+        @field:NotNull
+        val doctorId: Long?
 )

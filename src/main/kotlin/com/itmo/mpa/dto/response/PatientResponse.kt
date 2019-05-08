@@ -10,5 +10,6 @@ data class PatientResponse(
         @JsonSerialize(using = InstantSerializer::class)
         val birthDate: Instant,
         val status: StatusResponse?,
-        val diseaseName: String?
+        val diseaseName: String?,
+        val doctor: DoctorResponse
 )
