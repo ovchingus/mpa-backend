@@ -139,32 +139,32 @@ create table active_substance_in_medicine (
   on update no action on delete cascade
 );
 
-create table requirement_type (
-  id   bigserial primary key,
-  name varchar(255)
-);
-
-create table disease_attribute (
+create table disease_attributes (
   id                  bigserial primary key,
-  name                varchar(255) not null,
-  type                varchar(255) not null,
-  requirement_type_id bigserial not null,
-  requirement_id      bigserial not null,
+  requirement_type_id integer not null,
+  requirement_id      bigint not null,
   is_required         boolean not null,
+  attribute_id        bigserial not null,
 
-  constraint disease_attribute_requirement_type_id_fkey foreign key (requirement_type_id)
-  references requirement_type (id)
+  constraint attribute_id_id_fkey foreign key (attribute_id)
+  references active_substance (id)
   on update no action on delete cascade
 );
 
-create table diseases_attribute_value (
+create table attributes (
+  id                  bigserial primary key,
+  name                varchar(255) not null,
+  type                varchar(255) not null
+);
+
+create table disease_attribute_values (
   id                   bigserial primary key,
   status_id            bigserial not null,
   disease_attribute_id bigserial not null,
   value                text not null,
 
   constraint diseases_attribute_value_disease_attribute_id_fkey foreign key (disease_attribute_id)
-  references disease_attribute (id)
+  references disease_attributes (id)
   on update no action on delete cascade,
 
   constraint diseases_attribute_value_status_id_fkey foreign key (status_id)

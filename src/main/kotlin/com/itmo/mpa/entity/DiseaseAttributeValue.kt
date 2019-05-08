@@ -24,15 +24,15 @@ class DiseaseAttributeValue : Serializable {
         if (this === other) return true
         if (other !is DiseaseAttributeValue) return false
 
-        if (status.id != other.status.id) return false
-        if (diseaseAttribute.id != other.diseaseAttribute.id) return false
+        if (status != other.status) return false
+        if (diseaseAttribute != other.diseaseAttribute) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = status.id.hashCode()
-        result = 31 * result + diseaseAttribute.id.hashCode()
+        var result = status.hashCode()
+        result = 31 * result + diseaseAttribute.hashCode()
         return result
     }
 }

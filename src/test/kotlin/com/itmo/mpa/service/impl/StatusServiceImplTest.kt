@@ -57,7 +57,7 @@ class StatusServiceImplTest {
 
             @BeforeEach
             fun setUp() {
-                every { statusRepository.findStatusByPatientAndDraft(patient, draft = true) } returns null
+                every { statusRepository.findStatusByPatientIdAndDraft(patient.id, draft = true) } returns null
             }
 
             @Test
@@ -82,6 +82,7 @@ class StatusServiceImplTest {
                     draft = true
                 }
                 every { statusRepository.findStatusByPatientAndDraft(patient, draft = true) } returns statusDraft
+                every { statusRepository.findStatusByPatientIdAndDraft(patient.id, draft = true) } returns statusDraft
                 every { statusRepository.save(statusDraft) } returns statusDraft
                 every { statusRepository.delete(any()) } returns Unit
             }
@@ -92,8 +93,6 @@ class StatusServiceImplTest {
 
                 assertThat(statusDraft.draft, `is`(false))
                 verify { statusRepository.save(statusDraft) }
-                assertThat(patient.status, `is`(statusDraft))
-                verify { patientRepository.save(patient) }
             }
 
             @Test

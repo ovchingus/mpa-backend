@@ -4,6 +4,7 @@ import com.itmo.mpa.dto.request.PatientRequest
 import com.itmo.mpa.dto.response.PatientResponse
 import com.itmo.mpa.repository.PatientRepository
 import com.itmo.mpa.service.PatientService
+import com.itmo.mpa.service.StatusService
 import com.itmo.mpa.service.exception.PatientNotFoundException
 import com.itmo.mpa.service.mapping.toEntity
 import com.itmo.mpa.service.mapping.toResponse
@@ -13,7 +14,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class PatientServiceImpl(
-        private val patientRepository: PatientRepository
+        private val patientRepository: PatientRepository,
+        private val statusService: StatusService
 ) : PatientService {
 
     private val logger = LoggerFactory.getLogger(javaClass)!!
@@ -28,7 +30,7 @@ class PatientServiceImpl(
     override fun findAll(): List<PatientResponse> {
         logger.info("findAll: Query all patients from the database")
 
-        val result = patientRepository.findAll().map { it.toResponse() }
+        val result = patientRepository.findAll().map { it.toResponse(statusResponseForPatient(it.id)) }
 
         logger.info("findAll: Result: $result")
         return result
@@ -37,9 +39,13 @@ class PatientServiceImpl(
     override fun findPatient(id: Long): PatientResponse {
         logger.info("findPatient: find patient by id - $id")
 
-        val result = patientRepository.findByIdOrNull(id)?.toResponse()
+        val patient = patientRepository.findByIdOrNull(id) ?: throw PatientNotFoundException(id)
+        val patientStatus = statusResponseForPatient(id)
+        val result = patient.toResponse(patientStatus)
 
-        logger.info("findPatient: result is $result")
-        return result ?: throw PatientNotFoundException(id)
+        logger.info("findPatient: result is {}", result)
+        return result
     }
+
+    private fun statusResponseForPatient(id: Long) = runCatching { statusService.findCurrentStatus(id) }.getOrNull()
 }
