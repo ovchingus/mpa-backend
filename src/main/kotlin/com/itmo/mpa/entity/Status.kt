@@ -5,7 +5,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "status")
-class Status : LongIdEntity()  {
+class Status : LongIdEntity() {
 
     @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)
@@ -24,7 +24,7 @@ class Status : LongIdEntity()  {
     @JoinColumn(name = "state_id", nullable = false)
     lateinit var state: State
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+    @ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     @JoinTable(name = "prescription",
             joinColumns = [JoinColumn(name = "status_id", nullable = false)],
             inverseJoinColumns = [JoinColumn(name = "medicine_id", nullable = false)])
