@@ -38,7 +38,7 @@ create table status (
   id          bigserial primary key,
   patient_id  bigserial not null,
   submit_date timestamp not null,
-  state_id    bigserial,
+  state_id    bigserial not null,
   is_draft    boolean not null,
   constraint status_patient_id_fkey foreign key (patient_id)
   references patient (id)
@@ -147,7 +147,7 @@ create table disease_attributes (
   attribute_id        bigserial not null,
 
   constraint attribute_id_id_fkey foreign key (attribute_id)
-  references active_substance (id)
+  references attributes (id)
   on update no action on delete cascade
 );
 
@@ -168,6 +168,6 @@ create table disease_attribute_values (
   on update no action on delete cascade,
 
   constraint diseases_attribute_value_status_id_fkey foreign key (status_id)
-  references state (id)
+  references status (id)
   on update no action on delete cascade
 );

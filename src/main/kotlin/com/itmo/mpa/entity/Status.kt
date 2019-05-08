@@ -14,15 +14,15 @@ class Status : LongIdEntity() {
     @Column(name = "submit_date", nullable = false)
     lateinit var submittedOn: Instant
 
-    @OneToMany(mappedBy = "status", cascade = [CascadeType.ALL])
-    lateinit var diseaseAttributeValues: Set<DiseaseAttributeValue>
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "status", cascade = [CascadeType.ALL])
+    var diseaseAttributeValues: Set<DiseaseAttributeValue> = emptySet()
 
     @Column(name = "is_draft", nullable = false)
     var draft: Boolean = true
 
     @ManyToOne
-    @JoinColumn(name = "state_id")
-    var state: State? = null
+    @JoinColumn(name = "state_id", nullable = false)
+    lateinit var state: State
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     @JoinTable(name = "prescription",
