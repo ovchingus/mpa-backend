@@ -7,7 +7,6 @@ import com.itmo.mpa.entity.Status
 import com.itmo.mpa.repository.PatientRepository
 import com.itmo.mpa.repository.StatusRepository
 import com.itmo.mpa.service.StatusService
-import com.itmo.mpa.service.exception.NoCurrentStatusException
 import com.itmo.mpa.service.exception.NoPendingDraftException
 import com.itmo.mpa.service.exception.PatientNotFoundException
 import com.itmo.mpa.service.exception.StatusNotFoundException
@@ -29,15 +28,11 @@ class StatusServiceImpl(
     override fun commitDraft(patientId: Long): StatusResponse {
         logger.info("commitDraft: create new status from draft for patient with id - $patientId")
 
-        val (statusDraft, patient) = findDraftWithPatient(patientId)
-        if (statusDraft == null) {
-            throw NoPendingDraftException(patientId)
-        }
+        val statusDraft = statusRepository.findStatusByPatientIdAndDraft(patientId, draft = true)
+                ?: throw NoPendingDraftException(patientId)
 
         statusDraft.draft = false
         statusRepository.save(statusDraft)
-        patient.status = statusDraft
-        patientRepository.save(patient)
         return statusDraft.toResponse()
     }
 
@@ -66,8 +61,10 @@ class StatusServiceImpl(
 
     override fun findCurrentStatus(patientId: Long): StatusResponse {
         logger.info("findCurrentStatus: patientId {}", patientId)
-        val patient = findPatient(patientId)
-        return patient.status?.toResponse() ?: throw NoCurrentStatusException(patientId)
+        val status = statusRepository.findStatusByPatientIdAndDraft(patientId, draft = false)
+                ?: throw NoPendingDraftException(patientId)
+
+        return status.toResponse()
     }
 
     override fun findStatusById(patientId: Long, statusId: Long): StatusResponse {
