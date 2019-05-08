@@ -5,5 +5,7 @@ import javax.validation.constraints.NotNull
 data class StatusRequest(
 
     @field:NotNull
-    val stateId: Long?
+    val stateId: Long?,
+
+    val attributes: Map<String, String>
 )

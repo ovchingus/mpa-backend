@@ -2,6 +2,8 @@ package com.itmo.mpa.service.impl
 
 import com.itmo.mpa.dto.request.StatusRequest
 import com.itmo.mpa.dto.response.StatusResponse
+import com.itmo.mpa.entity.DiseaseAttribute
+import com.itmo.mpa.entity.DiseaseAttributeValue
 import com.itmo.mpa.entity.Patient
 import com.itmo.mpa.entity.Status
 import com.itmo.mpa.repository.PatientRepository
@@ -38,15 +40,24 @@ class StatusServiceImpl(
 
     override fun rewriteDraft(patientId: Long, statusDraftRequest: StatusRequest) {
         logger.info("rewriteDraft: change existing draft or create one for patient with id - $patientId, " +
-                "by status draft request - $statusDraftRequest")
+                "by status draft request - {}", statusDraftRequest)
 
         val (oldDraft, patient) = findDraftWithPatient(patientId)
-        if (oldDraft != null) {
-            statusRepository.delete(oldDraft)
-        }
-        val status = statusDraftRequest.toEntity(patient)
-        status.submittedOn = Instant.now()
-        statusRepository.save(status)
+
+        var statusEntity = oldDraft ?: statusDraftRequest.toEntity(patient)
+        statusEntity.submittedOn = Instant.now()
+        // todo: save and check stateId from the request
+
+        statusEntity = statusRepository.save(statusEntity)
+
+        statusEntity.diseaseAttributeValues = statusDraftRequest.attributes.map { (attributeName, attributeValue) ->
+            DiseaseAttributeValue().apply {
+                status = statusEntity
+                diseaseAttribute = findAttribute(statusEntity, attributeName, attributeValue)
+            }
+        }.toSet() + statusEntity.diseaseAttributeValues
+
+        statusRepository.save(statusEntity)
     }
 
     override fun findDraft(patientId: Long): StatusResponse {
@@ -90,5 +101,9 @@ class StatusServiceImpl(
     private fun findDraftWithPatient(patientId: Long): Pair<Status?, Patient> {
         val patient = patientRepository.findByIdOrNull(patientId) ?: throw PatientNotFoundException(patientId)
         return Pair(statusRepository.findStatusByPatientAndDraft(patient, draft = true), patient)
+    }
+
+    private fun findAttribute(statusEntity: Status, attributeName: String, attributeValue: String): DiseaseAttribute {
+        TODO(" Go to AttributeService and find if any ")
     }
 }

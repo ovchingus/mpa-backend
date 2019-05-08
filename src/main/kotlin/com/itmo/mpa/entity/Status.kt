@@ -21,8 +21,8 @@ class Status : LongIdEntity() {
     var draft: Boolean = true
 
     @ManyToOne
-    @JoinColumn(name = "state_id", nullable = false)
-    lateinit var state: State
+    @JoinColumn(name = "state_id")
+    var state: State? = null
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     @JoinTable(name = "prescription",

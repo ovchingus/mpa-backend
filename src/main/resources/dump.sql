@@ -38,7 +38,7 @@ create table status (
   id          bigserial primary key,
   patient_id  bigserial not null,
   submit_date timestamp not null,
-  state_id    bigserial not null,
+  state_id    bigserial,
   is_draft    boolean not null,
   constraint status_patient_id_fkey foreign key (patient_id)
   references patient (id)
