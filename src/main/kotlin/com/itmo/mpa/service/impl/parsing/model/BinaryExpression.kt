@@ -1,5 +1,6 @@
 package com.itmo.mpa.service.impl.parsing.model
 
+const val HAS_DELIMITER = ";"
 
 sealed class BinaryExpression<T : Comparable<T>>
 
@@ -8,6 +9,7 @@ class LessThan<T : Comparable<T>>(val left: Value<T>, val right: Value<T>) : Bin
 class LessThanEqual<T : Comparable<T>>(val left: Value<T>, val right: Value<T>) : BinaryExpression<T>()
 class GreaterThan<T : Comparable<T>>(val left: Value<T>, val right: Value<T>) : BinaryExpression<T>()
 class GreaterThanEqual<T : Comparable<T>>(val left: Value<T>, val right: Value<T>) : BinaryExpression<T>()
+class Has<T : Comparable<T>>(val left: Value<T>, val right: Value<T>) : BinaryExpression<T>()
 
 class Or<T : Comparable<T>>(val left: BinaryExpression<T>, val right: BinaryExpression<T>) : BinaryExpression<T>()
 class Not<T : Comparable<T>>(val other: BinaryExpression<T>) : BinaryExpression<T>()
@@ -36,6 +38,7 @@ fun <T : Comparable<T>> BinaryExpression<T>.evaluate(resolver: (String) -> T): B
         is LessThanEqual -> left.resolve(resolver) <= right.resolve(resolver)
         is GreaterThan -> left.resolve(resolver) > right.resolve(resolver)
         is GreaterThanEqual -> left.resolve(resolver) >= right.resolve(resolver)
+        is Has -> checkHas(left.resolve(resolver), right.resolve(resolver))
         is Not -> !other.evaluate(resolver)
         is Or -> left.evaluate(resolver) || right.evaluate(resolver)
         is And -> left.evaluate(resolver) && right.evaluate(resolver)
@@ -50,6 +53,12 @@ private fun <T : Comparable<T>> Value<T>.resolve(resolver: (String) -> T): T {
     }
 }
 
+private fun <T> checkHas(left: T, right: T): Boolean {
+    val mainSet = left.toString().split(HAS_DELIMITER).mapTo(HashSet()) { it.trim() }
+    val subSet = right.toString().split(HAS_DELIMITER).mapTo(HashSet()) { it.trim() }
+    return mainSet.containsAll(subSet)
+}
+
 /**
  *  For debug purposes only
  */
@@ -60,6 +69,7 @@ fun BinaryExpression<*>.asString(): String {
         is LessThanEqual -> "LessThanEqual(${left.asString()}, ${right.asString()})"
         is GreaterThan -> "GreaterThan(${left.asString()}, ${right.asString()})"
         is GreaterThanEqual -> "GreaterThanEqual(${left.asString()}, ${right.asString()})"
+        is Has -> "Has(${left.asString()}, ${right.asString()})"
         is Not -> "Not(${other.asString()})"
         is Or -> "Or(${left.asString()}, ${right.asString()})"
         is And -> "And(${left.asString()}, ${right.asString()})"

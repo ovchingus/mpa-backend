@@ -170,6 +170,38 @@ class ParserTest {
                     }
                 }
             }
+
+            @Nested
+            inner class TestHas {
+
+                @Test
+                fun `test has with equal strings`() {
+                    val shouldBeTrue = parser.parse("has(144,144)")
+                            .evaluate(emptyList())
+                    assertThat(shouldBeTrue, `is`(true))
+                }
+
+                @Test
+                fun `test has with first string elements count greater than second`() {
+                    val shouldBeTrue = parser.parse("has(a;b;c;d, a)")
+                            .evaluate(emptyList())
+                    assertThat(shouldBeTrue, `is`(true))
+                }
+
+                @Test
+                fun `test has with first string elements count less than second`() {
+                    val shouldBeFalse = parser.parse("has(14;19, 14;15;22)")
+                            .evaluate(emptyList())
+                    assertThat(shouldBeFalse, `is`(false))
+                }
+
+                @Test
+                fun `test has with first string elements count equal with second`() {
+                    val shouldBeTrue = parser.parse("has(foo;19;bar, bar;foo)")
+                            .evaluate(emptyList())
+                    assertThat(shouldBeTrue, `is`(true))
+                }
+            }
         }
 
         @Nested
