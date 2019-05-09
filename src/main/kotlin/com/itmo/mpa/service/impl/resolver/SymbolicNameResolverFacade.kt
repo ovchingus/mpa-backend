@@ -1,5 +1,6 @@
 package com.itmo.mpa.service.impl.resolver
 
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
 @Component
@@ -8,6 +9,8 @@ class SymbolicNameResolverFacade(
         medicineSymbolicNameResolver: SymbolicNameResolver,
         statusSymbolicNameResolver: SymbolicNameResolver
 ) : SymbolicNameResolver {
+
+    private val log = LoggerFactory.getLogger(javaClass)
 
     private val resolvers = listOf(
             patientSymbolicNameResolver,
@@ -19,5 +22,6 @@ class SymbolicNameResolverFacade(
         return resolvers.asSequence()
                 .mapNotNull { it.resolve(parameters, name) }
                 .firstOrNull()
+                .also { log.debug("Resolved {} to {}", name, it) }
     }
 }

@@ -9,6 +9,9 @@ class StatusSymbolicNameResolver(
 ) : AbstractSymbolicNameResolver(prefix) {
 
     override fun resolveValue(parameters: ResolvingParameters, propertyName: String): String? {
-        return null
+        val matchedAttribute = parameters.draft.diseaseAttributeValues
+                .firstOrNull { it.diseaseAttribute.attribute.name == propertyName }
+
+        return matchedAttribute?.value
     }
 }
