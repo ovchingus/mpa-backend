@@ -13,7 +13,9 @@ create table patient (
   name       varchar(255) not null,
   birth_date timestamp not null,
   disease_id bigserial not null,
+  current_status_id bigserial,
   doctor_id  bigserial not null,
+
   constraint patient_disease_id_fkey foreign key (disease_id)
   references disease (id)
   on update no action on delete cascade,
@@ -48,6 +50,12 @@ create table status (
   references state (id)
   on update no action on delete cascade
 );
+
+alter table patient
+    add constraint patient_current_status_id_fkey foreign key (current_status_id)
+        references status (id)
+        on update no action on delete cascade;
+alter table patient alter column current_status_id drop not null;
 
 create table transition (
   id            bigserial primary key,
@@ -139,6 +147,13 @@ create table active_substance_in_medicine (
   on update no action on delete cascade
 );
 
+
+create table attributes (
+  id                  bigserial primary key,
+  name                varchar(255) not null,
+  type                varchar(255) not null
+);
+
 create table disease_attributes (
   id                  bigserial primary key,
   requirement_type_id integer not null,
@@ -147,14 +162,8 @@ create table disease_attributes (
   attribute_id        bigserial not null,
 
   constraint attribute_id_id_fkey foreign key (attribute_id)
-  references active_substance (id)
+  references attributes (id)
   on update no action on delete cascade
-);
-
-create table attributes (
-  id                  bigserial primary key,
-  name                varchar(255) not null,
-  type                varchar(255) not null
 );
 
 create table disease_attribute_values (
@@ -168,6 +177,6 @@ create table disease_attribute_values (
   on update no action on delete cascade,
 
   constraint diseases_attribute_value_status_id_fkey foreign key (status_id)
-  references state (id)
+  references status (id)
   on update no action on delete cascade
 );

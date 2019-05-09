@@ -1,5 +1,6 @@
 package com.itmo.mpa.controller.config
 
+import com.itmo.mpa.service.exception.AttributesNotSetException
 import com.itmo.mpa.service.exception.NotFoundException
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -20,6 +21,17 @@ class RestExceptionHandler : ResponseEntityExceptionHandler() {
     fun handleException(exception: NotFoundException, request: WebRequest): ResponseEntity<Any> {
         logger.error(exception.toString())
         val status = HttpStatus.NOT_FOUND
+        return handleExceptionInternal(exception,
+                Error(exception.message, status.value()),
+                HttpHeaders(),
+                status,
+                request)
+    }
+
+    @ExceptionHandler(AttributesNotSetException::class)
+    fun handleBadRequestException(exception: AttributesNotSetException, request: WebRequest): ResponseEntity<Any> {
+        logger.error(exception.toString())
+        val status = HttpStatus.BAD_REQUEST
         return handleExceptionInternal(exception,
                 Error(exception.message, status.value()),
                 HttpHeaders(),

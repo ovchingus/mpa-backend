@@ -1,5 +1,7 @@
 package com.itmo.mpa.service.impl
 
+import com.itmo.mpa.repository.DiseaseRepository
+import com.itmo.mpa.repository.DoctorRepository
 import com.itmo.mpa.repository.PatientRepository
 import com.itmo.mpa.service.StatusService
 import com.itmo.mpa.service.exception.PatientNotFoundException
@@ -19,6 +21,12 @@ class PatientServiceImplTest {
 
     @MockK
     lateinit var statusService: StatusService
+
+    @MockK
+    lateinit var diseaseRepository: DiseaseRepository
+
+    @MockK
+    lateinit var  doctorRepository: DoctorRepository
 
     @InjectMockKs
     lateinit var patientServiceImpl: PatientServiceImpl
