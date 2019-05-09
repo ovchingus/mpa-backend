@@ -29,11 +29,25 @@ class StatusServiceImpl(
     override fun commitDraft(patientId: Long): StatusResponse {
         logger.info("commitDraft: create new status from draft for patient with id - $patientId")
 
+        val patient = findPatient(patientId)
+
         val statusDraft = statusRepository.findStatusByPatientIdAndDraft(patientId, draft = true)
                 ?: throw NoPendingDraftException(patientId)
 
+        val requiredAttributeNames = getDiseaseAttributes(patientId)
+                .filter { it.isRequired }
+                .mapTo(HashSet()) { it.name }
+
+        val savedAttributeNames = statusDraft.diseaseAttributeValues
+                .mapTo(HashSet()) { it.diseaseAttribute.attribute.name }
+
+        if (!savedAttributeNames.containsAll(requiredAttributeNames)) {
+            throw AttributesNotSetException(requiredAttributeNames - savedAttributeNames)
+        }
+
         statusDraft.draft = false
-        statusRepository.save(statusDraft)
+        patient.currentStatus = statusRepository.save(statusDraft)
+        patientRepository.save(patient)
         return statusDraft.toResponse()
     }
 
@@ -90,7 +104,7 @@ class StatusServiceImpl(
 
     override fun findCurrentStatus(patientId: Long): StatusResponse {
         logger.info("findCurrentStatus: patientId {}", patientId)
-        val status = statusRepository.findStatusByPatientIdAndDraft(patientId, draft = false)
+        val status = findPatient(patientId).currentStatus
                 ?: throw NoCurrentStatusException(patientId)
 
         return status.toResponse()
