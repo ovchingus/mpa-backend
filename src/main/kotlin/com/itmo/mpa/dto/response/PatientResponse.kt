@@ -1,14 +1,13 @@
 package com.itmo.mpa.dto.response
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.itmo.mpa.util.InstantSerializer
-import java.time.Instant
+import com.fasterxml.jackson.annotation.JsonFormat
+import java.time.LocalDate
 
 data class PatientResponse(
         val id: Long,
         val name: String,
-        @JsonSerialize(using = InstantSerializer::class)
-        val birthDate: Instant,
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        val birthDate: LocalDate,
         val status: StatusResponse?,
         val diseaseName: String?,
         val doctor: DoctorResponse
