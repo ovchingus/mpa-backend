@@ -14,7 +14,8 @@ enum class Operation(
     GTE("gte", ComparisonOperation),
     LT("lt", ComparisonOperation),
     LTE("lte", ComparisonOperation),
-    EQ("eq", ComparisonOperation);
+    EQ("eq", ComparisonOperation),
+    HAS("has", ComparisonOperation);
 }
 
 sealed class OperationType

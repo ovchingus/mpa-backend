@@ -26,10 +26,9 @@ class DiseaseServiceImpl(
 
     override fun getMedicineByDiseaseId(id: Long): List<MedicineResponse> {
         logger.info("getMedicineByDiseaseId: Query medicine for disease from database")
-        val result = diseaseRepository.findById(id).get().medicines
+        return diseaseRepository.findById(id).get().medicines
                 .map { it.toResponse() }
                 .also { logger.info("getMedicineByDiseaseId: Result {}:", it) }
-        return result
     }
 
     override fun getAll(): List<DiseaseResponse> {

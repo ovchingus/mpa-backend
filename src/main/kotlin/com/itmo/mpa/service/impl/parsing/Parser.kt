@@ -65,6 +65,7 @@ class Parser {
             Operation.GTE -> GreaterThanEqual(left, right)
             Operation.LT -> LessThan(left, right)
             Operation.LTE -> LessThanEqual(left, right)
+            Operation.HAS -> Has(left, right)
             else -> throw UnexpectedTokenException(operation.token)
         }
     }
