@@ -22,7 +22,7 @@ class MedicineServiceImpl(
 
     override fun getAppropriateMedicine(patientId: Long): List<AppropriateMedicineResponse> {
         val (status, patient) = patientStatusEntityService.requireDraftWithPatient(patientId)
-        return contraindicationsRepository.findByMedicineIn(status.medicines)
+        return contraindicationsRepository.findAll()
                 .map { contraindication -> formAppropriateMedicineResponse(patient, status, contraindication) }
                 .also { logger.debug("getAvailableTransitions: result {}", it) }
     }
