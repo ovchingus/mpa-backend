@@ -1,8 +1,7 @@
 package com.itmo.mpa.dto.request
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.itmo.mpa.util.InstantDeserializer
-import java.time.Instant
+import com.fasterxml.jackson.annotation.JsonFormat
+import java.time.LocalDate
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 
@@ -12,8 +11,8 @@ data class PatientRequest(
         val name: String?,
 
         @field:NotNull
-        @JsonDeserialize(using = InstantDeserializer::class)
-        val birthDate: Instant?,
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        val birthDate: LocalDate?,
 
         @field:NotNull
         val diseaseId: Long?,
