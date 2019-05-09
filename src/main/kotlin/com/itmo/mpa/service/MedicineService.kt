@@ -8,7 +8,7 @@ interface MedicineService {
 
     /**
      *  Returns list of all appropriate medicine transitions depending on state of the for patient by [patientId].
-     *  [AppropriateMedicineResponse.isRecommended] will be set according to the
+     *  [AppropriateMedicineResponse.isNotRecommended] will be set according to the
      *  value produced by predicate of contradictions. It wil be set to `null` in case of any error occurred.
      *  If that's the case, [AppropriateMedicineResponse.errorCause] will be populated with description
      *

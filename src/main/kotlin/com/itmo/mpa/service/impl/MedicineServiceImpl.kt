@@ -34,14 +34,14 @@ class MedicineServiceImpl(
     ): AppropriateMedicineResponse {
         val medicineResponse = contraindication.medicine.toResponse()
         return try {
-            val testResult = predicateService.testPredicate(
+            val isContraindicated = predicateService.testPredicate(
                     patient,
                     status,
                     contraindication.predicate
             )
-            AppropriateMedicineResponse(medicineResponse, testResult, errorCause = null)
+            AppropriateMedicineResponse(medicineResponse, isNotRecommended = isContraindicated, errorCause = null)
         } catch (e: Exception) {
-            AppropriateMedicineResponse(medicineResponse, isRecommended = null, errorCause = e.message)
+            AppropriateMedicineResponse(medicineResponse, isNotRecommended = null, errorCause = e.message)
         }
     }
 }
