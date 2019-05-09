@@ -168,12 +168,12 @@ class StatusServiceImpl(
             status: Status,
             transition: Transition
     ): AvailableTransitionResponse {
-        val stateId = transition.stateTo.id
+        val stateResponse = transition.stateTo.toResponse()
         return try {
             val testResult = predicateService.testPredicate(patient, status, transition.predicate)
-            AvailableTransitionResponse(stateId, testResult, errorCause = null)
+            AvailableTransitionResponse(stateResponse, testResult, errorCause = null)
         } catch (e: Exception) {
-            AvailableTransitionResponse(stateId, isRecommended = null, errorCause = e.message)
+            AvailableTransitionResponse(stateResponse, isRecommended = null, errorCause = e.message)
         }
     }
 
