@@ -101,14 +101,6 @@ class StatusServiceImplTest {
             }
 
             @Test
-            fun `on commit it turns to status`() {
-                statusServiceImpl.commitDraft(patient.id)
-
-                assertThat(statusDraft.draft, `is`(false))
-                verify { statusRepository.save(statusDraft) }
-            }
-
-            @Test
             fun `rewrite replaces old draft with saves new`() {
                 every { statusRepository.save(any<Status>()) } returns Status().apply { patient = this@StatusServiceImplTest.patient }
                 every { stateRepository.findById(any()) } returns Optional.of(State())

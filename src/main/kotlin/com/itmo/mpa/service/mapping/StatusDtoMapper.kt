@@ -14,5 +14,6 @@ fun StatusRequest.toEntity(patient: Patient, state: State) = Status().also {
 fun Status.toResponse() = StatusResponse(
         id,
         submittedOn,
+        stateId = state.id,
         attributes = diseaseAttributeValues.map { it.diseaseAttribute.attribute.name to it.value }.toMap(HashMap())
 )

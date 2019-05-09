@@ -8,5 +8,6 @@ data class StatusResponse(
         val id: Long,
         @JsonSerialize(using = InstantSerializer::class)
         val submittedOn: Instant,
+        val stateId: Long,
         val attributes: Map<String, String>
 )
