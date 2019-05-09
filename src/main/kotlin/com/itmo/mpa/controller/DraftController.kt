@@ -1,11 +1,12 @@
 package com.itmo.mpa.controller
 
 import com.itmo.mpa.dto.request.StatusRequest
-import com.itmo.mpa.dto.response.AppropriateMedicicneResponse
+import com.itmo.mpa.dto.response.AppropriateMedicineResponse
 import com.itmo.mpa.dto.response.AvailableTransitionResponse
 import com.itmo.mpa.dto.response.DiseaseAttributeResponse
 import com.itmo.mpa.dto.response.StatusResponse
 import com.itmo.mpa.service.DraftService
+import com.itmo.mpa.service.MedicineService
 import com.itmo.mpa.service.StatusService
 import com.itmo.mpa.service.TransitionService
 import io.swagger.annotations.Api
@@ -20,7 +21,8 @@ import javax.validation.Valid
 class DraftController(
         private val statusService: StatusService,
         private val draftService: DraftService,
-        private val transitionService: TransitionService
+        private val transitionService: TransitionService,
+        private val medicineService: MedicineService
 ) {
 
     @ApiOperation("Commit draft")
@@ -51,9 +53,9 @@ class DraftController(
             @PathVariable patientId: Long
     ): List<AvailableTransitionResponse> = transitionService.getAvailableTransitions(patientId)
 
-    @ApiOperation("Get available transitions from current state")
+    @ApiOperation("Get medicine compatibility info from current state")
     @GetMapping("status/draft/medicine")
     fun getAppropriateMedicinesByPatientId(
             @PathVariable patientId: Long
-    ): List<AppropriateMedicicneResponse> = emptyList()
+    ): List<AppropriateMedicineResponse> = medicineService.getAppropriateMedicine(patientId)
 }
