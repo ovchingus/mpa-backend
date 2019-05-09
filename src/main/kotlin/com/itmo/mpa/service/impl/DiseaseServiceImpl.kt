@@ -2,6 +2,7 @@ package com.itmo.mpa.service.impl
 
 import com.itmo.mpa.dto.request.DiseaseRequest
 import com.itmo.mpa.dto.response.DiseaseResponse
+import com.itmo.mpa.dto.response.MedicineResponse
 import com.itmo.mpa.repository.DiseaseRepository
 import com.itmo.mpa.service.DiseaseService
 import com.itmo.mpa.service.mapping.toEntity
@@ -21,6 +22,13 @@ class DiseaseServiceImpl(
         logger.info("createDisease: Create a new disease from request: $diseaseRequest")
 
         diseaseRepository.save(diseaseRequest.toEntity())
+    }
+
+    override fun getMedicineByDiseaseId(id: Long): List<MedicineResponse> {
+        logger.info("getMedicineByDiseaseId: Query medicine for disease from database")
+        val result = diseaseRepository.findById(id).get().medicines.map { it.toResponse() }
+        logger.info("getMedicineByDiseaseId: Result: $result")
+        return result
     }
 
     override fun getAll(): List<DiseaseResponse> {
