@@ -5,7 +5,9 @@ import com.itmo.mpa.dto.response.AppropriateMedicicneResponse
 import com.itmo.mpa.dto.response.AvailableTransitionResponse
 import com.itmo.mpa.dto.response.DiseaseAttributeResponse
 import com.itmo.mpa.dto.response.StatusResponse
+import com.itmo.mpa.service.DraftService
 import com.itmo.mpa.service.StatusService
+import com.itmo.mpa.service.TransitionService
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.http.HttpStatus
@@ -15,7 +17,11 @@ import javax.validation.Valid
 @RestController
 @Api(value = "/patients/{patientId}")
 @RequestMapping("patients/{patientId}")
-class DraftController(private val statusService: StatusService) {
+class DraftController(
+        private val statusService: StatusService,
+        private val draftService: DraftService,
+        private val transitionService: TransitionService
+) {
 
     @ApiOperation("Commit draft")
     @PostMapping("status/draft")
@@ -27,17 +33,17 @@ class DraftController(private val statusService: StatusService) {
     fun createDraft(
             @PathVariable patientId: Long,
             @Valid @RequestBody draftRequest: StatusRequest
-    ): Unit = statusService.rewriteDraft(patientId, draftRequest)
+    ): Unit = draftService.rewriteDraft(patientId, draftRequest)
 
     @ApiOperation("Get current draft")
     @GetMapping("status/draft")
-    fun getDraftByPatientId(@PathVariable patientId: Long): StatusResponse = statusService.findDraft(patientId)
+    fun getDraftByPatientId(@PathVariable patientId: Long): StatusResponse = draftService.findDraft(patientId)
 
     @ApiOperation("Get available disease attributes")
     @GetMapping("status/draft/attributes")
     fun getDiseaseAttributesByPatientId(
             @PathVariable patientId: Long
-    ): List<DiseaseAttributeResponse> = statusService.getDiseaseAttributes(patientId)
+    ): List<DiseaseAttributeResponse> = draftService.getDiseaseAttributes(patientId)
 
     @ApiOperation("Get available transitions from current state")
     @GetMapping("status/draft/states")
