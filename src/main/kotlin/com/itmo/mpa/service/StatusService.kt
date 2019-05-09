@@ -1,6 +1,7 @@
 package com.itmo.mpa.service
 
 import com.itmo.mpa.dto.request.StatusRequest
+import com.itmo.mpa.dto.response.DiseaseAttributeResponse
 import com.itmo.mpa.dto.response.StatusResponse
 import com.itmo.mpa.service.exception.NoCurrentStatusException
 import com.itmo.mpa.service.exception.NoPendingDraftException
@@ -38,6 +39,17 @@ interface StatusService {
      *  @throws NoPendingDraftException if no draft is pending for a patient
      */
     fun findDraft(patientId: Long): StatusResponse
+
+    /**
+     *  Returns list of all disease attributes which could be saved within a draft
+     *  abd committed later on  for patient by given [patientId]
+     *
+     *  @param patientId patient id
+     *  @return found attributes
+     *  @throws PatientNotFoundException if patient not found
+     *  @throws NoPendingDraftException if no draft is pending for a patient
+     */
+    fun getDiseaseAttributes(patientId: Long): List<DiseaseAttributeResponse>
 
     /**
      *  Returns current status for patient by given [patientId]

@@ -7,6 +7,11 @@ import org.springframework.data.repository.CrudRepository
 
 interface DiseaseAttributeRepository : CrudRepository<DiseaseAttribute, Long> {
 
+    fun findByRequirementTypeAndRequirementId(
+            requirementType: RequirementType,
+            requirementId: Long
+    ): List<DiseaseAttribute>
+
     fun findByAttributeAndRequirementTypeAndRequirementId(
             attribute: Attribute,
             requirementType: RequirementType,

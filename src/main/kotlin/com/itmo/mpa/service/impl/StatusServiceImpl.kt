@@ -1,6 +1,7 @@
 package com.itmo.mpa.service.impl
 
 import com.itmo.mpa.dto.request.StatusRequest
+import com.itmo.mpa.dto.response.DiseaseAttributeResponse
 import com.itmo.mpa.dto.response.StatusResponse
 import com.itmo.mpa.entity.*
 import com.itmo.mpa.repository.*
@@ -66,12 +67,25 @@ class StatusServiceImpl(
 
     override fun findDraft(patientId: Long): StatusResponse {
         logger.info("findDraft: find draft by patient id - $patientId")
+        return findDraftWithPatient(patientId).first?.toResponse()
+                .also { logger.info("findDraft: result {}", it) }
+                ?: throw NoPendingDraftException(patientId)
+    }
 
-        val (statusDraft) = findDraftWithPatient(patientId)
+    override fun getDiseaseAttributes(patientId: Long): List<DiseaseAttributeResponse> {
+        val (status, patient) = findDraftWithPatient(patientId)
 
-        logger.info("findDraft: Result: ${statusDraft?.toResponse() ?: "null"}")
+        if (status == null) {
+            throw NoPendingDraftException(patientId)
+        }
 
-        return statusDraft?.toResponse() ?: throw NoPendingDraftException(patientId)
+        val attributesFromDisease = diseaseAttributeRepository
+                .findByRequirementTypeAndRequirementId(RequirementType.DISEASE, patient.disease.id)
+        val attributesFromState = diseaseAttributeRepository
+                .findByRequirementTypeAndRequirementId(RequirementType.STATE, status.state.id)
+
+        return (attributesFromDisease + attributesFromState)
+                .map { it.toResponse() }
     }
 
     override fun findCurrentStatus(patientId: Long): StatusResponse {
@@ -103,7 +117,7 @@ class StatusServiceImpl(
     }
 
     private fun findDraftWithPatient(patientId: Long): Pair<Status?, Patient> {
-        val patient = patientRepository.findByIdOrNull(patientId) ?: throw PatientNotFoundException(patientId)
+        val patient = findPatient(patientId)
         return Pair(statusRepository.findStatusByPatientAndDraft(patient, draft = true), patient)
     }
 
