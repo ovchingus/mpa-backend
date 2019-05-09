@@ -1,10 +1,11 @@
 package com.itmo.mpa.service.impl
 
 import com.itmo.mpa.dto.request.StatusRequest
+import com.itmo.mpa.entity.DiseaseAttributeValue
 import com.itmo.mpa.entity.Patient
+import com.itmo.mpa.entity.State
 import com.itmo.mpa.entity.Status
-import com.itmo.mpa.repository.PatientRepository
-import com.itmo.mpa.repository.StatusRepository
+import com.itmo.mpa.repository.*
 import com.itmo.mpa.service.exception.NoPendingDraftException
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -25,6 +26,18 @@ class StatusServiceImplTest {
 
     @MockK
     lateinit var statusRepository: StatusRepository
+
+    @MockK
+    lateinit var diseaseAttributeValueRepository: DiseaseAttributeValueRepository
+
+    @MockK
+    lateinit var diseaseAttributeRepository: DiseaseAttributeRepository
+
+    @MockK
+    lateinit var attributeRepository: AttributeRepository
+
+    @MockK
+    lateinit var stateRepository: StateRepository
 
     @InjectMockKs
     lateinit var statusServiceImpl: StatusServiceImpl
@@ -96,16 +109,16 @@ class StatusServiceImplTest {
             }
 
             @Test
-            fun `rewrite replaces deletes old draft and saves new one`() {
-                every { statusRepository.save(any<Status>()) } returns Status()
+            fun `rewrite replaces old draft with saves new`() {
+                every { statusRepository.save(any<Status>()) } returns Status().apply { patient = this@StatusServiceImplTest.patient }
+                every { stateRepository.findById(any()) } returns Optional.of(State())
+                every { diseaseAttributeValueRepository.saveAll(any<Iterable<DiseaseAttributeValue>>()) } returns emptySet()
 
                 val statusRequest = StatusRequest(stateId = 42)
                 statusServiceImpl.rewriteDraft(patient.id, statusRequest)
 
                 val statusSlot = slot<Status>()
                 verify { statusRepository.save(capture(statusSlot)) }
-                assertThat(statusSlot.captured.patient, `is`(patient))
-                verify { statusRepository.delete(capture(statusSlot)) }
                 assertThat(statusSlot.captured.patient, `is`(patient))
             }
         }

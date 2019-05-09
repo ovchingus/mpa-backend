@@ -147,7 +147,7 @@ create table disease_attributes (
   attribute_id        bigserial not null,
 
   constraint attribute_id_id_fkey foreign key (attribute_id)
-  references active_substance (id)
+  references attributes (id)
   on update no action on delete cascade
 );
 
@@ -168,6 +168,6 @@ create table disease_attribute_values (
   on update no action on delete cascade,
 
   constraint diseases_attribute_value_status_id_fkey foreign key (status_id)
-  references state (id)
+  references status (id)
   on update no action on delete cascade
 );

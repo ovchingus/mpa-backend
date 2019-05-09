@@ -10,23 +10,23 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
-@Api(value = "/draft")
-@RequestMapping("patients")
+@Api(value = "/patients/{patientId}")
+@RequestMapping("patients/{patientId}")
 class DraftController(private val statusService: StatusService) {
 
     @ApiOperation("Commit draft")
-    @PostMapping("{patientId}/status/draft")
+    @PostMapping("status/draft")
     fun commitDraft(@PathVariable patientId: Long): StatusResponse = statusService.commitDraft(patientId)
 
     @ApiOperation("Create draft")
-    @PutMapping("{patientId}/status/draft")
+    @PutMapping("status/draft")
     @ResponseStatus(HttpStatus.CREATED)
     fun createDraft(
             @PathVariable patientId: Long,
             @Valid @RequestBody draftRequest: StatusRequest
-    ) = statusService.rewriteDraft(patientId, draftRequest)
+    ): Unit = statusService.rewriteDraft(patientId, draftRequest)
 
     @ApiOperation("Get current draft")
-    @GetMapping("{patientId}/status/draft")
+    @GetMapping("status/draft")
     fun getDraftByPatientId(@PathVariable patientId: Long): StatusResponse = statusService.findDraft(patientId)
 }
