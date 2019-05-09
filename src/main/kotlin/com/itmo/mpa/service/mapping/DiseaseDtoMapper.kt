@@ -12,3 +12,5 @@ fun Disease.toResponse() = DiseaseResponse(
         id,
         name
 )
+
+
