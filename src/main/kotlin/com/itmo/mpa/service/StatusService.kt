@@ -1,6 +1,7 @@
 package com.itmo.mpa.service
 
 import com.itmo.mpa.dto.request.StatusRequest
+import com.itmo.mpa.dto.response.AvailableTransitionResponse
 import com.itmo.mpa.dto.response.DiseaseAttributeResponse
 import com.itmo.mpa.dto.response.StatusResponse
 import com.itmo.mpa.service.exception.NoCurrentStatusException
@@ -42,7 +43,7 @@ interface StatusService {
 
     /**
      *  Returns list of all disease attributes which could be saved within a draft
-     *  abd committed later on  for patient by given [patientId]
+     *  and committed later on  for patient by given [patientId]
      *
      *  @param patientId patient id
      *  @return found attributes
@@ -50,6 +51,20 @@ interface StatusService {
      *  @throws NoPendingDraftException if no draft is pending for a patient
      */
     fun getDiseaseAttributes(patientId: Long): List<DiseaseAttributeResponse>
+
+    /**
+     *  Returns list of all available transitions that are directly descendant from
+     *  current state for patient by [patientId].
+     *  [AvailableTransitionResponse.isRecommended] will be set according to the
+     *  value produced by predicate of state's transition. It wil be set to `null` in case of any error occurred.
+     *  If that's the case, [AvailableTransitionResponse.errorCause] will be populated with description
+     *
+     *  @param patientId patient id
+     *  @return found available transitions
+     *  @throws PatientNotFoundException if patient not found
+     *  @throws NoPendingDraftException if no draft is pending for a patient
+     */
+    fun getAvailableTransitions(patientId: Long): List<AvailableTransitionResponse>
 
     /**
      *  Returns current status for patient by given [patientId]

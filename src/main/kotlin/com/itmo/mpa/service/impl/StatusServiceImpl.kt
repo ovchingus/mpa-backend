@@ -1,10 +1,12 @@
 package com.itmo.mpa.service.impl
 
 import com.itmo.mpa.dto.request.StatusRequest
+import com.itmo.mpa.dto.response.AvailableTransitionResponse
 import com.itmo.mpa.dto.response.DiseaseAttributeResponse
 import com.itmo.mpa.dto.response.StatusResponse
 import com.itmo.mpa.entity.*
 import com.itmo.mpa.repository.*
+import com.itmo.mpa.service.PredicateService
 import com.itmo.mpa.service.StatusService
 import com.itmo.mpa.service.exception.*
 import com.itmo.mpa.service.mapping.toEntity
@@ -21,7 +23,9 @@ class StatusServiceImpl(
         private val diseaseAttributeRepository: DiseaseAttributeRepository,
         private val diseaseAttributeValueRepository: DiseaseAttributeValueRepository,
         private val attributeRepository: AttributeRepository,
-        private val stateRepository: StateRepository
+        private val stateRepository: StateRepository,
+        private val transitionRepository: TransitionRepository,
+        private val predicateService: PredicateService
 ) : StatusService {
 
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -81,17 +85,19 @@ class StatusServiceImpl(
 
     override fun findDraft(patientId: Long): StatusResponse {
         logger.info("findDraft: find draft by patient id - $patientId")
-        return findDraftWithPatient(patientId).first?.toResponse()
+        return requireDraftWithPatient(patientId).first.toResponse()
                 .also { logger.info("findDraft: result {}", it) }
-                ?: throw NoPendingDraftException(patientId)
+    }
+
+    override fun getAvailableTransitions(patientId: Long): List<AvailableTransitionResponse> {
+        val (status, patient) = requireDraftWithPatient(patientId)
+        return transitionRepository.findByStateFrom(status.state)
+                .map { transition -> formAvailableTransitionResponse(patient, status, transition) }
+                .also { logger.debug("getAvailableTransitions: result {}", it) }
     }
 
     override fun getDiseaseAttributes(patientId: Long): List<DiseaseAttributeResponse> {
-        val (status, patient) = findDraftWithPatient(patientId)
-
-        if (status == null) {
-            throw NoPendingDraftException(patientId)
-        }
+        val (status, patient) = requireDraftWithPatient(patientId)
 
         val attributesFromDisease = diseaseAttributeRepository
                 .findByRequirementTypeAndRequirementId(RequirementType.DISEASE, patient.disease.id)
@@ -132,7 +138,15 @@ class StatusServiceImpl(
 
     private fun findDraftWithPatient(patientId: Long): Pair<Status?, Patient> {
         val patient = findPatient(patientId)
-        return Pair(statusRepository.findStatusByPatientAndDraft(patient, draft = true), patient)
+        return statusRepository.findStatusByPatientAndDraft(patient, draft = true) to patient
+    }
+
+    private fun requireDraftWithPatient(patientId: Long): Pair<Status, Patient> {
+        val (status, patient) = findDraftWithPatient(patientId)
+        if (status == null) {
+            throw NoPendingDraftException(patientId)
+        }
+        return status to patient
     }
 
     private fun findAttribute(statusEntity: Status, attributeName: String): DiseaseAttribute {
@@ -149,7 +163,21 @@ class StatusServiceImpl(
                 ?: throw AttributeNotFoundException(attributeName)
     }
 
-    fun findDiseaseAttribute(
+    private fun formAvailableTransitionResponse(
+            patient: Patient,
+            status: Status,
+            transition: Transition
+    ): AvailableTransitionResponse {
+        val stateId = transition.stateTo.id
+        return try {
+            val testResult = predicateService.testPredicate(patient, status, transition.predicate)
+            AvailableTransitionResponse(stateId, testResult, errorCause = null)
+        } catch (e: Exception) {
+            AvailableTransitionResponse(stateId, isRecommended = null, errorCause = e.message)
+        }
+    }
+
+    private fun findDiseaseAttribute(
             attribute: Attribute,
             type: RequirementType,
             id: Long
