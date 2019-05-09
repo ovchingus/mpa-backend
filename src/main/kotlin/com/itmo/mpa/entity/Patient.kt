@@ -17,6 +17,10 @@ class Patient : LongIdEntity() {
     @JoinColumn(name = "disease_id", nullable = true)
     lateinit var disease: Disease
 
+    @OneToOne
+    @JoinColumn(name = "current_status_id", nullable = true)
+    var currentStatus: Status? = null
+
     @ManyToOne
     @JoinColumn(name = "doctor_id", nullable = false)
     lateinit var doctor: Doctor

@@ -42,7 +42,7 @@ class PatientServiceImpl(
     override fun findAll(): List<PatientResponse> {
         logger.info("findAll: Query all patients from the database")
 
-        val result = patientRepository.findAll().map { it.toResponse(statusResponseForPatient(it.id)) }
+        val result = patientRepository.findAll().map { it.toResponse(it.currentStatus?.toResponse()) }
 
         logger.info("findAll: Result: $result")
         return result
@@ -52,12 +52,10 @@ class PatientServiceImpl(
         logger.info("findPatient: find patient by id - $id")
 
         val patient = patientRepository.findByIdOrNull(id) ?: throw PatientNotFoundException(id)
-        val patientStatus = statusResponseForPatient(id)
+        val patientStatus = patient.currentStatus?.toResponse()
         val result = patient.toResponse(patientStatus)
 
         logger.info("findPatient: result is {}", result)
         return result
     }
-
-    private fun statusResponseForPatient(id: Long) = runCatching { statusService.findCurrentStatus(id) }.getOrNull()
 }
