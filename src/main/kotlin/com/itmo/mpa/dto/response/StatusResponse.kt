@@ -9,5 +9,6 @@ data class StatusResponse(
         @JsonSerialize(using = InstantSerializer::class)
         val submittedOn: Instant,
         val stateId: Long,
-        val attributes: Map<String, String>
+        val attributes: Map<String, String>,
+        val medicines: List<MedicineResponse>
 )

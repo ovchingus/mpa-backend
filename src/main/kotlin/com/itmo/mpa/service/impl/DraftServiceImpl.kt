@@ -7,12 +7,14 @@ import com.itmo.mpa.entity.*
 import com.itmo.mpa.repository.*
 import com.itmo.mpa.service.DraftService
 import com.itmo.mpa.service.exception.AttributeNotFoundException
+import com.itmo.mpa.service.exception.MedicineNotFoundException
 import com.itmo.mpa.service.exception.StateNotFoundException
 import com.itmo.mpa.service.mapping.toEntity
 import com.itmo.mpa.service.mapping.toResponse
 import org.slf4j.LoggerFactory
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 
 @Service
@@ -22,11 +24,13 @@ class DraftServiceImpl(
         private val diseaseAttributeValueRepository: DiseaseAttributeValueRepository,
         private val attributeRepository: AttributeRepository,
         private val stateRepository: StateRepository,
-        private val patientStatusEntityService: PatientStatusEntityService
+        private val patientStatusEntityService: PatientStatusEntityService,
+        private val medicineRepository: MedicineRepository
 ) : DraftService {
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    @Transactional
     override fun rewriteDraft(patientId: Long, statusDraftRequest: StatusRequest) {
         logger.info("rewriteDraft: change existing draft or create one for patient with id - $patientId, " +
                 "by status draft request - {}", statusDraftRequest)
@@ -38,6 +42,8 @@ class DraftServiceImpl(
 
         var statusEntity = oldDraft ?: statusDraftRequest.toEntity(patient, state)
         statusEntity.submittedOn = Instant.now()
+
+        statusEntity.medicines = statusDraftRequest.medicines.mapTo(HashSet()) { requireMedicine(it) }
 
         statusEntity = statusRepository.save(statusEntity)
 
@@ -74,6 +80,10 @@ class DraftServiceImpl(
                 .map { it.toResponse() }
     }
 
+    private fun requireMedicine(medicineId: Long): Medicine {
+        return medicineRepository.findByIdOrNull(medicineId)
+                ?: throw MedicineNotFoundException(medicineId)
+    }
 
     private fun findAttribute(statusEntity: Status, attributeName: String): DiseaseAttribute {
 
