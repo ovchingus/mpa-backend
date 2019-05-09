@@ -26,7 +26,7 @@ class PatientServiceImpl(
 
     private val logger = LoggerFactory.getLogger(javaClass)!!
 
-    override fun createPatient(patientRequest: PatientRequest) {
+    override fun createPatient(patientRequest: PatientRequest): PatientResponse {
         logger.info("createPatient: Create a new patient from request: $patientRequest")
 
         val doctor = doctorRepository.findByIdOrNull(patientRequest.doctorId!!)
@@ -36,7 +36,7 @@ class PatientServiceImpl(
                 ?: throw DiseaseNotFoundException(patientRequest.diseaseId)
 
         val patient = patientRequest.toEntity(disease, doctor)
-        patientRepository.save(patient)
+        return patientRepository.save(patient).toResponse(null)
     }
 
     override fun findAll(): List<PatientResponse> {

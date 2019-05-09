@@ -1,6 +1,7 @@
 package com.itmo.mpa.controller
 
 import com.itmo.mpa.dto.request.StatusRequest
+import com.itmo.mpa.dto.response.AvailableTransitionResponse
 import com.itmo.mpa.dto.response.DiseaseAttributeResponse
 import com.itmo.mpa.dto.response.StatusResponse
 import com.itmo.mpa.service.StatusService
@@ -36,4 +37,10 @@ class DraftController(private val statusService: StatusService) {
     fun getDiseaseAttributesByPatientId(
             @PathVariable patientId: Long
     ): List<DiseaseAttributeResponse> = statusService.getDiseaseAttributes(patientId)
+
+    @ApiOperation("Get available transitions from current state")
+    @GetMapping("status/draft/states")
+    fun getAvailableTransitionsByPatientId(
+            @PathVariable patientId: Long
+    ): List<AvailableTransitionResponse> = statusService.getAvailableTransitions(patientId)
 }

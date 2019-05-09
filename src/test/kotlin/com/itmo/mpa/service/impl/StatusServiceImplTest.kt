@@ -6,6 +6,7 @@ import com.itmo.mpa.entity.Patient
 import com.itmo.mpa.entity.State
 import com.itmo.mpa.entity.Status
 import com.itmo.mpa.repository.*
+import com.itmo.mpa.service.PredicateService
 import com.itmo.mpa.service.exception.NoPendingDraftException
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -38,6 +39,12 @@ class StatusServiceImplTest {
 
     @MockK
     lateinit var stateRepository: StateRepository
+
+    @MockK
+    lateinit var transitionRepository: TransitionRepository
+
+    @MockK
+    lateinit var predicateService: PredicateService
 
     @InjectMockKs
     lateinit var statusServiceImpl: StatusServiceImpl

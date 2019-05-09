@@ -1,0 +1,16 @@
+{
+  "properties": [
+    {
+      "name": "mpa.predicate.prefix.medicine",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "mpa.predicate.prefix.status",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "mpa.predicate.prefix.patient",
+      "type": "java.lang.String"
+    }
+  ]
+}

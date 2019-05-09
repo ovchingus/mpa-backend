@@ -7,7 +7,7 @@ import com.itmo.mpa.service.exception.PatientNotFoundException
 
 interface PatientService {
 
-    fun createPatient(patientRequest: PatientRequest)
+    fun createPatient(patientRequest: PatientRequest): PatientResponse
 
     fun findAll(): List<PatientResponse>
 
