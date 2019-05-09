@@ -15,5 +15,6 @@ fun Status.toResponse() = StatusResponse(
         id,
         submittedOn,
         stateId = state.id,
-        attributes = diseaseAttributeValues.map { it.diseaseAttribute.attribute.name to it.value }.toMap(HashMap())
+        attributes = diseaseAttributeValues.map { it.diseaseAttribute.attribute.name to it.value }.toMap(HashMap()),
+        medicines = medicines.map { it.toResponse() }
 )
