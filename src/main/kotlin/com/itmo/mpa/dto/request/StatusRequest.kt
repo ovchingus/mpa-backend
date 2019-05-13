@@ -9,5 +9,5 @@ data class StatusRequest(
 
         val medicines: List<Long> = emptyList(),
 
-        val attributes: Map<String, String> = emptyMap()
+        val attributes: Map<Long, String> = emptyMap()
 )

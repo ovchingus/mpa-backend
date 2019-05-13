@@ -3,7 +3,10 @@ package com.itmo.mpa.service.impl
 import com.itmo.mpa.dto.request.StatusRequest
 import com.itmo.mpa.dto.response.DiseaseAttributeResponse
 import com.itmo.mpa.dto.response.StatusResponse
-import com.itmo.mpa.entity.*
+import com.itmo.mpa.entity.DiseaseAttribute
+import com.itmo.mpa.entity.DiseaseAttributeValue
+import com.itmo.mpa.entity.Medicine
+import com.itmo.mpa.entity.RequirementType
 import com.itmo.mpa.repository.*
 import com.itmo.mpa.service.DraftService
 import com.itmo.mpa.service.exception.AttributeNotFoundException
@@ -22,7 +25,6 @@ class DraftServiceImpl(
         private val statusRepository: StatusRepository,
         private val diseaseAttributeRepository: DiseaseAttributeRepository,
         private val diseaseAttributeValueRepository: DiseaseAttributeValueRepository,
-        private val attributeRepository: AttributeRepository,
         private val stateRepository: StateRepository,
         private val patientStatusEntityService: PatientStatusEntityService,
         private val medicineRepository: MedicineRepository
@@ -42,16 +44,15 @@ class DraftServiceImpl(
 
         var statusEntity = oldDraft ?: statusDraftRequest.toEntity(patient, state)
         statusEntity.submittedOn = Instant.now()
-
         statusEntity.medicines = statusDraftRequest.medicines.mapTo(HashSet()) { requireMedicine(it) }
-
         statusEntity = statusRepository.save(statusEntity)
 
+        val attrIdToDiseaseAttrMap = findDiseaseAttributes(statusDraftRequest.attributes.keys)
         val savedAttributeValues = statusDraftRequest.attributes
-                .map { (attributeName, attributeValue) ->
+                .map { (attributeId, attributeValue) ->
                     DiseaseAttributeValue().apply {
                         status = statusEntity
-                        diseaseAttribute = findAttribute(statusEntity, attributeName)
+                        diseaseAttribute = attrIdToDiseaseAttrMap.getValue(attributeId)
                         value = attributeValue
                     }
                 }.let { diseaseAttributeValueRepository.saveAll(it) }
@@ -85,25 +86,15 @@ class DraftServiceImpl(
                 ?: throw MedicineNotFoundException(medicineId)
     }
 
-    private fun findAttribute(statusEntity: Status, attributeName: String): DiseaseAttribute {
+    private fun findDiseaseAttributes(requestAttributeIds: Set<Long>): Map<Long, DiseaseAttribute> {
+        val attrIdToDiseaseAttrMap = diseaseAttributeRepository.findAllByAttributeIdIn(requestAttributeIds)
+                .groupBy { disAttr -> disAttr.attribute.id }
+                .mapValues { (_, diseaseAttributeList) -> diseaseAttributeList.first() }
 
-        val attribute = attributeRepository.findByName(attributeName)
-                ?: throw AttributeNotFoundException(attributeName)
-
-        val (state, disease) = statusEntity.state to statusEntity.patient.disease
-
-        val attributeForStateDisease = findDiseaseAttribute(attribute, RequirementType.DISEASE, disease.id)
-        if (attributeForStateDisease != null) return attributeForStateDisease
-
-        return findDiseaseAttribute(attribute, RequirementType.STATE, state.id)
-                ?: throw AttributeNotFoundException(attributeName)
-    }
-
-    private fun findDiseaseAttribute(
-            attribute: Attribute,
-            type: RequirementType,
-            id: Long
-    ): DiseaseAttribute? {
-        return diseaseAttributeRepository.findByAttributeAndRequirementTypeAndRequirementId(attribute, type, id)
+        if (requestAttributeIds.size != attrIdToDiseaseAttrMap.size) {
+            val notFoundIds: Set<Long> = requestAttributeIds - attrIdToDiseaseAttrMap.keys
+            throw AttributeNotFoundException(notFoundIds)
+        }
+        return attrIdToDiseaseAttrMap
     }
 }
