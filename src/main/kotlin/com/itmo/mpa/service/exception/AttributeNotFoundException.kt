@@ -1,3 +1,8 @@
 package com.itmo.mpa.service.exception
 
-class AttributeNotFoundException(name: String) : NotFoundException("Attribute $name not found")
+class AttributeNotFoundException : NotFoundException {
+
+    constructor(ids: Collection<Long>) : super("Attributes $ids not found")
+
+    constructor(id: Long) : super("Attribute $id not found")
+}

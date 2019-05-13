@@ -4,6 +4,7 @@ import com.itmo.mpa.dto.response.DiseaseAttributeResponse
 import com.itmo.mpa.entity.DiseaseAttribute
 
 fun DiseaseAttribute.toResponse() = DiseaseAttributeResponse(
+        id = attribute.id,
         name = attribute.name,
         type = attribute.type,
         isRequired = isRequired,
