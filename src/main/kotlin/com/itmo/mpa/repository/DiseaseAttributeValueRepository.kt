@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository
 
 interface DiseaseAttributeValueRepository : CrudRepository<DiseaseAttributeValue, Long> {
 
-    fun deleteALlByStatus(status: Status)
+    fun deleteAllByStatus(status: Status)
 }

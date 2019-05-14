@@ -31,8 +31,8 @@ class DraftServiceImpl(
 
     @Transactional
     override fun rewriteDraft(patientId: Long, statusDraftRequest: StatusRequest) {
-        logger.info("rewriteDraft: change existing draft or create one for patient with id - $patientId, " +
-                "by status draft request - {}", statusDraftRequest)
+        logger.info("rewriteDraft: change existing draft or create one for patient with id - {}, " +
+                "by status draft request - {}", patientId, statusDraftRequest)
 
         val (oldDraft, patient) = patientStatusEntityService.findDraftWithPatient(patientId)
 
@@ -51,7 +51,7 @@ class DraftServiceImpl(
     }
 
     override fun findDraft(patientId: Long): StatusResponse {
-        logger.info("findDraft: find draft by patient id - $patientId")
+        logger.info("findDraft: find draft by patient id - {}", patientId)
         return patientStatusEntityService.requireDraftWithPatient(patientId).first
                 .toResponse()
                 .also { logger.info("findDraft: result {}", it) }

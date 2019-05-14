@@ -20,11 +20,12 @@ class DiseaseAttributesEntityService(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     fun replaceAttributeValues(status: Status, attributes: Map<Long, String>): Set<DiseaseAttributeValue> {
+        logger.debug("replaceAttributeValues for status {} attributes: {}", status, attributes)
         val attrIdToDiseaseAttrMap = findDiseaseAttributes(attributes.keys)
-        diseaseAttributeValueRepository.deleteALlByStatus(status)
+        diseaseAttributeValueRepository.deleteAllByStatus(status)
         return attributes.mapTo(HashSet()) { (attributeId, attributeValue) ->
             createDiseaseAttributeValue(status, attrIdToDiseaseAttrMap.getValue(attributeId), attributeValue)
-        }.also { logger.debug("replaceAttributeValues for status {} result: {}", status, it) }
+        }
     }
 
     fun getDiseaseAttributes(patientId: Long): List<DiseaseAttribute> {
@@ -60,7 +61,6 @@ class DiseaseAttributesEntityService(
             value = attributeValue
             this.diseaseAttribute = diseaseAttribute
         }
-        diseaseAttributeValueRepository.save(diseaseAttributeValue)
-        return diseaseAttributeValue
+        return diseaseAttributeValueRepository.save(diseaseAttributeValue)
     }
 }
