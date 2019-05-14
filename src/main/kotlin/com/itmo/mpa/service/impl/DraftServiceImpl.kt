@@ -3,13 +3,11 @@ package com.itmo.mpa.service.impl
 import com.itmo.mpa.dto.request.StatusRequest
 import com.itmo.mpa.dto.response.DiseaseAttributeResponse
 import com.itmo.mpa.dto.response.StatusResponse
-import com.itmo.mpa.entity.DiseaseAttribute
-import com.itmo.mpa.entity.DiseaseAttributeValue
 import com.itmo.mpa.entity.Medicine
-import com.itmo.mpa.entity.RequirementType
-import com.itmo.mpa.repository.*
+import com.itmo.mpa.repository.MedicineRepository
+import com.itmo.mpa.repository.StateRepository
+import com.itmo.mpa.repository.StatusRepository
 import com.itmo.mpa.service.DraftService
-import com.itmo.mpa.service.exception.AttributeNotFoundException
 import com.itmo.mpa.service.exception.MedicineNotFoundException
 import com.itmo.mpa.service.exception.StateNotFoundException
 import com.itmo.mpa.service.mapping.toEntity
@@ -23,11 +21,10 @@ import java.time.Instant
 @Service
 class DraftServiceImpl(
         private val statusRepository: StatusRepository,
-        private val diseaseAttributeRepository: DiseaseAttributeRepository,
-        private val diseaseAttributeValueRepository: DiseaseAttributeValueRepository,
         private val stateRepository: StateRepository,
+        private val medicineRepository: MedicineRepository,
         private val patientStatusEntityService: PatientStatusEntityService,
-        private val medicineRepository: MedicineRepository
+        private val attributesEntityService: DiseaseAttributesEntityService
 ) : DraftService {
 
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -47,17 +44,8 @@ class DraftServiceImpl(
         statusEntity.medicines = statusDraftRequest.medicines.mapTo(HashSet()) { requireMedicine(it) }
         statusEntity = statusRepository.save(statusEntity)
 
-        val attrIdToDiseaseAttrMap = findDiseaseAttributes(statusDraftRequest.attributes.keys)
-        val savedAttributeValues = statusDraftRequest.attributes
-                .map { (attributeId, attributeValue) ->
-                    DiseaseAttributeValue().apply {
-                        status = statusEntity
-                        diseaseAttribute = attrIdToDiseaseAttrMap.getValue(attributeId)
-                        value = attributeValue
-                    }
-                }.let { diseaseAttributeValueRepository.saveAll(it) }
-
-        statusEntity.diseaseAttributeValues = savedAttributeValues.toSet() + statusEntity.diseaseAttributeValues
+        statusEntity.diseaseAttributeValues = attributesEntityService
+                .replaceAttributeValues(statusEntity, statusDraftRequest.attributes)
 
         statusRepository.save(statusEntity)
     }
@@ -70,31 +58,12 @@ class DraftServiceImpl(
     }
 
     override fun getDiseaseAttributes(patientId: Long): List<DiseaseAttributeResponse> {
-        val (status, patient) = patientStatusEntityService.requireDraftWithPatient(patientId)
-
-        val attributesFromDisease = diseaseAttributeRepository
-                .findByRequirementTypeAndRequirementId(RequirementType.DISEASE, patient.disease.id)
-        val attributesFromState = diseaseAttributeRepository
-                .findByRequirementTypeAndRequirementId(RequirementType.STATE, status.state.id)
-
-        return (attributesFromDisease + attributesFromState)
+        return attributesEntityService.getDiseaseAttributes(patientId)
                 .map { it.toResponse() }
     }
 
     private fun requireMedicine(medicineId: Long): Medicine {
         return medicineRepository.findByIdOrNull(medicineId)
                 ?: throw MedicineNotFoundException(medicineId)
-    }
-
-    private fun findDiseaseAttributes(requestAttributeIds: Set<Long>): Map<Long, DiseaseAttribute> {
-        val attrIdToDiseaseAttrMap = diseaseAttributeRepository.findAllByAttributeIdIn(requestAttributeIds)
-                .groupBy { disAttr -> disAttr.attribute.id }
-                .mapValues { (_, diseaseAttributeList) -> diseaseAttributeList.first() }
-
-        if (requestAttributeIds.size != attrIdToDiseaseAttrMap.size) {
-            val notFoundIds: Set<Long> = requestAttributeIds - attrIdToDiseaseAttrMap.keys
-            throw AttributeNotFoundException(notFoundIds)
-        }
-        return attrIdToDiseaseAttrMap
     }
 }
