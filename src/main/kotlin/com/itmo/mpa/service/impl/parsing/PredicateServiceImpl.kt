@@ -19,7 +19,7 @@ class PredicateServiceImpl(
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    override fun testPredicate(patient: Patient, draft: Status, predicate: String): Boolean {
+    override fun testPredicate(patient: Patient?, draft: Status?, predicate: String): Boolean {
         logger.info("testPredicate: parses predicate {}", predicate)
         val parsedExpression = parser.parse(predicate)
         logger.debug("testPredicate: predicate {} parsed to {}", predicate, parsedExpression.asString())
