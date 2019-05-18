@@ -10,6 +10,8 @@ import com.itmo.mpa.service.AssociationService
 import com.itmo.mpa.service.PredicateService
 import com.itmo.mpa.service.exception.AssociationNotFoundException
 import com.itmo.mpa.service.mapping.toEntity
+import com.itmo.mpa.service.mapping.toResponse
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.time.Instant
 
@@ -21,11 +23,14 @@ class AssociationServiceImpl(
         private val patientStatusEntityService: PatientStatusEntityService
 ) : AssociationService {
 
+    private val logger = LoggerFactory.getLogger(javaClass)
+
     override fun getDoctorsAssociations(doctorId: Long, patientId: Long?): List<AssociationResponse> {
         val doctor = doctorEntityService.findById(doctorId)
         val (draft, patient) = patientStatusEntityService.findDraftWithPatient(patientId)
         return associationRepository.findByDoctor(doctor)
-                .map { it.formResponse(patient, draft) }
+                .filter { it.isRelevant(patient, draft) }
+                .map { it.toResponse() }
     }
 
     override fun createAssociation(doctorId: Long, request: AssociationRequest): AssociationResponse {
@@ -34,7 +39,7 @@ class AssociationServiceImpl(
         association.createdDate = Instant.now()
         association.doctor = doctor
         return associationRepository.save(association)
-                .formResponse(patient = null, draft = null)
+                .toResponse()
     }
 
     override fun replaceAssociation(doctorId: Long, associationId: Long, request: AssociationRequest): AssociationResponse {
@@ -43,7 +48,7 @@ class AssociationServiceImpl(
                 ?: throw AssociationNotFoundException(associationId)
         association.text = request.text!!
         return associationRepository.save(association)
-                .formResponse(patient = null, draft = null)
+                .toResponse()
     }
 
     override fun deleteAssociation(doctorId: Long, associationId: Long) {
@@ -53,15 +58,12 @@ class AssociationServiceImpl(
         associationRepository.delete(association)
     }
 
-    private fun Association.formResponse(
-            patient: Patient?,
-            draft: Status?
-    ): AssociationResponse {
+    private fun Association.isRelevant(patient: Patient?, draft: Status?): Boolean {
         return try {
-            val isRelevant = predicateService.testPredicate(patient, draft, predicate)
-            AssociationResponse(id, text, createdDate, isRelevant, errorCause = null)
+            predicateService.testPredicate(patient, draft, predicate)
         } catch (e: Exception) {
-            AssociationResponse(id, text, createdDate, isRelevant = null, errorCause = e.message)
+            logger.warn("Association.isRelevant failed because of an exception", e)
+            false
         }
     }
 }

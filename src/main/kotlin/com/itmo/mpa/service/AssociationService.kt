@@ -9,10 +9,7 @@ import com.itmo.mpa.service.exception.PatientNotFoundException
 interface AssociationService {
 
     /**
-     *  Returns list of all associations by [doctorId].
-     *  [AssociationResponse.isRelevant] will be set according to the
-     *  value produced by predicate of the association. It wil be set to `null` in case of any error occurred.
-     *  If that's the case, [AssociationResponse.errorCause] will be populated with description
+     *  Returns list of all the relevant associations by [doctorId].
      *
      *  @param doctorId doctor id
      *  @param patientId patient id as a predicate context
