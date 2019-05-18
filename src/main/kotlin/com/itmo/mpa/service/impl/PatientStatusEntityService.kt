@@ -28,9 +28,9 @@ class PatientStatusEntityService(
         return statusRepository.findStatusByPatientAndDraft(patient, draft = true) to patient
     }
 
-    fun requireDraftWithPatient(patientId: Long?): Pair<Status?, Patient?> {
+    fun findDraftWithPatient(patientId: Long?): Pair<Status?, Patient?> {
         if (patientId == null) return Pair(null, null)
-        return requireDraftWithPatient(patientId)
+        return findDraftWithPatient(patientId)
     }
 
     fun requireDraftWithPatient(patientId: Long): Pair<Status, Patient> {
