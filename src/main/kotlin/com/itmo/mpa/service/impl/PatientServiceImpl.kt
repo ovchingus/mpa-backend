@@ -2,23 +2,21 @@ package com.itmo.mpa.service.impl
 
 import com.itmo.mpa.dto.request.PatientRequest
 import com.itmo.mpa.dto.response.PatientResponse
-import com.itmo.mpa.repository.DiseaseRepository
 import com.itmo.mpa.repository.PatientRepository
 import com.itmo.mpa.service.PatientService
-import com.itmo.mpa.service.exception.DiseaseNotFoundException
+import com.itmo.mpa.service.impl.entityservice.DiseaseEntityService
 import com.itmo.mpa.service.impl.entityservice.DoctorEntityService
 import com.itmo.mpa.service.impl.entityservice.PatientStatusEntityService
 import com.itmo.mpa.service.mapping.toEntity
 import com.itmo.mpa.service.mapping.toResponse
 import org.slf4j.LoggerFactory
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
 class PatientServiceImpl(
         private val patientRepository: PatientRepository,
-        private val diseaseRepository: DiseaseRepository,
         private val doctorEntityService: DoctorEntityService,
+        private val diseaseEntityService: DiseaseEntityService,
         private val patientStatusEntityService: PatientStatusEntityService
 ) : PatientService {
 
@@ -26,12 +24,8 @@ class PatientServiceImpl(
 
     override fun createPatient(patientRequest: PatientRequest): PatientResponse {
         logger.info("createPatient: Create a new patient from request {}", patientRequest)
-
         val doctor = doctorEntityService.findById(patientRequest.doctorId!!)
-
-        val disease = diseaseRepository.findByIdOrNull(patientRequest.diseaseId!!)
-                ?: throw DiseaseNotFoundException(patientRequest.diseaseId)
-
+        val disease = diseaseEntityService.findDisease(patientRequest.diseaseId!!)
         val patient = patientRequest.toEntity(disease, doctor)
         return patientRepository.save(patient).toResponse()
     }
