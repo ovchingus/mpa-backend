@@ -17,6 +17,7 @@ class PatientSymbolicNameResolver(
     private val utcZone = ZoneId.of("UTC")
 
     override fun resolveValue(parameters: ResolvingParameters, propertyName: String): String? {
+        if (parameters.patient == null) return null
         return when (propertyName) {
             patientAge -> calculateAge(parameters.patient).toString()
             patientDiseaseId -> parameters.patient.disease.id.toString()

@@ -1,14 +1,8 @@
 package com.itmo.mpa.controller
 
 import com.itmo.mpa.dto.request.StatusRequest
-import com.itmo.mpa.dto.response.AppropriateMedicineResponse
-import com.itmo.mpa.dto.response.AvailableTransitionResponse
-import com.itmo.mpa.dto.response.DiseaseAttributeResponse
-import com.itmo.mpa.dto.response.StatusResponse
-import com.itmo.mpa.service.DraftService
-import com.itmo.mpa.service.MedicineService
-import com.itmo.mpa.service.StatusService
-import com.itmo.mpa.service.TransitionService
+import com.itmo.mpa.dto.response.*
+import com.itmo.mpa.service.*
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.http.HttpStatus
@@ -22,7 +16,8 @@ class DraftController(
         private val statusService: StatusService,
         private val draftService: DraftService,
         private val transitionService: TransitionService,
-        private val medicineService: MedicineService
+        private val medicineService: MedicineService,
+        private val associationService: AssociationService
 ) {
 
     @ApiOperation("Commit draft")
@@ -58,4 +53,10 @@ class DraftController(
     fun getAppropriateMedicinesByPatientId(
             @PathVariable patientId: Long
     ): List<AppropriateMedicineResponse> = medicineService.getAppropriateMedicine(patientId)
+
+    @GetMapping("status/draft/associations")
+    @ApiOperation("Get relevant associations for a patient")
+    fun getRelevantAssociationsByPatientId(
+            @PathVariable patientId: Long
+    ): List<AssociationResponse> = associationService.getDoctorsAssociations(patientId)
 }

@@ -17,5 +17,5 @@ interface PredicateService {
      * @throws [NullReferenceException] if a reference from predicate was resolved to null
      * @throws [UnexpectedTokenException] if predicate is malformed
      */
-    fun testPredicate(patient: Patient, draft: Status, predicate: String): Boolean
+    fun testPredicate(patient: Patient?, draft: Status?, predicate: String): Boolean
 }
