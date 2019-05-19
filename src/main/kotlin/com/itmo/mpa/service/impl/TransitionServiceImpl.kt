@@ -7,6 +7,7 @@ import com.itmo.mpa.entity.Transition
 import com.itmo.mpa.repository.TransitionRepository
 import com.itmo.mpa.service.PredicateService
 import com.itmo.mpa.service.TransitionService
+import com.itmo.mpa.service.impl.entityservice.PatientStatusEntityService
 import com.itmo.mpa.service.mapping.toResponse
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -23,18 +24,17 @@ class TransitionServiceImpl(
     override fun getAvailableTransitions(patientId: Long): List<AvailableTransitionResponse> {
         val (status, patient) = patientStatusEntityService.requireDraftWithPatient(patientId)
         return transitionRepository.findByStateFrom(status.state)
-                .map { transition -> formAvailableTransitionResponse(patient, status, transition) }
+                .map { it.formResponse(patient, status) }
                 .also { logger.debug("getAvailableTransitions: result {}", it) }
     }
 
-    private fun formAvailableTransitionResponse(
+    private fun Transition.formResponse(
             patient: Patient,
-            status: Status,
-            transition: Transition
+            status: Status
     ): AvailableTransitionResponse {
-        val stateResponse = transition.stateTo.toResponse()
+        val stateResponse = stateTo.toResponse()
         return try {
-            val testResult = predicateService.testPredicate(patient, status, transition.predicate)
+            val testResult = predicateService.testPredicate(patient, status, predicate)
             AvailableTransitionResponse(stateResponse, testResult, errorCause = null)
         } catch (e: Exception) {
             AvailableTransitionResponse(stateResponse, isRecommended = null, errorCause = e.message)

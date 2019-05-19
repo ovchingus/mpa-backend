@@ -1,4 +1,4 @@
-package com.itmo.mpa.service.impl
+package com.itmo.mpa.service.impl.entityservice
 
 import com.itmo.mpa.entity.DiseaseAttribute
 import com.itmo.mpa.entity.DiseaseAttributeValue

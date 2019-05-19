@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
-@Api(value = "/patients/{patientId}")
-@RequestMapping("patients/{patientId}")
+@Api(value = "/patients/{patientId}/status/draft")
+@RequestMapping("patients/{patientId}/status/draft")
 class DraftController(
         private val statusService: StatusService,
         private val draftService: DraftService,
@@ -20,41 +20,41 @@ class DraftController(
         private val associationService: AssociationService
 ) {
 
+    @PostMapping
     @ApiOperation("Commit draft")
-    @PostMapping("status/draft")
     fun commitDraft(@PathVariable patientId: Long): StatusResponse = statusService.commitDraft(patientId)
 
+    @PutMapping
     @ApiOperation("Create draft")
-    @PutMapping("status/draft")
     @ResponseStatus(HttpStatus.CREATED)
     fun createDraft(
             @PathVariable patientId: Long,
             @Valid @RequestBody draftRequest: StatusRequest
     ): Unit = draftService.rewriteDraft(patientId, draftRequest)
 
+    @GetMapping
     @ApiOperation("Get current draft")
-    @GetMapping("status/draft")
     fun getDraftByPatientId(@PathVariable patientId: Long): StatusResponse = draftService.findDraft(patientId)
 
+    @GetMapping("attributes")
     @ApiOperation("Get available disease attributes")
-    @GetMapping("status/draft/attributes")
     fun getDiseaseAttributesByPatientId(
             @PathVariable patientId: Long
     ): List<DiseaseAttributeResponse> = draftService.getDiseaseAttributes(patientId)
 
+    @GetMapping("states")
     @ApiOperation("Get available transitions from current state")
-    @GetMapping("status/draft/states")
     fun getAvailableTransitionsByPatientId(
             @PathVariable patientId: Long
     ): List<AvailableTransitionResponse> = transitionService.getAvailableTransitions(patientId)
 
+    @GetMapping("medicine")
     @ApiOperation("Get medicine compatibility info from current state")
-    @GetMapping("status/draft/medicine")
     fun getAppropriateMedicinesByPatientId(
             @PathVariable patientId: Long
     ): List<AppropriateMedicineResponse> = medicineService.getAppropriateMedicine(patientId)
 
-    @GetMapping("status/draft/associations")
+    @GetMapping("associations")
     @ApiOperation("Get relevant associations for a patient")
     fun getRelevantAssociationsByPatientId(
             @PathVariable patientId: Long

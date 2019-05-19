@@ -9,6 +9,8 @@ import com.itmo.mpa.repository.AssociationRepository
 import com.itmo.mpa.service.AssociationService
 import com.itmo.mpa.service.PredicateService
 import com.itmo.mpa.service.exception.AssociationNotFoundException
+import com.itmo.mpa.service.impl.entityservice.DoctorEntityService
+import com.itmo.mpa.service.impl.entityservice.PatientStatusEntityService
 import com.itmo.mpa.service.mapping.toEntity
 import com.itmo.mpa.service.mapping.toResponse
 import org.slf4j.LoggerFactory
@@ -47,7 +49,11 @@ class AssociationServiceImpl(
                 .toResponse()
     }
 
-    override fun replaceAssociation(doctorId: Long, associationId: Long, request: AssociationRequest): AssociationResponse {
+    override fun replaceAssociation(
+            doctorId: Long,
+            associationId: Long,
+            request: AssociationRequest
+    ): AssociationResponse {
         val doctor = doctorEntityService.findById(doctorId)
         val association = associationRepository.findByIdAndDoctor(associationId, doctor)
                 ?: throw AssociationNotFoundException(associationId)

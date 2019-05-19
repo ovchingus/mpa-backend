@@ -14,18 +14,18 @@ import javax.validation.Valid
 @RequestMapping("patients")
 class PatientController(private val patientService: PatientService) {
 
-    @ApiOperation("Create patient")
     @PostMapping
+    @ApiOperation("Create patient")
     @ResponseStatus(HttpStatus.CREATED)
     fun create(
             @Valid @RequestBody patientRequest: PatientRequest
     ): PatientResponse = patientService.createPatient(patientRequest)
 
-    @ApiOperation("Get all patients")
     @GetMapping
+    @ApiOperation("Get all patients")
     fun getAll(): List<PatientResponse> = patientService.findAll()
 
-    @ApiOperation("Find patient by id")
     @GetMapping("{id}")
+    @ApiOperation("Find patient by id")
     fun getById(@PathVariable id: Long): PatientResponse = patientService.findPatient(id)
 }

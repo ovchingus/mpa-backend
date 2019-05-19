@@ -5,6 +5,7 @@ import com.itmo.mpa.repository.PatientRepository
 import com.itmo.mpa.repository.StatusRepository
 import com.itmo.mpa.service.DraftService
 import com.itmo.mpa.service.exception.NoPendingDraftException
+import com.itmo.mpa.service.impl.entityservice.PatientStatusEntityService
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs

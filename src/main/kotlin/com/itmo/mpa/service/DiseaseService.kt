@@ -8,7 +8,7 @@ interface DiseaseService {
 
     fun getAll(): List<DiseaseResponse>
 
-    fun getMedicineByDiseaseId(id: Long): List<MedicineResponse>
+    fun getMedicineByDiseaseId(diseaseId: Long): List<MedicineResponse>
 
     fun createDisease(diseaseRequest: DiseaseRequest)
 }

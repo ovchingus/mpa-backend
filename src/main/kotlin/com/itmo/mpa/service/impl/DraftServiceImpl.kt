@@ -10,6 +10,8 @@ import com.itmo.mpa.repository.StatusRepository
 import com.itmo.mpa.service.DraftService
 import com.itmo.mpa.service.exception.MedicineNotFoundException
 import com.itmo.mpa.service.exception.StateNotFoundException
+import com.itmo.mpa.service.impl.entityservice.DiseaseAttributesEntityService
+import com.itmo.mpa.service.impl.entityservice.PatientStatusEntityService
 import com.itmo.mpa.service.mapping.toEntity
 import com.itmo.mpa.service.mapping.toResponse
 import org.slf4j.LoggerFactory

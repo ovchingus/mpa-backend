@@ -9,6 +9,7 @@ import com.itmo.mpa.service.exception.AttributesNotSetException
 import com.itmo.mpa.service.exception.NoCurrentStatusException
 import com.itmo.mpa.service.exception.NoPendingDraftException
 import com.itmo.mpa.service.exception.StatusNotFoundException
+import com.itmo.mpa.service.impl.entityservice.PatientStatusEntityService
 import com.itmo.mpa.service.mapping.toResponse
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -24,7 +25,7 @@ class StatusServiceImpl(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun commitDraft(patientId: Long): StatusResponse {
-        logger.info("commitDraft: create new status from draft for patient with id - $patientId")
+        logger.info("commitDraft: create new status from draft for patient with id {}", patientId)
 
         val patient = patientStatusEntityService.findPatient(patientId)
 
