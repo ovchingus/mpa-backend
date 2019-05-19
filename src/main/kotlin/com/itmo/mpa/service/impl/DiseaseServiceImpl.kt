@@ -5,6 +5,7 @@ import com.itmo.mpa.dto.response.DiseaseResponse
 import com.itmo.mpa.dto.response.MedicineResponse
 import com.itmo.mpa.repository.DiseaseRepository
 import com.itmo.mpa.service.DiseaseService
+import com.itmo.mpa.service.impl.entityservice.DiseaseEntityService
 import com.itmo.mpa.service.mapping.toEntity
 import com.itmo.mpa.service.mapping.toResponse
 import org.slf4j.LoggerFactory
@@ -12,7 +13,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class DiseaseServiceImpl(
-        private val diseaseRepository: DiseaseRepository
+        private val diseaseRepository: DiseaseRepository,
+        private val diseaseEntityService: DiseaseEntityService
 ) : DiseaseService {
 
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -24,7 +26,7 @@ class DiseaseServiceImpl(
 
     override fun getMedicineByDiseaseId(diseaseId: Long): List<MedicineResponse> {
         logger.info("getMedicineByDiseaseId: Query medicine for disease from database")
-        return diseaseRepository.findById(diseaseId).get().medicines
+        return diseaseEntityService.findDisease(diseaseId).medicines
                 .map { it.toResponse() }
                 .also { logger.debug("getMedicineByDiseaseId {} returned {}", diseaseId, it) }
     }
