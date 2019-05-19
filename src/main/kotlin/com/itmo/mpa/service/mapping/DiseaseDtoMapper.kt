@@ -8,9 +8,4 @@ fun DiseaseRequest.toEntity() = Disease().also {
     it.name = name!!
 }
 
-fun Disease.toResponse() = DiseaseResponse(
-        id,
-        name
-)
-
-
+fun Disease.toResponse() = DiseaseResponse(id, name)

@@ -16,7 +16,9 @@ class StatusController(private val statusService: StatusService) {
 
     @ApiOperation("Collect patient's history")
     @GetMapping("statuses")
-    fun collectPatientStatuses(@PathVariable patientId: Long): List<StatusResponse> = statusService.findAllForPatient(patientId)
+    fun collectPatientStatuses(
+            @PathVariable patientId: Long
+    ): List<StatusResponse> = statusService.findAllForPatient(patientId)
 
     @ApiOperation("Get current patient's status")
     @GetMapping("status")

@@ -7,6 +7,7 @@ import com.itmo.mpa.entity.Status
 import com.itmo.mpa.repository.ContraindicationsRepository
 import com.itmo.mpa.service.MedicineService
 import com.itmo.mpa.service.PredicateService
+import com.itmo.mpa.service.impl.entityservice.PatientStatusEntityService
 import com.itmo.mpa.service.mapping.toResponse
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -23,22 +24,17 @@ class MedicineServiceImpl(
     override fun getAppropriateMedicine(patientId: Long): List<AppropriateMedicineResponse> {
         val (status, patient) = patientStatusEntityService.requireDraftWithPatient(patientId)
         return contraindicationsRepository.findAll()
-                .map { contraindication -> formAppropriateMedicineResponse(patient, status, contraindication) }
+                .map { it.formResponse(patient, status) }
                 .also { logger.debug("getAvailableTransitions: result {}", it) }
     }
 
-    private fun formAppropriateMedicineResponse(
+    private fun Contraindications.formResponse(
             patient: Patient,
-            status: Status,
-            contraindication: Contraindications
+            status: Status
     ): AppropriateMedicineResponse {
-        val medicineResponse = contraindication.medicine.toResponse()
+        val medicineResponse = medicine.toResponse()
         return try {
-            val isContraindicated = predicateService.testPredicate(
-                    patient,
-                    status,
-                    contraindication.predicate
-            )
+            val isContraindicated = predicateService.testPredicate(patient, status, predicate)
             AppropriateMedicineResponse(medicineResponse, isNotRecommended = isContraindicated, errorCause = null)
         } catch (e: Exception) {
             AppropriateMedicineResponse(medicineResponse, isNotRecommended = null, errorCause = e.message)

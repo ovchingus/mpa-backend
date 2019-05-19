@@ -15,30 +15,23 @@ class DiseaseServiceImpl(
         private val diseaseRepository: DiseaseRepository
 ) : DiseaseService {
 
-    private val logger = LoggerFactory.getLogger(javaClass)!!
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun createDisease(diseaseRequest: DiseaseRequest) {
-
-        logger.info("createDisease: Create a new disease from request: $diseaseRequest")
-
+        logger.info("createDisease: Create a new disease from request: {}", diseaseRequest)
         diseaseRepository.save(diseaseRequest.toEntity())
     }
 
-    override fun getMedicineByDiseaseId(id: Long): List<MedicineResponse> {
+    override fun getMedicineByDiseaseId(diseaseId: Long): List<MedicineResponse> {
         logger.info("getMedicineByDiseaseId: Query medicine for disease from database")
-        return diseaseRepository.findById(id).get().medicines
+        return diseaseRepository.findById(diseaseId).get().medicines
                 .map { it.toResponse() }
-                .also { logger.info("getMedicineByDiseaseId: Result {}:", it) }
+                .also { logger.debug("getMedicineByDiseaseId {} returned {}", diseaseId, it) }
     }
 
     override fun getAll(): List<DiseaseResponse> {
-
         logger.info("getAll: Query all patients from the database")
-
-        val result = diseaseRepository.findAll().map { it.toResponse() }
-
-        logger.info("getAll: Result: $result")
-
-        return result
+        return diseaseRepository.findAll().map { it.toResponse() }
+                .also { logger.debug("getAll returned {}", it) }
     }
 }

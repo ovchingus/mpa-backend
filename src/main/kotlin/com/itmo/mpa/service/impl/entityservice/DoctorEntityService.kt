@@ -1,4 +1,4 @@
-package com.itmo.mpa.service.impl
+package com.itmo.mpa.service.impl.entityservice
 
 import com.itmo.mpa.entity.Doctor
 import com.itmo.mpa.repository.DoctorRepository

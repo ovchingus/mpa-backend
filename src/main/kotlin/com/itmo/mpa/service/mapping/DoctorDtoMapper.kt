@@ -8,7 +8,4 @@ fun DoctorRequest.toEntity() = Doctor().also {
     it.name = name!!
 }
 
-fun Doctor.toResponse() = DoctorResponse(
-        id,
-        name
-)
+fun Doctor.toResponse() = DoctorResponse(id, name)

@@ -5,7 +5,6 @@ import com.itmo.mpa.service.impl.parsing.model.HAS_DELIMITER
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
-
 @Component
 class MedicineSymbolicNameResolver(
         @Value("\${mpa.predicate.prefix.medicine}") prefix: String

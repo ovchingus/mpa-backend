@@ -1,4 +1,4 @@
-package com.itmo.mpa.service.impl
+package com.itmo.mpa.service.impl.entityservice
 
 import com.itmo.mpa.entity.Patient
 import com.itmo.mpa.entity.Status
@@ -8,9 +8,9 @@ import com.itmo.mpa.service.exception.NoPendingDraftException
 import com.itmo.mpa.service.exception.PatientNotFoundException
 import org.slf4j.LoggerFactory
 import org.springframework.data.repository.findByIdOrNull
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 
-@Component
+@Service
 class PatientStatusEntityService(
         private val patientRepository: PatientRepository,
         private val statusRepository: StatusRepository
@@ -26,11 +26,6 @@ class PatientStatusEntityService(
     fun findDraftWithPatient(patientId: Long): Pair<Status?, Patient> {
         val patient = findPatient(patientId)
         return statusRepository.findStatusByPatientAndDraft(patient, draft = true) to patient
-    }
-
-    fun findDraftWithPatient(patientId: Long?): Pair<Status?, Patient?> {
-        if (patientId == null) return Pair(null, null)
-        return findDraftWithPatient(patientId)
     }
 
     fun requireDraftWithPatient(patientId: Long): Pair<Status, Patient> {

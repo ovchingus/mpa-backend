@@ -16,7 +16,7 @@ class DoctorServiceImpl(
         private val doctorRepository: DoctorRepository
 ) : DoctorService {
 
-    private val logger = LoggerFactory.getLogger(javaClass)!!
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun createDoctor(request: DoctorRequest) {
         logger.info("Saving doctor: {}", request)

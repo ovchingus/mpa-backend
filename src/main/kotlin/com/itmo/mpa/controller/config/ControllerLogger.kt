@@ -9,7 +9,7 @@ import org.springframework.web.context.request.WebRequest
 @ControllerAdvice
 class ControllerLogger {
 
-    private val logger = LoggerFactory.getLogger(javaClass)!!
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     @InitBinder
     fun initLoggingBinder(binder: WebDataBinder, request: WebRequest) {
@@ -20,6 +20,4 @@ class ControllerLogger {
                     Context path: ${request.contextPath}
                     """)
     }
-
-
 }
