@@ -25,10 +25,15 @@ class AssociationServiceImpl(
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    override fun getDoctorsAssociations(doctorId: Long, patientId: Long?): List<AssociationResponse> {
+    override fun getDoctorsAssociations(doctorId: Long): List<AssociationResponse> {
         val doctor = doctorEntityService.findById(doctorId)
-        val (draft, patient) = patientStatusEntityService.findDraftWithPatient(patientId)
         return associationRepository.findByDoctor(doctor)
+                .map { it.toResponse() }
+    }
+
+    override fun getRelevantAssociations(patientId: Long): List<AssociationResponse> {
+        val (draft, patient) = patientStatusEntityService.findDraftWithPatient(patientId)
+        return associationRepository.findByDoctor(patient.doctor)
                 .filter { it.isRelevant(patient, draft) }
                 .map { it.toResponse() }
     }

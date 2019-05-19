@@ -9,15 +9,22 @@ import com.itmo.mpa.service.exception.PatientNotFoundException
 interface AssociationService {
 
     /**
-     *  Returns list of all the relevant associations by [doctorId].
+     *  Returns list of all associations by [doctorId].
      *
      *  @param doctorId doctor id
-     *  @param patientId patient id as a predicate context
      *  @return found associations
-     *  @throws PatientNotFoundException if [patientId] is not `null` and not found
      *  @throws DoctorNotFoundException if doctor not found by [doctorId]
      */
-    fun getDoctorsAssociations(doctorId: Long, patientId: Long?): List<AssociationResponse>
+    fun getDoctorsAssociations(doctorId: Long): List<AssociationResponse>
+
+    /**
+     *  Returns list of all the relevant associations by [patientId].
+     *
+     *  @param patientId patient id as a predicate context
+     *  @return found associations
+     *  @throws PatientNotFoundException if not found by [patientId]
+     */
+    fun getRelevantAssociations(patientId: Long): List<AssociationResponse>
 
     /**
      *  Creates a new association for a doctor

@@ -18,7 +18,7 @@ class AssociationController(
     @ApiOperation("Get all doctor's associations")
     fun getAllAssociations(
             @PathVariable doctorId: Long
-    ): List<AssociationResponse> = associationService.getDoctorsAssociations(doctorId, patientId = null)
+    ): List<AssociationResponse> = associationService.getDoctorsAssociations(doctorId)
 
     @PostMapping
     @ApiOperation("Save new association")
