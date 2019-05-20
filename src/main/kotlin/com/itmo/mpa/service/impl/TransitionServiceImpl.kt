@@ -22,15 +22,15 @@ class TransitionServiceImpl(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun getAvailableTransitions(patientId: Long): List<AvailableTransitionResponse> {
-        val (status, patient) = patientStatusEntityService.requireDraftWithPatient(patientId)
-        return transitionRepository.findByStateFrom(status.state)
+        val (status, patient) = patientStatusEntityService.findDraftWithPatient(patientId)
+        return transitionRepository.findByStateFrom(patient.currentStatus.state)
                 .map { it.formResponse(patient, status) }
                 .also { logger.debug("getAvailableTransitions: result {}", it) }
     }
 
     private fun Transition.formResponse(
             patient: Patient,
-            status: Status
+            status: Status?
     ): AvailableTransitionResponse {
         val stateResponse = stateTo.toResponse()
         return try {
