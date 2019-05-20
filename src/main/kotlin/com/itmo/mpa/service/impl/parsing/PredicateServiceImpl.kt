@@ -29,4 +29,11 @@ class PredicateServiceImpl(
                     ?: throw NullReferenceException(referenceName)
         }
     }
+
+    override fun checkPredicate(predicate: String) {
+        val parsed = parser.parse(predicate)
+        if (logger.isDebugEnabled) {
+            logger.debug("check predicate parsed {} to {}", predicate, parsed.asString())
+        }
+    }
 }

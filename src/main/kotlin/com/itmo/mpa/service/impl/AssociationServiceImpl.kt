@@ -41,6 +41,7 @@ class AssociationServiceImpl(
     }
 
     override fun createAssociation(doctorId: Long, request: AssociationRequest): AssociationResponse {
+        predicateService.checkPredicate(request.predicate!!)
         val doctor = doctorEntityService.findById(doctorId)
         val association = request.toEntity()
         association.createdDate = Instant.now()
@@ -54,6 +55,7 @@ class AssociationServiceImpl(
             associationId: Long,
             request: AssociationRequest
     ): AssociationResponse {
+        predicateService.checkPredicate(request.predicate!!)
         val doctor = doctorEntityService.findById(doctorId)
         val association = associationRepository.findByIdAndDoctor(associationId, doctor)
                 ?: throw AssociationNotFoundException(associationId)
@@ -73,7 +75,7 @@ class AssociationServiceImpl(
         return try {
             predicateService.testPredicate(patient, draft, predicate)
         } catch (e: Exception) {
-            logger.warn("Association.isRelevant failed because of an exception", e)
+            logger.warn("Association.isRelevant failed because of an exception: {}", e.toString())
             false
         }
     }

@@ -58,5 +58,5 @@ class DraftController(
     @ApiOperation("Get relevant associations for a patient")
     fun getRelevantAssociationsByPatientId(
             @PathVariable patientId: Long
-    ): List<AssociationResponse> = associationService.getDoctorsAssociations(patientId)
+    ): List<AssociationResponse> = associationService.getRelevantAssociations(patientId)
 }

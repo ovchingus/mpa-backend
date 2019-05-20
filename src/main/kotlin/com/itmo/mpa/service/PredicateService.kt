@@ -14,8 +14,15 @@ interface PredicateService {
      * @param draft current status' draft of patient
      * @param predicate predicate expression to check
      * @return test's result
-     * @throws [NullReferenceException] if a reference from predicate was resolved to null
-     * @throws [UnexpectedTokenException] if predicate is malformed
+     * @throws NullReferenceException if a reference from predicate was resolved to null
+     * @throws UnexpectedTokenException if predicate is malformed
      */
     fun testPredicate(patient: Patient?, draft: Status?, predicate: String): Boolean
+
+    /**
+     *  Parses given [predicate] to check if it is malformed.
+     *
+     *  @throws UnexpectedTokenException if predicate is malformed
+     */
+    fun checkPredicate(predicate: String)
 }

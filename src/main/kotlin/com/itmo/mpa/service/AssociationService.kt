@@ -5,6 +5,7 @@ import com.itmo.mpa.dto.response.AssociationResponse
 import com.itmo.mpa.service.exception.AssociationNotFoundException
 import com.itmo.mpa.service.exception.DoctorNotFoundException
 import com.itmo.mpa.service.exception.PatientNotFoundException
+import com.itmo.mpa.service.impl.parsing.UnexpectedTokenException
 
 interface AssociationService {
 
@@ -33,6 +34,7 @@ interface AssociationService {
      *  @param request valid association data
      *  @return populated association response
      *  @throws DoctorNotFoundException if doctor not found by [doctorId]
+     *  @throws UnexpectedTokenException if predicate is malformed
      */
     fun createAssociation(doctorId: Long, request: AssociationRequest): AssociationResponse
 
@@ -45,6 +47,7 @@ interface AssociationService {
      *  @return populated association response
      *  @throws DoctorNotFoundException if doctor not found by [doctorId]
      *  @throws AssociationNotFoundException if association not found by [associationId]
+     *  @throws UnexpectedTokenException if predicate is malformed
      */
     fun replaceAssociation(doctorId: Long, associationId: Long, request: AssociationRequest): AssociationResponse
 
