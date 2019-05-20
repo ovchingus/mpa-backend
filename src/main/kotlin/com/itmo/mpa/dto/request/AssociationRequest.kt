@@ -5,5 +5,8 @@ import javax.validation.constraints.NotEmpty
 data class AssociationRequest(
 
         @field:NotEmpty
-        val text: String?
+        val text: String?,
+
+        @field:NotEmpty
+        val predicate: String?
 )
