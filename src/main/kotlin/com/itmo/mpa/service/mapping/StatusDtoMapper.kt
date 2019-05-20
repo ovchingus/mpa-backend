@@ -6,7 +6,7 @@ import com.itmo.mpa.entity.Status
 fun Status.toResponse() = StatusResponse(
         id,
         submittedOn,
-        stateId = state.id,
+        state = state.toResponse(),
         attributes = diseaseAttributeValues.map { it.diseaseAttribute.attribute.name to it.value }.toMap(HashMap()),
         medicines = medicines.map { it.toResponse() }
 )
