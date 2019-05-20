@@ -472,6 +472,19 @@ class ParserTest {
             assertThat(shouldBeTrue, `is`(true))
         }
 
+        @Test
+        fun `test expression with spaces in reference values`() {
+            val predicate = "and(gt(500, \$small_number), eq(\$language.top, j av a ))"
+
+            val lookupTable = mapOf(
+                    "small_number" to 5.asValue(),
+                    "language.top" to "jav a".asValue()
+            )
+
+            println(parser.parse(predicate).asString())
+            val shouldBeTrue = parser.parse(predicate).evaluate { symName -> lookupTable.getValue(symName) }
+            assertThat(shouldBeTrue, `is`(true))
+        }
     }
 
     private fun <T : Any> T.asValue(): PredicateValue {
