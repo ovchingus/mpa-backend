@@ -7,26 +7,32 @@ import com.itmo.mpa.service.PatientService
 import com.itmo.mpa.service.impl.entityservice.DiseaseEntityService
 import com.itmo.mpa.service.impl.entityservice.DoctorEntityService
 import com.itmo.mpa.service.impl.entityservice.PatientStatusEntityService
+import com.itmo.mpa.service.impl.entityservice.StatusEntityService
 import com.itmo.mpa.service.mapping.toEntity
 import com.itmo.mpa.service.mapping.toResponse
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class PatientServiceImpl(
         private val patientRepository: PatientRepository,
         private val doctorEntityService: DoctorEntityService,
         private val diseaseEntityService: DiseaseEntityService,
-        private val patientStatusEntityService: PatientStatusEntityService
+        private val patientStatusEntityService: PatientStatusEntityService,
+        private val statusEntityService: StatusEntityService
 ) : PatientService {
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    @Transactional
     override fun createPatient(patientRequest: PatientRequest): PatientResponse {
         logger.info("createPatient: Create a new patient from request {}", patientRequest)
         val doctor = doctorEntityService.findById(patientRequest.doctorId!!)
         val disease = diseaseEntityService.findDisease(patientRequest.diseaseId!!)
-        val patient = patientRequest.toEntity(disease, doctor)
+        var patient = patientRequest.toEntity(disease, doctor)
+        patient = patientRepository.save(patient)
+        patient.currentStatus = statusEntityService.createInitialStatus(patient, disease)
         return patientRepository.save(patient).toResponse()
     }
 

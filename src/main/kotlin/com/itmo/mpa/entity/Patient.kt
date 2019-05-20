@@ -18,8 +18,8 @@ class Patient : LongIdEntity() {
     lateinit var disease: Disease
 
     @OneToOne
-    @JoinColumn(name = "current_status_id", nullable = true)
-    var currentStatus: Status? = null
+    @JoinColumn(name = "current_status_id", nullable = true) // it is nullable in db to fix circular dependency
+    lateinit var currentStatus: Status
 
     @ManyToOne
     @JoinColumn(name = "doctor_id", nullable = false)

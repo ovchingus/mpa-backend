@@ -1,7 +1,6 @@
 package com.itmo.mpa.service
 
 import com.itmo.mpa.dto.response.StatusResponse
-import com.itmo.mpa.service.exception.NoCurrentStatusException
 import com.itmo.mpa.service.exception.NoPendingDraftException
 import com.itmo.mpa.service.exception.PatientNotFoundException
 import com.itmo.mpa.service.exception.StatusNotFoundException
@@ -24,7 +23,6 @@ interface StatusService {
      *  @param patientId patient id
      *  @return current status for the patient
      *  @throws PatientNotFoundException if patient not found
-     *  @throws NoCurrentStatusException if no status associated with the patient
      */
     fun findCurrentStatus(patientId: Long): StatusResponse
 
