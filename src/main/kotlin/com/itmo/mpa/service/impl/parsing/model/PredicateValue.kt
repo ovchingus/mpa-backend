@@ -1,6 +1,8 @@
 package com.itmo.mpa.service.impl.parsing.model
 
-data class PredicateValue(val value: String) : Comparable<PredicateValue> {
+class PredicateValue(value: String) : Comparable<PredicateValue> {
+
+    val value = value.replace("\\s".toRegex(), "")
 
     /**
      *  Compares underlying String value as Double values.
@@ -12,5 +14,16 @@ data class PredicateValue(val value: String) : Comparable<PredicateValue> {
 
     override fun toString(): String {
         return value
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is PredicateValue) return false
+
+        return value == other.value
+    }
+
+    override fun hashCode(): Int {
+        return value.hashCode()
     }
 }
