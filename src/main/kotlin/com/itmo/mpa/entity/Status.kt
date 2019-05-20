@@ -28,5 +28,5 @@ class Status : LongIdEntity() {
     @JoinTable(name = "prescription",
             joinColumns = [JoinColumn(name = "status_id", nullable = false)],
             inverseJoinColumns = [JoinColumn(name = "medicine_id", nullable = false)])
-    lateinit var medicines: Set<Medicine>
+    var medicines: Set<Medicine> = emptySet()
 }

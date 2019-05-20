@@ -6,7 +6,6 @@ import com.itmo.mpa.repository.StatusRepository
 import com.itmo.mpa.service.DraftService
 import com.itmo.mpa.service.StatusService
 import com.itmo.mpa.service.exception.AttributesNotSetException
-import com.itmo.mpa.service.exception.NoCurrentStatusException
 import com.itmo.mpa.service.exception.NoPendingDraftException
 import com.itmo.mpa.service.exception.StatusNotFoundException
 import com.itmo.mpa.service.impl.entityservice.PatientStatusEntityService
@@ -53,8 +52,7 @@ class StatusServiceImpl(
         logger.info("findCurrentStatus: patientId {}", patientId)
         return patientStatusEntityService.findPatient(patientId)
                 .currentStatus
-                ?.toResponse()
-                ?: throw NoCurrentStatusException(patientId)
+                .toResponse()
     }
 
     override fun findStatusById(patientId: Long, statusId: Long): StatusResponse {
