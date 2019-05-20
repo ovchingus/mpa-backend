@@ -1,7 +1,6 @@
 package com.itmo.mpa.service
 
 import com.itmo.mpa.dto.response.AvailableTransitionResponse
-import com.itmo.mpa.service.exception.NoPendingDraftException
 import com.itmo.mpa.service.exception.PatientNotFoundException
 
 interface TransitionService {
@@ -16,7 +15,6 @@ interface TransitionService {
      *  @param patientId patient id
      *  @return found available transitions
      *  @throws PatientNotFoundException if patient not found
-     *  @throws NoPendingDraftException if no draft is pending for a patient
      */
     fun getAvailableTransitions(patientId: Long): List<AvailableTransitionResponse>
 }
