@@ -4,6 +4,7 @@ import com.itmo.mpa.dto.request.StatusRequest
 import com.itmo.mpa.dto.response.DiseaseAttributeResponse
 import com.itmo.mpa.dto.response.StatusResponse
 import com.itmo.mpa.entity.Medicine
+import com.itmo.mpa.entity.Status
 import com.itmo.mpa.repository.MedicineRepository
 import com.itmo.mpa.repository.StateRepository
 import com.itmo.mpa.repository.StatusRepository
@@ -12,7 +13,6 @@ import com.itmo.mpa.service.exception.MedicineNotFoundException
 import com.itmo.mpa.service.exception.StateNotFoundException
 import com.itmo.mpa.service.impl.entityservice.DiseaseAttributesEntityService
 import com.itmo.mpa.service.impl.entityservice.PatientStatusEntityService
-import com.itmo.mpa.service.mapping.toEntity
 import com.itmo.mpa.service.mapping.toResponse
 import org.slf4j.LoggerFactory
 import org.springframework.data.repository.findByIdOrNull
@@ -41,8 +41,9 @@ class DraftServiceImpl(
         val state = stateRepository.findByIdOrNull(statusDraftRequest.stateId!!)
                 ?: throw StateNotFoundException(statusDraftRequest.stateId)
 
-        var statusEntity = oldDraft ?: statusDraftRequest.toEntity(patient, state)
+        var statusEntity = oldDraft ?: Status().also { it.patient = patient }
         statusEntity.submittedOn = Instant.now()
+        statusEntity.state = state
         statusEntity.medicines = statusDraftRequest.medicines.mapTo(HashSet()) { requireMedicine(it) }
         statusEntity = statusRepository.save(statusEntity)
 
