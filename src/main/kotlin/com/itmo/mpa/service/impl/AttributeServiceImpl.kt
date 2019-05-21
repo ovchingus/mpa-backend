@@ -15,4 +15,9 @@ class AttributeServiceImpl(
         return attributesEntityService.getDiseaseAttributes(patientId)
                 .map { it.toResponse() }
     }
+
+    override fun getForState(stateId: Long): List<DiseaseAttributeResponse> {
+        return attributesEntityService.getForState(stateId)
+                .map { it.toResponse() }
+    }
 }
