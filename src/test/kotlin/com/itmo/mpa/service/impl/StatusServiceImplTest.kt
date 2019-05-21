@@ -3,7 +3,7 @@ package com.itmo.mpa.service.impl
 import com.itmo.mpa.entity.Patient
 import com.itmo.mpa.repository.PatientRepository
 import com.itmo.mpa.repository.StatusRepository
-import com.itmo.mpa.service.DraftService
+import com.itmo.mpa.service.AttributeService
 import com.itmo.mpa.service.exception.NoPendingDraftException
 import com.itmo.mpa.service.impl.entityservice.PatientStatusEntityService
 import io.mockk.MockKAnnotations
@@ -22,7 +22,7 @@ class StatusServiceImplTest {
     lateinit var statusRepository: StatusRepository
 
     @MockK
-    lateinit var draftService: DraftService
+    lateinit var attributeService: AttributeService
 
     @MockK
     lateinit var patientStatusEntityService: PatientStatusEntityService

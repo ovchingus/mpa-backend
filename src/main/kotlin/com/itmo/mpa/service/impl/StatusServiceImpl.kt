@@ -3,7 +3,7 @@ package com.itmo.mpa.service.impl
 import com.itmo.mpa.dto.response.StatusResponse
 import com.itmo.mpa.repository.PatientRepository
 import com.itmo.mpa.repository.StatusRepository
-import com.itmo.mpa.service.DraftService
+import com.itmo.mpa.service.AttributeService
 import com.itmo.mpa.service.StatusService
 import com.itmo.mpa.service.exception.AttributesNotSetException
 import com.itmo.mpa.service.exception.NoPendingDraftException
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service
 class StatusServiceImpl(
         private val patientRepository: PatientRepository,
         private val statusRepository: StatusRepository,
-        private val draftService: DraftService,
+        private val attributeService: AttributeService,
         private val patientStatusEntityService: PatientStatusEntityService
 ) : StatusService {
 
@@ -31,7 +31,7 @@ class StatusServiceImpl(
         val statusDraft = statusRepository.findStatusByPatientIdAndDraft(patientId, draft = true)
                 ?: throw NoPendingDraftException(patientId)
 
-        val requiredAttributeNames = draftService.getDiseaseAttributes(patientId)
+        val requiredAttributeNames = attributeService.getDiseaseAttributes(patientId)
                 .filter { it.isRequired }
                 .mapTo(HashSet()) { it.name }
 

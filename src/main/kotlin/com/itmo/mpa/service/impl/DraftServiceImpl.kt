@@ -1,7 +1,6 @@
 package com.itmo.mpa.service.impl
 
 import com.itmo.mpa.dto.request.StatusRequest
-import com.itmo.mpa.dto.response.DiseaseAttributeResponse
 import com.itmo.mpa.dto.response.StatusResponse
 import com.itmo.mpa.entity.Medicine
 import com.itmo.mpa.entity.Status
@@ -58,11 +57,6 @@ class DraftServiceImpl(
         return patientStatusEntityService.requireDraftWithPatient(patientId).first
                 .toResponse()
                 .also { logger.info("findDraft: result {}", it) }
-    }
-
-    override fun getDiseaseAttributes(patientId: Long): List<DiseaseAttributeResponse> {
-        return attributesEntityService.getDiseaseAttributes(patientId)
-                .map { it.toResponse() }
     }
 
     private fun requireMedicine(medicineId: Long): Medicine {

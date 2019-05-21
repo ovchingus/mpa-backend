@@ -1,0 +1,18 @@
+package com.itmo.mpa.service.impl
+
+import com.itmo.mpa.dto.response.DiseaseAttributeResponse
+import com.itmo.mpa.service.AttributeService
+import com.itmo.mpa.service.impl.entityservice.DiseaseAttributesEntityService
+import com.itmo.mpa.service.mapping.toResponse
+import org.springframework.stereotype.Service
+
+@Service
+class AttributeServiceImpl(
+        private val attributesEntityService: DiseaseAttributesEntityService
+) : AttributeService {
+
+    override fun getDiseaseAttributes(patientId: Long): List<DiseaseAttributeResponse> {
+        return attributesEntityService.getDiseaseAttributes(patientId)
+                .map { it.toResponse() }
+    }
+}
