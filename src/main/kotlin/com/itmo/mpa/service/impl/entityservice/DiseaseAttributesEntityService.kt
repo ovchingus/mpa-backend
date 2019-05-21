@@ -39,6 +39,11 @@ class DiseaseAttributesEntityService(
         return attributesFromDisease + attributesFromState
     }
 
+    fun getForState(stateId: Long): List<DiseaseAttribute> {
+        return diseaseAttributeRepository
+                .findByRequirementTypeAndRequirementId(RequirementType.STATE, stateId)
+    }
+
     private fun findDiseaseAttributes(requestAttributeIds: Set<Long>): Map<Long, DiseaseAttribute> {
         val attrIdToDiseaseAttrMap = diseaseAttributeRepository.findAllByAttributeIdIn(requestAttributeIds)
                 .groupBy { disAttr -> disAttr.attribute.id }

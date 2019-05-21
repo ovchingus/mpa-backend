@@ -14,4 +14,12 @@ interface AttributeService {
      *  @throws PatientNotFoundException if patient not found
      */
     fun getDiseaseAttributes(patientId: Long): List<DiseaseAttributeResponse>
+
+    /**
+     *  Returns list of all disease attributes for a given state
+     *
+     *  @param stateId patient id
+     *  @return found attributes
+     */
+    fun getForState(stateId: Long): List<DiseaseAttributeResponse>
 }
