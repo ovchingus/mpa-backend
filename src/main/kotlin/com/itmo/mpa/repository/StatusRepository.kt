@@ -8,8 +8,6 @@ interface StatusRepository : PagingAndSortingRepository<Status, Long> {
 
     fun findStatusByPatientAndDraft(patient: Patient, draft: Boolean): Status?
 
-    fun findStatusByPatientIdAndDraft(patientId: Long, draft: Boolean): Status?
-
     fun findStatusByPatientAndId(patient: Patient, id: Long): Status?
 
     fun findStatusesByPatientOrderBySubmittedOnAsc(patient: Patient): List<Status>

@@ -21,7 +21,7 @@ fun Patient.toResponse() = PatientResponse(
         id,
         name,
         birthDate.atZone(utcZone).toLocalDate(),
-        currentStatus?.toResponse(),
+        currentStatus.toResponse(),
         disease.name,
         doctor.toResponse()
 )

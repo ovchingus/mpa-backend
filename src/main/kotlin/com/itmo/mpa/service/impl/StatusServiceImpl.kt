@@ -6,7 +6,6 @@ import com.itmo.mpa.repository.StatusRepository
 import com.itmo.mpa.service.AttributeService
 import com.itmo.mpa.service.StatusService
 import com.itmo.mpa.service.exception.AttributesNotSetException
-import com.itmo.mpa.service.exception.NoPendingDraftException
 import com.itmo.mpa.service.exception.StatusNotFoundException
 import com.itmo.mpa.service.impl.entityservice.PatientStatusEntityService
 import com.itmo.mpa.service.mapping.toResponse
@@ -26,10 +25,7 @@ class StatusServiceImpl(
     override fun commitDraft(patientId: Long): StatusResponse {
         logger.info("commitDraft: create new status from draft for patient with id {}", patientId)
 
-        val patient = patientStatusEntityService.findPatient(patientId)
-
-        val statusDraft = statusRepository.findStatusByPatientIdAndDraft(patientId, draft = true)
-                ?: throw NoPendingDraftException(patientId)
+        val (statusDraft, patient) = patientStatusEntityService.requireDraftWithPatient(patientId)
 
         val requiredAttributeNames = attributeService.getDiseaseAttributes(patientId)
                 .filter { it.isRequired }

@@ -7,7 +7,7 @@ interface AttributeService {
 
     /**
      *  Returns list of all disease attributes which could be saved within a draft
-     *  and committed later on  for patient by given [patientId]
+     *  and committed later on for patient by given [patientId]
      *
      *  @param patientId patient id
      *  @return found attributes
