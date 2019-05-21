@@ -29,12 +29,12 @@ class DiseaseAttributesEntityService(
     }
 
     fun getDiseaseAttributes(patientId: Long): List<DiseaseAttribute> {
-        val (status, patient) = patientStatusEntityService.requireDraftWithPatient(patientId)
+        val patient = patientStatusEntityService.findPatient(patientId)
 
         val attributesFromDisease = diseaseAttributeRepository
                 .findByRequirementTypeAndRequirementId(RequirementType.DISEASE, patient.disease.id)
         val attributesFromState = diseaseAttributeRepository
-                .findByRequirementTypeAndRequirementId(RequirementType.STATE, status.state.id)
+                .findByRequirementTypeAndRequirementId(RequirementType.STATE, patient.currentStatus.state.id)
 
         return attributesFromDisease + attributesFromState
     }
