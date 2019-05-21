@@ -29,10 +29,10 @@ class StatusServiceImpl(
 
         val requiredAttributeNames = attributeService.getDiseaseAttributes(patientId)
                 .filter { it.isRequired }
-                .mapTo(HashSet()) { it.name }
+                .mapTo(HashSet()) { it.id }
 
         val savedAttributeNames = statusDraft.diseaseAttributeValues
-                .mapTo(HashSet()) { it.diseaseAttribute.attribute.name }
+                .mapTo(HashSet()) { it.diseaseAttribute.attribute.id }
 
         if (!savedAttributeNames.containsAll(requiredAttributeNames)) {
             throw AttributesNotSetException(requiredAttributeNames - savedAttributeNames)
