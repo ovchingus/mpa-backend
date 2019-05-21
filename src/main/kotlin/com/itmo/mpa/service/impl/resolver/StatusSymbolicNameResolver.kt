@@ -10,7 +10,7 @@ class StatusSymbolicNameResolver(
 
     override fun resolveValue(parameters: ResolvingParameters, propertyName: String): String? {
         val matchedAttribute = parameters.draft?.diseaseAttributeValues
-                ?.firstOrNull { it.diseaseAttribute.attribute.name == propertyName }
+                ?.firstOrNull { it.diseaseAttribute.attribute.id == propertyName.toLong() }
 
         return matchedAttribute?.value
     }
