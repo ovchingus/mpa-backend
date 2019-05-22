@@ -1,4 +1,4 @@
-package com.itmo.mpa.service.impl.resolver
+package com.itmo.mpa.service.impl.predicate.resolver
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component

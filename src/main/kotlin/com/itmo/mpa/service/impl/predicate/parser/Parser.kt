@@ -1,7 +1,7 @@
-package com.itmo.mpa.service.impl.parsing
+package com.itmo.mpa.service.impl.predicate.parser
 
-import com.itmo.mpa.service.impl.parsing.model.*
-
+import com.itmo.mpa.service.impl.predicate.PredicateValue
+import com.itmo.mpa.service.impl.predicate.parser.exception.UnexpectedTokenException
 import org.springframework.stereotype.Component
 
 @Component

@@ -1,4 +1,4 @@
-package com.itmo.mpa.service.impl.resolver
+package com.itmo.mpa.service.impl.predicate.resolver
 
 abstract class AbstractSymbolicNameResolver(
         private val referenceName: String

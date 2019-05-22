@@ -1,7 +1,7 @@
-package com.itmo.mpa.service.impl.resolver
+package com.itmo.mpa.service.impl.predicate.resolver
 
 import com.itmo.mpa.entity.Medicine
-import com.itmo.mpa.service.impl.parsing.model.HAS_DELIMITER
+import com.itmo.mpa.service.impl.predicate.parser.HAS_DELIMITER
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 

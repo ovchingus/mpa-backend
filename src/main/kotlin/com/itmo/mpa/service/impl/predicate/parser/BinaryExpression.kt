@@ -1,4 +1,6 @@
-package com.itmo.mpa.service.impl.parsing.model
+package com.itmo.mpa.service.impl.predicate.parser
+
+import com.itmo.mpa.service.impl.predicate.parser.exception.ArgumentsCountMismatchException
 
 const val HAS_DELIMITER = ";"
 
