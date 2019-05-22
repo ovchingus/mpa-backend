@@ -1,4 +1,4 @@
-package com.itmo.mpa.service.impl.parsing
+package com.itmo.mpa.service.impl.predicate
 
 data class PredicateError(
         val code: Int,

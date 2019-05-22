@@ -1,4 +1,4 @@
-package com.itmo.mpa.service.impl.parsing
+package com.itmo.mpa.service.impl.predicate.parser
 
 /**
  *  Data class to combine repetitive arguments among parser methods

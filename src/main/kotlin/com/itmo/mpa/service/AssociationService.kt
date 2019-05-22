@@ -5,7 +5,7 @@ import com.itmo.mpa.dto.response.AssociationResponse
 import com.itmo.mpa.service.exception.AssociationNotFoundException
 import com.itmo.mpa.service.exception.DoctorNotFoundException
 import com.itmo.mpa.service.exception.PatientNotFoundException
-import com.itmo.mpa.service.impl.parsing.UnexpectedTokenException
+import com.itmo.mpa.service.impl.predicate.parser.exception.UnexpectedTokenException
 
 interface AssociationService {
 

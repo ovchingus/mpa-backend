@@ -1,4 +1,4 @@
-package com.itmo.mpa.service.impl.resolver
+package com.itmo.mpa.service.impl.predicate.resolver
 
 /**
  *  Exception will be thrown if [SymbolicNameResolver.resolve] could not resolve a reference.

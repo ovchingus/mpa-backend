@@ -1,5 +1,6 @@
 package com.itmo.mpa.service.impl.parsing.model
 
+import com.itmo.mpa.service.impl.predicate.parser.*
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.containsInAnyOrder
 import org.junit.jupiter.api.Test

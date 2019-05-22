@@ -1,15 +1,15 @@
-package com.itmo.mpa.service.impl.parsing
+package com.itmo.mpa.service.impl.predicate
 
 import com.itmo.mpa.entity.Patient
 import com.itmo.mpa.entity.Status
 import com.itmo.mpa.service.PredicateService
-import com.itmo.mpa.service.impl.parsing.model.PredicateValue
-import com.itmo.mpa.service.impl.parsing.model.asString
-import com.itmo.mpa.service.impl.parsing.model.collectReferences
-import com.itmo.mpa.service.impl.parsing.model.evaluate
-import com.itmo.mpa.service.impl.resolver.ResolvingException
-import com.itmo.mpa.service.impl.resolver.ResolvingParameters
-import com.itmo.mpa.service.impl.resolver.SymbolicNameResolverFacade
+import com.itmo.mpa.service.impl.predicate.parser.Parser
+import com.itmo.mpa.service.impl.predicate.parser.asString
+import com.itmo.mpa.service.impl.predicate.parser.collectReferences
+import com.itmo.mpa.service.impl.predicate.parser.evaluate
+import com.itmo.mpa.service.impl.predicate.resolver.ResolvingException
+import com.itmo.mpa.service.impl.predicate.resolver.ResolvingParameters
+import com.itmo.mpa.service.impl.predicate.resolver.SymbolicNameResolverFacade
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 

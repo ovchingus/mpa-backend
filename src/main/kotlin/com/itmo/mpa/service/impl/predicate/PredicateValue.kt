@@ -1,4 +1,4 @@
-package com.itmo.mpa.service.impl.parsing.model
+package com.itmo.mpa.service.impl.predicate
 
 class PredicateValue(value: String) : Comparable<PredicateValue> {
 
