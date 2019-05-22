@@ -6,5 +6,5 @@ data class AvailableTransitionResponse(
         val state: StateResponse,
         val isRecommended: Boolean?,
         @field:JsonInclude(JsonInclude.Include.NON_NULL)
-        val errorCause: String?
+        val errors: List<PredicateErrorResponse>?
 )

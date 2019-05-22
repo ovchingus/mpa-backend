@@ -8,6 +8,7 @@ import com.itmo.mpa.repository.TransitionRepository
 import com.itmo.mpa.service.PredicateService
 import com.itmo.mpa.service.TransitionService
 import com.itmo.mpa.service.impl.entityservice.PatientStatusEntityService
+import com.itmo.mpa.service.impl.predicate.PredicateException
 import com.itmo.mpa.service.mapping.toResponse
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -35,9 +36,12 @@ class TransitionServiceImpl(
         val stateResponse = stateTo.toResponse()
         return try {
             val testResult = predicateService.testPredicate(patient, status, predicate)
-            AvailableTransitionResponse(stateResponse, testResult, errorCause = null)
-        } catch (e: Exception) {
-            AvailableTransitionResponse(stateResponse, isRecommended = null, errorCause = e.message)
+            AvailableTransitionResponse(stateResponse, testResult, errors = null)
+        } catch (e: PredicateException) {
+            AvailableTransitionResponse(stateResponse, isRecommended = null, errors = e.errors.map { it.toResponse() })
+        } catch (e: Throwable) {
+            logger.error("Exception was thrown during predicate testing, but was not expected", e)
+            throw e
         }
     }
 }
