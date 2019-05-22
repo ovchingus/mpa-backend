@@ -8,7 +8,7 @@ class SymbolicNameResolverFacade(
         patientSymbolicNameResolver: SymbolicNameResolver,
         medicineSymbolicNameResolver: SymbolicNameResolver,
         statusSymbolicNameResolver: SymbolicNameResolver
-) : SymbolicNameResolver {
+) {
 
     private val log = LoggerFactory.getLogger(javaClass)
 
@@ -18,10 +18,12 @@ class SymbolicNameResolverFacade(
             statusSymbolicNameResolver
     )
 
-    override fun resolve(parameters: ResolvingParameters, name: String): String? {
-        return resolvers.asSequence()
-                .mapNotNull { it.resolve(parameters, name) }
-                .firstOrNull()
+    fun resolve(parameters: ResolvingParameters, name: String): String {
+        val symbolicNameResolver = resolvers.asSequence()
+                .firstOrNull { it.isSupported(name) }
+
+        return symbolicNameResolver?.resolve(parameters, name)
                 .also { log.debug("Resolved {} to {}", name, it) }
+                ?: throw ResolvingException(code = ResolverErrorCode.UNKNOWN.code, reason = name)
     }
 }
