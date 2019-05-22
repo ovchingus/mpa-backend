@@ -16,12 +16,12 @@ class PatientSymbolicNameResolver(
     private val patientDiseaseId = "diseaseId"
     private val utcZone = ZoneId.of("UTC")
 
-    override fun resolveValue(parameters: ResolvingParameters, propertyName: String): String? {
-        if (parameters.patient == null) return null
+    override fun resolveValue(parameters: ResolvingParameters, propertyName: String): String {
+        if (parameters.patient == null) throw IllegalArgumentException()
         return when (propertyName) {
             patientAge -> calculateAge(parameters.patient).toString()
             patientDiseaseId -> parameters.patient.disease.id.toString()
-            else -> null
+            else -> throw ResolvingException(code = ResolverErrorCode.PATIENT.code, reason = propertyName)
         }
     }
 

@@ -6,19 +6,20 @@ abstract class AbstractSymbolicNameResolver(
 
     private val referenceDelimiter = '.'
 
-    final override fun resolve(parameters: ResolvingParameters, name: String): String? {
-        if (!name.startsWith(referenceName)) {
-            return null
+    final override fun resolve(parameters: ResolvingParameters, name: String): String {
+        if (!isSupported(name)) {
+            throw IllegalArgumentException("$name is not supported by this resolver")
         }
         val propertyName = name.substringAfter(referenceDelimiter, missingDelimiterValue = "")
-        if (propertyName.isBlank()) {
-            return null
-        }
         return resolveValue(parameters, propertyName)
+    }
+
+    override fun isSupported(name: String): Boolean {
+        return name.substringBefore(referenceDelimiter) == referenceName
     }
 
     /**
      *  Resolves given property name
      */
-    protected abstract fun resolveValue(parameters: ResolvingParameters, propertyName: String): String?
+    protected abstract fun resolveValue(parameters: ResolvingParameters, propertyName: String): String
 }

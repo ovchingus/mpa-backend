@@ -7,7 +7,16 @@ interface SymbolicNameResolver {
      *
      *  @param parameters reference values to perform resolving
      *  @param name symbolic link to resolve
-     *  @return resolved value, or `null` if value could not be resolved
+     *  @return resolved value
+     *  @throws ResolvingException if value couldn't be resolved with this resolver
      */
-    fun resolve(parameters: ResolvingParameters, name: String): String?
+    fun resolve(parameters: ResolvingParameters, name: String): String
+
+    /**
+     *  Checks if a given [name] is supported by current resolver
+     *
+     *  @param name symbolic link to check
+     *  @return true if given name is supported by resolver
+     */
+    fun isSupported(name: String): Boolean
 }

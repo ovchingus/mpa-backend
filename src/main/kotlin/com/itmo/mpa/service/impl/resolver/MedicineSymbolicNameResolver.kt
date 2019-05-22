@@ -13,12 +13,12 @@ class MedicineSymbolicNameResolver(
     private val medicineId = "id"
     private val activeSubstanceId = "activeSubstanceId"
 
-    override fun resolveValue(parameters: ResolvingParameters, propertyName: String): String? {
-        if (parameters.draft == null) return null
+    override fun resolveValue(parameters: ResolvingParameters, propertyName: String): String {
+        if (parameters.draft == null) throw IllegalArgumentException()
         return when (propertyName) {
             medicineId -> joinId(parameters.draft.medicines)
             activeSubstanceId -> joinSubstances(parameters.draft.medicines)
-            else -> null
+            else -> throw ResolvingException(code = ResolverErrorCode.MEDICINE.code, reason = propertyName)
         }
     }
 
