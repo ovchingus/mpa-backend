@@ -1,4 +1,4 @@
-package com.itmo.mpa.service.impl.resolver
+package com.itmo.mpa.service.impl.predicate.resolver
 
 import com.itmo.mpa.entity.Patient
 import org.springframework.beans.factory.annotation.Value
@@ -16,12 +16,12 @@ class PatientSymbolicNameResolver(
     private val patientDiseaseId = "diseaseId"
     private val utcZone = ZoneId.of("UTC")
 
-    override fun resolveValue(parameters: ResolvingParameters, propertyName: String): String? {
-        if (parameters.patient == null) return null
+    override fun resolveValue(parameters: ResolvingParameters, propertyName: String): String {
+        if (parameters.patient == null) throw IllegalArgumentException()
         return when (propertyName) {
             patientAge -> calculateAge(parameters.patient).toString()
             patientDiseaseId -> parameters.patient.disease.id.toString()
-            else -> null
+            else -> throw ResolvingException(code = ResolverErrorCode.PATIENT.code, reason = propertyName)
         }
     }
 

@@ -1,4 +1,4 @@
-package com.itmo.mpa.service.impl.parsing.model
+package com.itmo.mpa.service.impl.predicate
 
 class PredicateValue(value: String) : Comparable<PredicateValue> {
 
@@ -9,7 +9,7 @@ class PredicateValue(value: String) : Comparable<PredicateValue> {
      *  In case of NumberFormException it will be propagated to call site
      */
     override fun compareTo(other: PredicateValue): Int {
-        return value.toDouble().compareTo(other.value.toDouble())
+        return value.parseDouble().compareTo(other.value.parseDouble())
     }
 
     override fun toString(): String {
@@ -25,5 +25,13 @@ class PredicateValue(value: String) : Comparable<PredicateValue> {
 
     override fun hashCode(): Int {
         return value.hashCode()
+    }
+
+    private fun String.parseDouble(): Double {
+        return try {
+            this.toDouble()
+        } catch (ex: NumberFormatException) {
+            throw NumberFormatException(this)
+        }
     }
 }

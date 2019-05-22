@@ -1,9 +1,11 @@
 package com.itmo.mpa.service.impl.parsing
 
-import com.itmo.mpa.service.impl.parsing.model.ArgumentsCountMismatchException
-import com.itmo.mpa.service.impl.parsing.model.PredicateValue
-import com.itmo.mpa.service.impl.parsing.model.asString
-import com.itmo.mpa.service.impl.parsing.model.evaluate
+import com.itmo.mpa.service.impl.predicate.PredicateValue
+import com.itmo.mpa.service.impl.predicate.parser.Parser
+import com.itmo.mpa.service.impl.predicate.parser.asString
+import com.itmo.mpa.service.impl.predicate.parser.evaluate
+import com.itmo.mpa.service.impl.predicate.parser.exception.ArgumentsCountMismatchException
+import com.itmo.mpa.service.impl.predicate.parser.exception.UnexpectedTokenException
 import org.hamcrest.Matchers.`is`
 import org.junit.Assert.assertThat
 import org.junit.jupiter.api.BeforeEach

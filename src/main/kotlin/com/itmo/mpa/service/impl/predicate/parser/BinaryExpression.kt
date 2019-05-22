@@ -1,4 +1,6 @@
-package com.itmo.mpa.service.impl.parsing.model
+package com.itmo.mpa.service.impl.predicate.parser
+
+import com.itmo.mpa.service.impl.predicate.parser.exception.ArgumentsCountMismatchException
 
 const val HAS_DELIMITER = ";"
 
@@ -14,8 +16,6 @@ class Has<T : Comparable<T>>(val left: Value<T>, val right: Value<T>) : BinaryEx
 class Or<T : Comparable<T>>(val left: BinaryExpression<T>, val right: BinaryExpression<T>) : BinaryExpression<T>()
 class Not<T : Comparable<T>>(val other: BinaryExpression<T>) : BinaryExpression<T>()
 class And<T : Comparable<T>>(val left: BinaryExpression<T>, val right: BinaryExpression<T>) : BinaryExpression<T>()
-
-class Evaluated<T : Comparable<T>>(val value: Boolean) : BinaryExpression<T>()
 
 sealed class Value<T>
 class UnknownValue<T : Comparable<T>>(val symbolicName: String) : Value<T>()
@@ -42,8 +42,52 @@ fun <T : Comparable<T>> BinaryExpression<T>.evaluate(resolver: (String) -> T): B
         is Not -> !other.evaluate(resolver)
         is Or -> left.evaluate(resolver) || right.evaluate(resolver)
         is And -> left.evaluate(resolver) && right.evaluate(resolver)
-        is Evaluated -> value
     }
+}
+
+fun <T : Comparable<T>> BinaryExpression<T>.collectReferences(
+        destination: MutableSet<String> = HashSet()
+): Set<String> {
+    when (this) {
+        is Equal -> {
+            left.addIfUnknown(destination)
+            right.addIfUnknown(destination)
+        }
+        is LessThan -> {
+            left.addIfUnknown(destination)
+            right.addIfUnknown(destination)
+        }
+        is LessThanEqual -> {
+            left.addIfUnknown(destination)
+            right.addIfUnknown(destination)
+        }
+        is GreaterThan -> {
+            left.addIfUnknown(destination)
+            right.addIfUnknown(destination)
+        }
+        is GreaterThanEqual -> {
+            left.addIfUnknown(destination)
+            right.addIfUnknown(destination)
+        }
+        is Has -> {
+            left.addIfUnknown(destination)
+            right.addIfUnknown(destination)
+        }
+        is Not -> other.collectReferences(destination)
+        is Or -> {
+            left.collectReferences(destination)
+            right.collectReferences(destination)
+        }
+        is And -> {
+            left.collectReferences(destination)
+            right.collectReferences(destination)
+        }
+    }
+    return destination
+}
+
+private fun <T : Comparable<T>> Value<T>.addIfUnknown(destination: MutableSet<String>) {
+    if (this is UnknownValue) destination += this.symbolicName
 }
 
 private fun <T : Comparable<T>> Value<T>.resolve(resolver: (String) -> T): T {
@@ -73,7 +117,6 @@ fun BinaryExpression<*>.asString(): String {
         is Not -> "Not(${other.asString()})"
         is Or -> "Or(${left.asString()}, ${right.asString()})"
         is And -> "And(${left.asString()}, ${right.asString()})"
-        is Evaluated -> value.toString()
     }
 }
 
