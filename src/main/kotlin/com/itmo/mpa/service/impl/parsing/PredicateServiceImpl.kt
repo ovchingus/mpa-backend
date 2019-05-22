@@ -5,7 +5,9 @@ import com.itmo.mpa.entity.Status
 import com.itmo.mpa.service.PredicateService
 import com.itmo.mpa.service.impl.parsing.model.PredicateValue
 import com.itmo.mpa.service.impl.parsing.model.asString
+import com.itmo.mpa.service.impl.parsing.model.collectReferences
 import com.itmo.mpa.service.impl.parsing.model.evaluate
+import com.itmo.mpa.service.impl.resolver.ResolvingException
 import com.itmo.mpa.service.impl.resolver.ResolvingParameters
 import com.itmo.mpa.service.impl.resolver.SymbolicNameResolverFacade
 import org.slf4j.LoggerFactory
@@ -24,10 +26,35 @@ class PredicateServiceImpl(
         val parsedExpression = parser.parse(predicate)
         logger.debug("testPredicate: predicate {} parsed to {}", predicate, parsedExpression.asString())
         val resolverParameters = ResolvingParameters(patient, draft)
+
+        val resolvedValues = resolveReferences(parsedExpression.collectReferences(), resolverParameters)
         return parsedExpression.evaluate { referenceName ->
-            symbolicNameResolverFacade.resolve(resolverParameters, referenceName)?.let { PredicateValue(it) }
-                    ?: throw NullReferenceException(referenceName)
+            PredicateValue(resolvedValues.getValue(referenceName))
         }
+    }
+
+    private fun resolveReferences(
+            parsedExpression: Set<String>,
+            resolverParameters: ResolvingParameters
+    ): Map<String, String> {
+        val resolvingErrors = mutableListOf<Throwable>()
+        val resolvedValues = parsedExpression.mapNotNull { referenceName ->
+            runCatching { referenceName to symbolicNameResolverFacade.resolve(resolverParameters, referenceName) }
+                    .onFailure { resolvingErrors += it }
+                    .getOrNull()
+        }
+
+        if (resolvingErrors.isEmpty()) return resolvedValues.toMap()
+
+        val errors = resolvingErrors.map { error ->
+            when (error) {
+                is ResolvingException -> PredicateError(error.code, error.reason)
+                is NumberFormatException -> PredicateError(PredicateErrorCode.NUMBER_FORMAT.code, error.message!!)
+                else -> PredicateError(PredicateErrorCode.UNKNOWN_ERROR.code, error.toString())
+            }
+        }
+
+        throw PredicateException(errors)
     }
 
     override fun checkPredicate(predicate: String) {
