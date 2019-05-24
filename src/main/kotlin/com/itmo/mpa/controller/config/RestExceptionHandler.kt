@@ -2,6 +2,7 @@ package com.itmo.mpa.controller.config
 
 import com.itmo.mpa.service.exception.AttributesNotSetException
 import com.itmo.mpa.service.exception.NotFoundException
+import com.itmo.mpa.service.impl.predicate.parser.exception.UnexpectedTokenException
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
+import java.lang.Exception
 
 @ControllerAdvice
 class RestExceptionHandler : ResponseEntityExceptionHandler() {
@@ -28,8 +30,8 @@ class RestExceptionHandler : ResponseEntityExceptionHandler() {
                 request)
     }
 
-    @ExceptionHandler(AttributesNotSetException::class)
-    fun handleBadRequestException(exception: AttributesNotSetException, request: WebRequest): ResponseEntity<Any> {
+    @ExceptionHandler(AttributesNotSetException::class, UnexpectedTokenException::class)
+    fun handleBadRequestException(exception: Exception, request: WebRequest): ResponseEntity<Any> {
         logger.error(exception.toString())
         val status = HttpStatus.BAD_REQUEST
         return handleExceptionInternal(exception,
