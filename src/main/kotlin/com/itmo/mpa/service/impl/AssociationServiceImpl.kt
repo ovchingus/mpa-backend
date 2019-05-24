@@ -3,17 +3,20 @@ package com.itmo.mpa.service.impl
 import com.itmo.mpa.dto.request.AssociationRequest
 import com.itmo.mpa.dto.response.AssociationResponse
 import com.itmo.mpa.entity.Association
+import com.itmo.mpa.entity.AssociationType
 import com.itmo.mpa.entity.Patient
 import com.itmo.mpa.entity.Status
 import com.itmo.mpa.repository.AssociationRepository
 import com.itmo.mpa.service.AssociationService
 import com.itmo.mpa.service.PredicateService
 import com.itmo.mpa.service.exception.AssociationNotFoundException
+import com.itmo.mpa.service.exception.AssociationTypeNotFoundException
 import com.itmo.mpa.service.impl.entityservice.DoctorEntityService
 import com.itmo.mpa.service.impl.entityservice.PatientStatusEntityService
 import com.itmo.mpa.service.mapping.toEntity
 import com.itmo.mpa.service.mapping.toResponse
 import org.slf4j.LoggerFactory
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.Instant
 
@@ -41,34 +44,40 @@ class AssociationServiceImpl(
     }
 
     override fun createAssociation(doctorId: Long, request: AssociationRequest): AssociationResponse {
+        val associationType = requireAssociationType(request)
         predicateService.checkPredicate(request.predicate!!)
         val doctor = doctorEntityService.findById(doctorId)
-        val association = request.toEntity()
+        val association = request.toEntity(doctor)
         association.createdDate = Instant.now()
-        association.doctor = doctor
+        association.associationType = associationType
         return associationRepository.save(association)
                 .toResponse()
     }
 
     override fun replaceAssociation(
-            doctorId: Long,
             associationId: Long,
             request: AssociationRequest
     ): AssociationResponse {
         predicateService.checkPredicate(request.predicate!!)
-        val doctor = doctorEntityService.findById(doctorId)
-        val association = associationRepository.findByIdAndDoctor(associationId, doctor)
+        val association = associationRepository.findByIdOrNull(associationId)
                 ?: throw AssociationNotFoundException(associationId)
         association.text = request.text!!
+        association.predicate = request.predicate
+        association.associationType = requireAssociationType(request)
         return associationRepository.save(association)
                 .toResponse()
     }
 
-    override fun deleteAssociation(doctorId: Long, associationId: Long) {
-        val doctor = doctorEntityService.findById(doctorId)
-        val association = associationRepository.findByIdAndDoctor(associationId, doctor)
+    override fun deleteAssociation(associationId: Long) {
+        val association = associationRepository.findByIdOrNull(associationId)
                 ?: throw AssociationNotFoundException(associationId)
         associationRepository.delete(association)
+    }
+
+    private fun requireAssociationType(request: AssociationRequest): AssociationType {
+        return AssociationType.values()
+                .find { it.name.equals(request.associationType, ignoreCase = true) }
+                ?: throw AssociationTypeNotFoundException(request.associationType)
     }
 
     private fun Association.isRelevant(patient: Patient?, draft: Status?): Boolean {

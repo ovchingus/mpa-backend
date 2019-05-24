@@ -19,4 +19,8 @@ class Association : LongIdEntity() {
     @ManyToOne
     @JoinColumn(name = "doctor_id", nullable = false)
     lateinit var doctor: Doctor
+
+    @Enumerated
+    @Column(name = "association_type_id", nullable = false)
+    lateinit var associationType: AssociationType
 }

@@ -7,6 +7,7 @@ import java.time.Instant
 data class AssociationResponse(
         val id: Long,
         val text: String,
+        val type: String,
         @JsonSerialize(using = InstantSerializer::class)
         val createdOn: Instant
 )

@@ -110,6 +110,7 @@ create table association (
   created_date timestamp not null,
   predicate    text not null,
   text         text not null,
+  association_type_id integer not null,
   doctor_id    bigserial not null,
 
   constraint association_doctor_id_fkey foreign key (doctor_id)

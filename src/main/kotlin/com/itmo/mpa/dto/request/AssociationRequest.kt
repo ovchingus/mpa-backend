@@ -8,5 +8,8 @@ data class AssociationRequest(
         val text: String?,
 
         @field:NotEmpty
+        val associationType: String?,
+
+        @field:NotEmpty
         val predicate: String?
 )

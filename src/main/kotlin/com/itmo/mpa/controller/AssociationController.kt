@@ -9,18 +9,18 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("doctors/{doctorId}/associations")
+@RequestMapping("associations")
 class AssociationController(
         private val associationService: AssociationService
 ) {
 
     @GetMapping
-    @ApiOperation("Get all doctor's associations")
+    @ApiOperation("Get relevant associations")
     fun getAllAssociations(
-            @PathVariable doctorId: Long
-    ): List<AssociationResponse> = associationService.getDoctorsAssociations(doctorId)
+            @RequestParam patientId: Long
+    ): List<AssociationResponse> = associationService.getRelevantAssociations(patientId)
 
-    @PostMapping
+    @PostMapping("{doctorId}")
     @ApiOperation("Save new association")
     @ResponseStatus(HttpStatus.CREATED)
     fun createAssociation(
@@ -31,15 +31,13 @@ class AssociationController(
     @PutMapping("{associationId}")
     @ApiOperation("Replace existing association")
     fun replaceAssociation(
-            @PathVariable doctorId: Long,
             @PathVariable associationId: Long,
             @Valid @RequestBody request: AssociationRequest
-    ): AssociationResponse = associationService.replaceAssociation(doctorId, associationId, request)
+    ): AssociationResponse = associationService.replaceAssociation(associationId, request)
 
     @DeleteMapping("{associationId}")
     @ApiOperation("Delete an association")
     fun deleteAssociation(
-            @PathVariable doctorId: Long,
             @PathVariable associationId: Long
-    ): Unit = associationService.deleteAssociation(doctorId, associationId)
+    ): Unit = associationService.deleteAssociation(associationId)
 }
