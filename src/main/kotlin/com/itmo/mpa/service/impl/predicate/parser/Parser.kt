@@ -38,6 +38,7 @@ class Parser {
         while (expression[head].isLetter()) {
             expressionCandidate += expression[head]
             head++
+            if (head == expression.length) throw UnexpectedTokenException(expression)
         }
 
         val operation = supportedOperations[expressionCandidate]
