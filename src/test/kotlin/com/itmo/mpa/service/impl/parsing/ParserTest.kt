@@ -49,7 +49,7 @@ class ParserTest {
     @Test
     fun `when arguments count is less than requested exception is thrown`() {
         assertThrows<ArgumentsCountMismatchException> {
-            parser.parse("eq($0, $2)").evaluate(listOf(0.asValue(), "".asValue()))
+            parser.parse("eq({0}, {2})").evaluate(listOf(0.asValue(), "".asValue()))
         }
     }
 
@@ -220,28 +220,28 @@ class ParserTest {
 
                         @Test
                         fun `test equals with equal numbers`() {
-                            val shouldBeTrue = parser.parse("eq($0, 42)")
+                            val shouldBeTrue = parser.parse("eq({0}, 42)")
                                     .evaluate(listOf(42.asValue()))
                             assertThat(shouldBeTrue, `is`(true))
                         }
 
                         @Test
                         fun `test equals with different numbers`() {
-                            val shouldBeFalse = parser.parse("eq($0, 45)")
+                            val shouldBeFalse = parser.parse("eq({0}, 45)")
                                     .evaluate(listOf(42.asValue()))
                             assertThat(shouldBeFalse, `is`(false))
                         }
 
                         @Test
                         fun `test equals with equal strings`() {
-                            val shouldBeTrue = parser.parse("eq($0,spring)")
+                            val shouldBeTrue = parser.parse("eq({0},spring)")
                                     .evaluate(listOf("spring".asValue()))
                             assertThat(shouldBeTrue, `is`(true))
                         }
 
                         @Test
                         fun `test equals with different strings`() {
-                            val shouldBeFalse = parser.parse("eq($0,javascript)")
+                            val shouldBeFalse = parser.parse("eq({0},javascript)")
                                     .evaluate(listOf("amazing".asValue()))
                             assertThat(shouldBeFalse, `is`(false))
                         }
@@ -252,21 +252,21 @@ class ParserTest {
 
                         @Test
                         fun `test lessThan with equal numbers`() {
-                            val shouldBeFalse = parser.parse("lt($0, 100)")
+                            val shouldBeFalse = parser.parse("lt({0}, 100)")
                                     .evaluate(listOf(100.asValue()))
                             assertThat(shouldBeFalse, `is`(false))
                         }
 
                         @Test
                         fun `test lessThan with first number greater than second`() {
-                            val shouldBeFalse = parser.parse("lt($0, -300)")
+                            val shouldBeFalse = parser.parse("lt({0}, -300)")
                                     .evaluate(listOf((-200).asValue()))
                             assertThat(shouldBeFalse, `is`(false))
                         }
 
                         @Test
                         fun `test lessThan with first number less than second`() {
-                            val shouldBeTrue = parser.parse("lt($0, 12)")
+                            val shouldBeTrue = parser.parse("lt({0}, 12)")
                                     .evaluate(listOf(11.asValue()))
                             assertThat(shouldBeTrue, `is`(true))
                         }
@@ -277,21 +277,21 @@ class ParserTest {
 
                         @Test
                         fun `test greaterThan with equal numbers`() {
-                            val shouldBeFalse = parser.parse("gt($0,1.3)")
+                            val shouldBeFalse = parser.parse("gt({0},1.3)")
                                     .evaluate(listOf(1.3.asValue()))
                             assertThat(shouldBeFalse, `is`(false))
                         }
 
                         @Test
                         fun `test greaterThan with first number greater than second`() {
-                            val shouldBeTrue = parser.parse("gt($0,-300)")
+                            val shouldBeTrue = parser.parse("gt({0},-300)")
                                     .evaluate(listOf((-200).asValue()))
                             assertThat(shouldBeTrue, `is`(true))
                         }
 
                         @Test
                         fun `test greaterThan with first number less than second`() {
-                            val shouldBeFalse = parser.parse("gt($0, 12)")
+                            val shouldBeFalse = parser.parse("gt({0}, 12)")
                                     .evaluate(listOf(0.5.asValue()))
                             assertThat(shouldBeFalse, `is`(false))
                         }
@@ -306,7 +306,7 @@ class ParserTest {
 
                         @Test
                         fun `test equals with equal numbers`() {
-                            val shouldBeTrue = parser.parse("eq(42, $0)")
+                            val shouldBeTrue = parser.parse("eq(42, {0})")
                                     .evaluate(listOf(42.asValue()))
                             assertThat(shouldBeTrue, `is`(true))
                         }
@@ -317,7 +317,7 @@ class ParserTest {
 
                         @Test
                         fun `test lessThan with first number greater than second`() {
-                            val shouldBeFalse = parser.parse("lt(10,$0)")
+                            val shouldBeFalse = parser.parse("lt(10,{0})")
                                     .evaluate(listOf(5.asValue()))
                             assertThat(shouldBeFalse, `is`(false))
                         }
@@ -328,7 +328,7 @@ class ParserTest {
 
                         @Test
                         fun `test greaterThan with first number greater than second`() {
-                            val shouldBeTrue = parser.parse("gt(10,$0)")
+                            val shouldBeTrue = parser.parse("gt(10,{0})")
                                     .evaluate(listOf(5.asValue()))
                             assertThat(shouldBeTrue, `is`(true))
                         }
@@ -345,35 +345,35 @@ class ParserTest {
 
                     @Test
                     fun `test equals with equal numbers`() {
-                        val shouldBeTrue = parser.parse("eq($0, $0)")
+                        val shouldBeTrue = parser.parse("eq({0}, {0})")
                                 .evaluate(listOf(42.asValue()))
                         assertThat(shouldBeTrue, `is`(true))
                     }
 
                     @Test
                     fun `test equals with equal numbers with different index`() {
-                        val shouldBeTrue = parser.parse("eq($1, $0)")
+                        val shouldBeTrue = parser.parse("eq({1}, {0})")
                                 .evaluate(listOf(42.asValue(), 42.asValue()))
                         assertThat(shouldBeTrue, `is`(true))
                     }
 
                     @Test
                     fun `test equals with different numbers with different index`() {
-                        val shouldBeFalse = parser.parse("eq($1, $0)")
+                        val shouldBeFalse = parser.parse("eq({1}, {0})")
                                 .evaluate(listOf(142.asValue(), 42.asValue()))
                         assertThat(shouldBeFalse, `is`(false))
                     }
 
                     @Test
                     fun `test equals with equal strings`() {
-                        val shouldBeTrue = parser.parse("eq($0, $0)")
+                        val shouldBeTrue = parser.parse("eq({0}, {0})")
                                 .evaluate(listOf("spring".asValue(), "spring".asValue()))
                         assertThat(shouldBeTrue, `is`(true))
                     }
 
                     @Test
                     fun `test equals with different strings with different index`() {
-                        val shouldBeTrue = parser.parse("eq($1, $0)")
+                        val shouldBeTrue = parser.parse("eq({1}, {0})")
                                 .evaluate(listOf("spring".asValue(), "spring".asValue()))
                         assertThat(shouldBeTrue, `is`(true))
                     }
@@ -384,7 +384,7 @@ class ParserTest {
 
                     @Test
                     fun `test lessThan with first number greater than second`() {
-                        val shouldBeTrue = parser.parse("lt($0,$1)")
+                        val shouldBeTrue = parser.parse("lt({0},{1})")
                                 .evaluate(listOf(5.asValue(), 10.asValue()))
                         assertThat(shouldBeTrue, `is`(true))
                     }
@@ -395,7 +395,7 @@ class ParserTest {
 
                     @Test
                     fun `test greaterThan with first number greater than second`() {
-                        val shouldBeFalse = parser.parse("gt($0,$1)")
+                        val shouldBeFalse = parser.parse("gt({0},{1})")
                                 .evaluate(listOf(5.asValue(), 10.asValue()))
                         assertThat(shouldBeFalse, `is`(false))
                     }
@@ -407,7 +407,7 @@ class ParserTest {
     @Nested
     inner class TestCompoundExpression {
 
-        private val predicate = "not(and(or(lt(10, $0), eq($1, java)), not(gt($2, -5))))"
+        private val predicate = "not(and(or(lt(10, {0}), eq({1}, java)), not(gt({2}, -5))))"
 
         @Test
         fun `test compound expression 1`() {
@@ -461,7 +461,7 @@ class ParserTest {
             //                       !((true) && false)
             //                       !(false)
             //                         true
-            val predicate = "not(and(or(lt(5, \$small_number), eq(\$language.top, java)), not(gte(\$big_number, 10))))"
+            val predicate = "not(and(or(lt(5, {small_number}), eq({language.top}, java)), not(gte({big_number}, 10))))"
 
             val lookupTable = mapOf(
                     "small_number" to 5.asValue(),
@@ -476,7 +476,7 @@ class ParserTest {
 
         @Test
         fun `test expression with spaces in reference values`() {
-            val predicate = "and(gt(500, \$small_number), eq(\$language.top, j av a ))"
+            val predicate = "and(gt(500, {small_number}), eq({language.top}, j av a ))"
 
             val lookupTable = mapOf(
                     "small_number" to 5.asValue(),
