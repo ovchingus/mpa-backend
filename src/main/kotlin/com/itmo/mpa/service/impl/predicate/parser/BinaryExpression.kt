@@ -126,6 +126,6 @@ fun BinaryExpression<*>.asString(): String {
 private fun Value<*>.asString(): String {
     return when (this) {
         is KnownValue -> value.toString()
-        is UnknownValue -> "\$$symbolicName"
+        is UnknownValue -> "{$symbolicName}"
     }
 }
