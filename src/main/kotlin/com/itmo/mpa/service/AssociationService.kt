@@ -3,6 +3,7 @@ package com.itmo.mpa.service
 import com.itmo.mpa.dto.request.AssociationRequest
 import com.itmo.mpa.dto.response.AssociationResponse
 import com.itmo.mpa.service.exception.AssociationNotFoundException
+import com.itmo.mpa.service.exception.AssociationTypeNotFoundException
 import com.itmo.mpa.service.exception.DoctorNotFoundException
 import com.itmo.mpa.service.exception.PatientNotFoundException
 import com.itmo.mpa.service.impl.predicate.parser.exception.UnexpectedTokenException
@@ -34,6 +35,7 @@ interface AssociationService {
      *  @param request valid association data
      *  @return populated association response
      *  @throws DoctorNotFoundException if doctor not found by [doctorId]
+     *  @throws AssociationTypeNotFoundException if association type not found
      *  @throws UnexpectedTokenException if predicate is malformed
      */
     fun createAssociation(doctorId: Long, request: AssociationRequest): AssociationResponse
@@ -41,23 +43,20 @@ interface AssociationService {
     /**
      *  Replaces an association with a new one
      *
-     *  @param doctorId doctor id
      *  @param associationId association id to replace
      *  @param request valid association data
      *  @return populated association response
-     *  @throws DoctorNotFoundException if doctor not found by [doctorId]
      *  @throws AssociationNotFoundException if association not found by [associationId]
+     *  @throws AssociationTypeNotFoundException if association type not found
      *  @throws UnexpectedTokenException if predicate is malformed
      */
-    fun replaceAssociation(doctorId: Long, associationId: Long, request: AssociationRequest): AssociationResponse
+    fun replaceAssociation(associationId: Long, request: AssociationRequest): AssociationResponse
 
     /**
      *  Deletes an association
      *
-     *  @param doctorId doctor id
      *  @param associationId association id to delete
-     *  @throws DoctorNotFoundException if doctor not found by [doctorId]
      *  @throws AssociationNotFoundException if association not found by [associationId]
      */
-    fun deleteAssociation(doctorId: Long, associationId: Long)
+    fun deleteAssociation(associationId: Long)
 }
