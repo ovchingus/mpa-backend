@@ -10,7 +10,7 @@ class Parser {
     companion object {
 
         private const val ARGS_DELIMITER = ','
-        private const val REFERENCE_PREFIX = '$'
+        private const val REFERENCE_PREFIX = '{'
     }
 
     private val supportedOperations = Operation.values()
@@ -117,7 +117,7 @@ class Parser {
     ): Value<PredicateValue> {
         val inclusiveEnd = end + 1
         if (expression[begin] == REFERENCE_PREFIX) {
-            return UnknownValue(expression.substring(begin + 1, inclusiveEnd))
+            return UnknownValue(expression.substring(begin + 1, inclusiveEnd - 1)) // -1 because of postfix: {var}
         }
         return KnownValue(PredicateValue(expression.substring(begin, inclusiveEnd)))
     }
