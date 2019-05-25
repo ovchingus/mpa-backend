@@ -1,9 +1,6 @@
 package com.itmo.mpa.service.impl.entityservice
 
-import com.itmo.mpa.entity.DiseaseAttribute
-import com.itmo.mpa.entity.DiseaseAttributeValue
-import com.itmo.mpa.entity.RequirementType
-import com.itmo.mpa.entity.Status
+import com.itmo.mpa.entity.*
 import com.itmo.mpa.repository.DiseaseAttributeRepository
 import com.itmo.mpa.repository.DiseaseAttributeValueRepository
 import com.itmo.mpa.service.exception.AttributeNotFoundException
@@ -13,8 +10,7 @@ import org.springframework.stereotype.Service
 @Service
 class DiseaseAttributesEntityService(
         private val diseaseAttributeRepository: DiseaseAttributeRepository,
-        private val diseaseAttributeValueRepository: DiseaseAttributeValueRepository,
-        private val patientStatusEntityService: PatientStatusEntityService
+        private val diseaseAttributeValueRepository: DiseaseAttributeValueRepository
 ) {
 
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -28,9 +24,7 @@ class DiseaseAttributesEntityService(
         }
     }
 
-    fun getDiseaseAttributes(patientId: Long): List<DiseaseAttribute> {
-        val patient = patientStatusEntityService.findPatient(patientId)
-
+    fun getDiseaseAttributes(patient: Patient): List<DiseaseAttribute> {
         val attributesFromDisease = diseaseAttributeRepository
                 .findByRequirementTypeAndRequirementId(RequirementType.DISEASE, patient.disease.id)
         val attributesFromState = diseaseAttributeRepository
