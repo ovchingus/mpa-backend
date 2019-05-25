@@ -11,6 +11,7 @@ import com.itmo.mpa.service.impl.entityservice.PatientStatusEntityService
 import com.itmo.mpa.service.mapping.toResponse
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import java.time.Instant
 
 @Service
 class StatusServiceImpl(
@@ -37,7 +38,7 @@ class StatusServiceImpl(
         if (!savedAttributeNames.containsAll(requiredAttributeNames)) {
             throw AttributesNotSetException(requiredAttributeNames - savedAttributeNames)
         }
-
+        statusDraft.submittedOn = Instant.now()
         statusDraft.draft = false
         patient.currentStatus = statusRepository.save(statusDraft)
         patientRepository.save(patient)
