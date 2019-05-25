@@ -3,10 +3,10 @@ package com.itmo.mpa.service.impl
 import com.itmo.mpa.dto.response.StatusResponse
 import com.itmo.mpa.repository.PatientRepository
 import com.itmo.mpa.repository.StatusRepository
-import com.itmo.mpa.service.AttributeService
 import com.itmo.mpa.service.StatusService
 import com.itmo.mpa.service.exception.AttributesNotSetException
 import com.itmo.mpa.service.exception.StatusNotFoundException
+import com.itmo.mpa.service.impl.entityservice.DiseaseAttributesEntityService
 import com.itmo.mpa.service.impl.entityservice.PatientStatusEntityService
 import com.itmo.mpa.service.mapping.toResponse
 import org.slf4j.LoggerFactory
@@ -17,8 +17,8 @@ import java.time.Instant
 class StatusServiceImpl(
         private val patientRepository: PatientRepository,
         private val statusRepository: StatusRepository,
-        private val attributeService: AttributeService,
-        private val patientStatusEntityService: PatientStatusEntityService
+        private val patientStatusEntityService: PatientStatusEntityService,
+        private val attributesEntityService: DiseaseAttributesEntityService
 ) : StatusService {
 
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -28,7 +28,7 @@ class StatusServiceImpl(
 
         val (statusDraft, patient) = patientStatusEntityService.requireDraftWithPatient(patientId)
 
-        val requiredAttributeNames = attributeService.getDiseaseAttributes(patientId)
+        val requiredAttributeNames = attributesEntityService.getDiseaseAttributes(patient)
                 .filter { it.isRequired }
                 .mapTo(HashSet()) { it.id }
 
