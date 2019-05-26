@@ -47,7 +47,10 @@ class DraftServiceImpl(
         statusEntity = statusRepository.save(statusEntity)
 
         statusEntity.diseaseAttributeValues = attributesEntityService
-                .replaceAttributeValues(statusEntity, statusDraftRequest.attributes)
+                .replaceAttributeValues(
+                        statusEntity,
+                        statusDraftRequest.attributes.map { it.id to it.value }.toMap()
+                )
 
         statusRepository.save(statusEntity)
     }
