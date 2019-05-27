@@ -8,11 +8,15 @@ class StatusSymbolicNameResolver(
         @Value("\${mpa.predicate.prefix.status}") prefix: String
 ) : AbstractSymbolicNameResolver(prefix) {
 
-    override fun resolveValue(parameters: ResolvingParameters, propertyName: String): String {
-        val matchedAttribute = parameters.draft?.diseaseAttributeValues
-                ?.firstOrNull { it.diseaseAttribute.attribute.id == propertyName.toLong() }
-                ?: throw ResolvingException(code = ResolverErrorCode.STATUS.code, reason = propertyName)
+    val stateIdProperty = "state.id"
 
-        return matchedAttribute.value
+    override fun resolveValue(parameters: ResolvingParameters, propertyName: String): String {
+        return if (propertyName == stateIdProperty) {
+            parameters.draft?.state?.id?.toString()
+        } else {
+            parameters.draft?.diseaseAttributeValues
+                    ?.firstOrNull { it.diseaseAttribute.attribute.id == propertyName.toLong() }
+                    ?.value
+        } ?: throw ResolvingException(code = ResolverErrorCode.STATUS.code, reason = propertyName)
     }
 }
