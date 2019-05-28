@@ -65,7 +65,7 @@ class StatusServiceImpl(
     override fun findAllForPatient(patientId: Long): List<StatusResponse> {
         logger.info("findAllForPatient: {}", patientId)
         val patient = patientStatusEntityService.findPatient(patientId)
-        return statusRepository.findStatusesByPatientOrderBySubmittedOnAsc(patient)
+        return statusRepository.findStatusesByPatientAndDraftOrderBySubmittedOnAsc(patient, draft = false)
                 .map { it.toResponse() }
     }
 }
