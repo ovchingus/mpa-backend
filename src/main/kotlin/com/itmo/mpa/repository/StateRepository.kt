@@ -9,4 +9,6 @@ interface StateRepository : CrudRepository<State, Long> {
 
     @Query("SELECT s FROM State s WHERE s.disease = :disease AND s NOT IN (SELECT t.stateTo FROM Transition t)")
     fun findInitialState(disease: Disease): State?
+
+    fun findByDisease(disease: Disease): List<State>
 }
