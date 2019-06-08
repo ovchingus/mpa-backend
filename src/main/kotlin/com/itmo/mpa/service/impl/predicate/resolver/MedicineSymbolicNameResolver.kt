@@ -1,5 +1,8 @@
 package com.itmo.mpa.service.impl.predicate.resolver
 
+import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
 import com.itmo.mpa.entity.Medicine
 import com.itmo.mpa.service.impl.predicate.parser.HAS_DELIMITER
 import org.springframework.beans.factory.annotation.Value
@@ -13,12 +16,12 @@ class MedicineSymbolicNameResolver(
     private val medicineId = "id"
     private val activeSubstanceId = "activeSubstanceId"
 
-    override fun resolveValue(parameters: ResolvingParameters, propertyName: String): String {
-        if (parameters.draft == null) throw IllegalArgumentException()
+    override fun resolveValue(parameters: ResolvingParameters, propertyName: String): Either<ResolvingError, String> {
+        if (parameters.draft == null) return IllegalResolvingStateError.left()
         return when (propertyName) {
-            medicineId -> joinId(parameters.draft.medicines)
-            activeSubstanceId -> joinSubstances(parameters.draft.medicines)
-            else -> throw ResolvingException(code = ResolverErrorCode.MEDICINE.code, reason = propertyName)
+            medicineId -> joinId(parameters.draft.medicines).right()
+            activeSubstanceId -> joinSubstances(parameters.draft.medicines).right()
+            else -> MedicineResolvingError(propertyName).left()
         }
     }
 

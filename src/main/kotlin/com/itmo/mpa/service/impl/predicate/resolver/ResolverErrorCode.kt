@@ -6,4 +6,5 @@ enum class ResolverErrorCode(val code: Int) {
     PATIENT(102),
     MEDICINE(103),
     UNKNOWN(199),
+    ILLEGAL_STATE(999),
 }
