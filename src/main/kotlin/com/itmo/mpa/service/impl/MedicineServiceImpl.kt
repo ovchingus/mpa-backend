@@ -22,19 +22,19 @@ class MedicineServiceImpl(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun getAppropriateMedicine(patientId: Long): List<AppropriateMedicineResponse> {
-        val (status, patient) = patientStatusEntityService.requireDraftWithPatient(patientId)
+        val (draft, patient) = patientStatusEntityService.requireDraftWithPatient(patientId)
         return contraindicationsRepository.findAll()
                 .groupBy { it.medicine.id }
-                .map { (_, contraindications) -> contraindications.formResponse(patient, status) }
+                .map { (_, contraindications) -> contraindications.formResponse(patient, draft) }
                 .also { logger.debug("getAvailableTransitions: result {}", it) }
     }
 
     private fun List<Contraindications>.formResponse(
             patient: Patient,
-            status: Status
+            draft: Status
     ): AppropriateMedicineResponse {
         val medicineResponse = this.first().medicine.toResponse()
-        val notRecommendedResults = this.map { it.isNotRecommended(patient, status) }
+        val notRecommendedResults = this.map { it.isNotRecommended(patient, draft) }
         val notRecommendedList = notRecommendedResults.map { it.first }
         val errors = notRecommendedResults.mapNotNull { it.second }
         val isNotRecommended = when {
@@ -50,12 +50,10 @@ class MedicineServiceImpl(
 
     private fun Contraindications.isNotRecommended(
             patient: Patient,
-            status: Status
+            draft: Status
     ): Pair<Boolean?, String?> {
-        return try {
-            predicateService.testPredicate(patient, status, predicate) to null
-        } catch (e: Exception) {
-            null to e.message
-        }
+        return predicateService.testPredicate(patient, draft, predicate)
+                .mapLeft { it.toString() }
+                .fold({ null to it }, { it to null })
     }
 }

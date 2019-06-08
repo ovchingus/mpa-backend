@@ -1,5 +1,8 @@
 package com.itmo.mpa.service.impl.predicate.resolver
 
+import arrow.core.Either
+import arrow.core.firstOrNone
+import arrow.core.left
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
@@ -18,12 +21,9 @@ class SymbolicNameResolverFacade(
             statusSymbolicNameResolver
     )
 
-    fun resolve(parameters: ResolvingParameters, name: String): String {
-        val symbolicNameResolver = resolvers.asSequence()
-                .firstOrNull { it.isSupported(name) }
-
-        return symbolicNameResolver?.resolve(parameters, name)
+    fun resolve(parameters: ResolvingParameters, name: String): Either<ResolvingError, String> {
+        return resolvers.firstOrNone { it.isSupported(name) }
+                .fold({ NoMatchedResolverError(name).left() }) { it.resolve(parameters, name) }
                 .also { log.debug("Resolved {} to {}", name, it) }
-                ?: throw ResolvingException(code = ResolverErrorCode.UNKNOWN.code, reason = name)
     }
 }

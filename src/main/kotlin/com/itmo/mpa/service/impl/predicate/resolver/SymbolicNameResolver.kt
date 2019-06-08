@@ -1,5 +1,7 @@
 package com.itmo.mpa.service.impl.predicate.resolver
 
+import arrow.core.Either
+
 interface SymbolicNameResolver {
 
     /**
@@ -7,10 +9,9 @@ interface SymbolicNameResolver {
      *
      *  @param parameters reference values to perform resolving
      *  @param name symbolic link to resolve
-     *  @return resolved value
-     *  @throws ResolvingException if value couldn't be resolved with this resolver
+     *  @return either an error, if value couldn't be resolved with this resolver, or a resolved value
      */
-    fun resolve(parameters: ResolvingParameters, name: String): String
+    fun resolve(parameters: ResolvingParameters, name: String): Either<ResolvingError, String>
 
     /**
      *  Checks if a given [name] is supported by current resolver

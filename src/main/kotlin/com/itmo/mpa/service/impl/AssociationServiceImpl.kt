@@ -1,5 +1,6 @@
 package com.itmo.mpa.service.impl
 
+import arrow.core.getOrElse
 import com.itmo.mpa.dto.request.AssociationRequest
 import com.itmo.mpa.dto.response.AssociationResponse
 import com.itmo.mpa.entity.Association
@@ -81,11 +82,7 @@ class AssociationServiceImpl(
     }
 
     private fun Association.isRelevant(patient: Patient?, draft: Status?): Boolean {
-        return try {
-            predicateService.testPredicate(patient, draft, predicate)
-        } catch (e: Exception) {
-            logger.warn("Association.isRelevant failed because of an exception: {}", e.toString())
-            false
-        }
+        return predicateService.testPredicate(patient, draft, predicate)
+                .getOrElse { false }
     }
 }
