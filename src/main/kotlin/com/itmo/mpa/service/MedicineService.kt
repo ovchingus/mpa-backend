@@ -14,8 +14,8 @@ interface MedicineService {
      *
      *  @param patientId patient id
      *  @return found available transitions
-     *  @throws PatientNotFoundException if patient not found
-     *  @throws NoPendingDraftException if no draft is pending for a patient
+     *  @throws [PatientNotFoundException] if patient not found
+     *  @throws [NoPendingDraftException] if no draft is pending for a patient
      */
     fun getAppropriateMedicine(patientId: Long): List<AppropriateMedicineResponse>
 }

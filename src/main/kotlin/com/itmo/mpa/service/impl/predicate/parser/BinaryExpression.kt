@@ -1,3 +1,4 @@
+@file:Suppress("ComplexMethod")
 package com.itmo.mpa.service.impl.predicate.parser
 
 import com.itmo.mpa.service.impl.predicate.parser.exception.ArgumentsCountMismatchException

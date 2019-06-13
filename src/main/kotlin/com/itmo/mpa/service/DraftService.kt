@@ -13,7 +13,7 @@ interface DraftService {
      *
      *  @param patientId patient id
      *  @param statusDraftRequest draft of a status to be saved
-     *  @throws PatientNotFoundException if patient not found
+     *  @throws [PatientNotFoundException] if patient not found
      */
     fun rewriteDraft(patientId: Long, statusDraftRequest: StatusRequest)
 
@@ -22,8 +22,8 @@ interface DraftService {
      *
      *  @param patientId patient id
      *  @return found draft
-     *  @throws PatientNotFoundException if patient not found
-     *  @throws NoPendingDraftException if no draft is pending for a patient
+     *  @throws [PatientNotFoundException] if patient not found
+     *  @throws [NoPendingDraftException] if no draft is pending for a patient
      */
     fun findDraft(patientId: Long): StatusResponse
 }

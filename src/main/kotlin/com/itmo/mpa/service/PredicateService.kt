@@ -15,7 +15,7 @@ interface PredicateService {
      * @param draft current status' draft of patient
      * @param predicate predicate expression to check
      * @return either an evaluating error or test's result
-     * @throws UnexpectedTokenException if predicate is malformed
+     * @throws [UnexpectedTokenException] if predicate is malformed
      */
     fun testPredicate(patient: Patient?, draft: Status?, predicate: String): Either<PredicateEvaluatingError, Boolean>
 
