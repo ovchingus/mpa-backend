@@ -10,7 +10,11 @@ import com.itmo.mpa.service.impl.predicate.parser.Parser
 import com.itmo.mpa.service.impl.predicate.parser.asString
 import com.itmo.mpa.service.impl.predicate.parser.collectReferences
 import com.itmo.mpa.service.impl.predicate.parser.evaluate
-import com.itmo.mpa.service.impl.predicate.resolver.*
+import com.itmo.mpa.service.impl.predicate.resolver.NoMatchedResolverError
+import com.itmo.mpa.service.impl.predicate.resolver.ResolvingParameters
+import com.itmo.mpa.service.impl.predicate.resolver.SymbolicNameResolverFacade
+import com.itmo.mpa.service.impl.predicate.resolver.UnresolvedPropertyError
+import com.itmo.mpa.service.impl.predicate.resolver.IllegalResolvingStateError
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 

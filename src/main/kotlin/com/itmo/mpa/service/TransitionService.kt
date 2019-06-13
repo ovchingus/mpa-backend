@@ -14,7 +14,7 @@ interface TransitionService {
      *
      *  @param patientId patient id
      *  @return found available transitions
-     *  @throws PatientNotFoundException if patient not found
+     *  @throws [PatientNotFoundException] if patient not found
      */
     fun getAvailableTransitions(patientId: Long): List<AvailableTransitionResponse>
 }

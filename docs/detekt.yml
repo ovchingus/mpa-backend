@@ -533,4 +533,4 @@ style:
   WildcardImport:
     active: true
     excludes: "**/test/**"
-    excludeImports: 'java.util.*,javax.persistence.*'
+    excludeImports: 'java.util.*,javax.persistence.*,org.springframework.web.bind.annotation.*'
