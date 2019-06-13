@@ -15,7 +15,7 @@ interface AssociationService {
      *
      *  @param doctorId doctor id
      *  @return found associations
-     *  @throws DoctorNotFoundException if doctor not found by [doctorId]
+     *  @throws [DoctorNotFoundException] if doctor not found by [doctorId]
      */
     fun getDoctorsAssociations(doctorId: Long): List<AssociationResponse>
 
@@ -24,7 +24,7 @@ interface AssociationService {
      *
      *  @param patientId patient id as a predicate context
      *  @return found associations
-     *  @throws PatientNotFoundException if not found by [patientId]
+     *  @throws [PatientNotFoundException] if not found by [patientId]
      */
     fun getRelevantAssociations(patientId: Long): List<AssociationResponse>
 
@@ -34,9 +34,9 @@ interface AssociationService {
      *  @param doctorId doctor id
      *  @param request valid association data
      *  @return populated association response
-     *  @throws DoctorNotFoundException if doctor not found by [doctorId]
-     *  @throws AssociationTypeNotFoundException if association type not found
-     *  @throws UnexpectedTokenException if predicate is malformed
+     *  @throws [DoctorNotFoundException] if doctor not found by [doctorId]
+     *  @throws [AssociationTypeNotFoundException] if association type not found
+     *  @throws [UnexpectedTokenException] if predicate is malformed
      */
     fun createAssociation(doctorId: Long, request: AssociationRequest): AssociationResponse
 
@@ -46,9 +46,9 @@ interface AssociationService {
      *  @param associationId association id to replace
      *  @param request valid association data
      *  @return populated association response
-     *  @throws AssociationNotFoundException if association not found by [associationId]
-     *  @throws AssociationTypeNotFoundException if association type not found
-     *  @throws UnexpectedTokenException if predicate is malformed
+     *  @throws [AssociationNotFoundException] if association not found by [associationId]
+     *  @throws [AssociationTypeNotFoundException] if association type not found
+     *  @throws [UnexpectedTokenException] if predicate is malformed
      */
     fun replaceAssociation(associationId: Long, request: AssociationRequest): AssociationResponse
 
@@ -56,7 +56,7 @@ interface AssociationService {
      *  Deletes an association
      *
      *  @param associationId association id to delete
-     *  @throws AssociationNotFoundException if association not found by [associationId]
+     *  @throws [AssociationNotFoundException] if association not found by [associationId]
      */
     fun deleteAssociation(associationId: Long)
 }
