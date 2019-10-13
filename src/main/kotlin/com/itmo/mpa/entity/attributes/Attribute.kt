@@ -4,7 +4,7 @@ import com.itmo.mpa.entity.LongIdEntity
 import javax.persistence.*
 
 @Entity
-@Table(name = "Attributes")
+@Table(name = "attributes")
 class Attribute : LongIdEntity() {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "attribute", cascade = [CascadeType.ALL])

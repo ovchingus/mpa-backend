@@ -4,7 +4,7 @@ import com.itmo.mpa.entity.LongIdEntity
 import com.itmo.mpa.entity.Status
 import javax.persistence.*
 
-@Table(name = "DiseaseAttributeValues")
+@Table(name = "disease_attribute_values")
 @Entity
 class DiseaseAttributeValue : LongIdEntity() {
 
