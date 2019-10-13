@@ -5,8 +5,8 @@ import java.time.Instant
 import javax.persistence.*
 
 @Entity
-@Table(name = "contraindications")
-class Contraindications : LongIdEntity() {
+@Table(name = "contradictions")
+class Contradiction : LongIdEntity() {
 
     @Column(name = "created_date", nullable = false)
     lateinit var createdDate: Instant

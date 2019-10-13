@@ -118,14 +118,14 @@ create table association (
   on update no action on delete cascade
 );
 
-create table contraindications (
+create table contradictions (
   id           bigserial primary key,
   medicine_id  bigserial not null,
   created_date timestamp not null,
   predicate    text not null,
   source       text not null,
 
-  constraint contraindications_medicine_id_fkey foreign key (medicine_id)
+  constraint contradictions_medicine_id_fkey foreign key (medicine_id)
   references medicine (id)
   on update no action on delete cascade
 );
