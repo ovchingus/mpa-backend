@@ -5,12 +5,12 @@ import com.itmo.mpa.dto.response.DiseaseAttributeResponse
 import com.itmo.mpa.entity.attributes.DiseaseAttribute
 
 fun DiseaseAttribute.toResponse() = DiseaseAttributeResponse(
-        id = attribute.id,
-        name = attribute.name,
-        type = attribute.type,
-        isRequired = isRequired,
-        requirementId = requirementId,
-        requirementType = requirementType.toString().toLowerCase(),
+        id = this.attribute.id,
+        name = this.attribute.name,
+        type = this.attribute.type,
+        isRequired = this.isRequired,
+        requirementId = this.requirementId,
+        requirementType = this.requirementType.toString().toLowerCase(),
         possibleValues = this.attribute.possibleValues.map { possibleAttrValue ->
             AttributeValueEnumConstantResponse(
                     id = possibleAttrValue.id,
