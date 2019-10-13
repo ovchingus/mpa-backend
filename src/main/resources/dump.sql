@@ -155,6 +155,16 @@ create table attributes (
   type                varchar(255) not null
 );
 
+create table attribute_values (
+  id                  bigserial primary key,
+  value               varchar(255) not null,
+  attribute_id        bigserial not null,
+
+  constraint attribute_id_id_fkey foreign key (attribute_id)
+  references attributes (id)
+  on update no action on delete cascade
+);
+
 create table disease_attributes (
   id                  bigserial primary key,
   requirement_type_id integer not null,
