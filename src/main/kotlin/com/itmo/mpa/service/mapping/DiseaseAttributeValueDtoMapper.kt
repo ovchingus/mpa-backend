@@ -4,7 +4,7 @@ import com.itmo.mpa.dto.response.DiseaseAttributeValueResponse
 import com.itmo.mpa.entity.attributes.DiseaseAttributeValue
 
 fun DiseaseAttributeValue.toResponse() = DiseaseAttributeValueResponse(
-        id = diseaseAttribute.attribute.id,
-        name = diseaseAttribute.attribute.name,
-        value = value
+        id = this.diseaseAttribute.attribute.id,
+        name = this.diseaseAttribute.attribute.name,
+        value = this.value
 )

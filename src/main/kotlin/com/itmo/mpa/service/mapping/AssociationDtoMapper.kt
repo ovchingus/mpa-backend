@@ -6,14 +6,14 @@ import com.itmo.mpa.entity.associations.Association
 import com.itmo.mpa.entity.Doctor
 
 fun AssociationRequest.toEntity(doctor: Doctor) = Association().also {
-    it.text = text!!
-    it.predicate = predicate!!
+    it.text = this.text!!
+    it.predicate = this.predicate!!
     it.doctor = doctor
 }
 
 fun Association.toResponse() = AssociationResponse(
-        id,
-        text,
-        associationType.name.toLowerCase(),
-        createdDate
+        id = this.id,
+        text = this.text,
+        type = this.associationType.name.toLowerCase(),
+        createdOn = this.createdDate
 )
