@@ -1,7 +1,7 @@
 package com.itmo.mpa.repository
 
 import com.itmo.mpa.entity.Disease
-import com.itmo.mpa.entity.State
+import com.itmo.mpa.entity.states.State
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 

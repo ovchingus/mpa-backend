@@ -2,7 +2,7 @@ package com.itmo.mpa.service.impl
 
 import com.itmo.mpa.dto.request.StatusRequest
 import com.itmo.mpa.dto.response.StatusResponse
-import com.itmo.mpa.entity.Medicine
+import com.itmo.mpa.entity.medicine.Medicine
 import com.itmo.mpa.repository.MedicineRepository
 import com.itmo.mpa.repository.StateRepository
 import com.itmo.mpa.repository.StatusRepository

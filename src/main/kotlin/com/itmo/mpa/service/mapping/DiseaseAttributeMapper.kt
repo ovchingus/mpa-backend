@@ -1,7 +1,7 @@
 package com.itmo.mpa.service.mapping
 
 import com.itmo.mpa.dto.response.DiseaseAttributeResponse
-import com.itmo.mpa.entity.DiseaseAttribute
+import com.itmo.mpa.entity.attributes.DiseaseAttribute
 
 fun DiseaseAttribute.toResponse() = DiseaseAttributeResponse(
         id = attribute.id,

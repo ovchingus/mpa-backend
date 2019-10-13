@@ -4,7 +4,7 @@ import arrow.core.getOrHandle
 import com.itmo.mpa.dto.response.AvailableTransitionResponse
 import com.itmo.mpa.entity.Patient
 import com.itmo.mpa.entity.Status
-import com.itmo.mpa.entity.Transition
+import com.itmo.mpa.entity.states.Transition
 import com.itmo.mpa.repository.TransitionRepository
 import com.itmo.mpa.service.PredicateService
 import com.itmo.mpa.service.TransitionService

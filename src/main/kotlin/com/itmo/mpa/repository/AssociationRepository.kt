@@ -1,6 +1,6 @@
 package com.itmo.mpa.repository
 
-import com.itmo.mpa.entity.Association
+import com.itmo.mpa.entity.associations.Association
 import com.itmo.mpa.entity.Doctor
 import org.springframework.data.repository.CrudRepository
 

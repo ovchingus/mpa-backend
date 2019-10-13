@@ -3,8 +3,8 @@ package com.itmo.mpa.service.impl
 import arrow.core.getOrElse
 import com.itmo.mpa.dto.request.AssociationRequest
 import com.itmo.mpa.dto.response.AssociationResponse
-import com.itmo.mpa.entity.Association
-import com.itmo.mpa.entity.AssociationType
+import com.itmo.mpa.entity.associations.Association
+import com.itmo.mpa.entity.associations.AssociationType
 import com.itmo.mpa.entity.Patient
 import com.itmo.mpa.entity.Status
 import com.itmo.mpa.repository.AssociationRepository

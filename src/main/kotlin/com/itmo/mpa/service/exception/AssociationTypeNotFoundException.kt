@@ -1,6 +1,6 @@
 package com.itmo.mpa.service.exception
 
-import com.itmo.mpa.entity.AssociationType
+import com.itmo.mpa.entity.associations.AssociationType
 
 class AssociationTypeNotFoundException(type: String?) :
         NotFoundException("No association type: $type, " +

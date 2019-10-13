@@ -1,9 +1,9 @@
 package com.itmo.mpa.service.impl.entityservice
 
-import com.itmo.mpa.entity.DiseaseAttribute
-import com.itmo.mpa.entity.DiseaseAttributeValue
+import com.itmo.mpa.entity.attributes.DiseaseAttribute
+import com.itmo.mpa.entity.attributes.DiseaseAttributeValue
 import com.itmo.mpa.entity.Patient
-import com.itmo.mpa.entity.RequirementType
+import com.itmo.mpa.entity.attributes.RequirementType
 import com.itmo.mpa.entity.Status
 import com.itmo.mpa.repository.DiseaseAttributeRepository
 import com.itmo.mpa.repository.DiseaseAttributeValueRepository

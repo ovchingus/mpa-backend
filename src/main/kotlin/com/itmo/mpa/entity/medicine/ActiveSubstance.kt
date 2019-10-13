@@ -1,5 +1,6 @@
-package com.itmo.mpa.entity
+package com.itmo.mpa.entity.medicine
 
+import com.itmo.mpa.entity.LongIdEntity
 import javax.persistence.*
 
 @Entity

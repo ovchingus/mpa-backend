@@ -1,5 +1,8 @@
 package com.itmo.mpa.entity
 
+import com.itmo.mpa.entity.attributes.DiseaseAttributeValue
+import com.itmo.mpa.entity.medicine.Medicine
+import com.itmo.mpa.entity.states.State
 import java.time.Instant
 import javax.persistence.*
 

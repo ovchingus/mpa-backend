@@ -3,7 +3,7 @@ package com.itmo.mpa.service.impl.predicate.resolver
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
-import com.itmo.mpa.entity.Medicine
+import com.itmo.mpa.entity.medicine.Medicine
 import com.itmo.mpa.service.impl.predicate.parser.HAS_DELIMITER
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
