@@ -1,10 +1,10 @@
 package com.itmo.mpa.service.impl
 
 import com.itmo.mpa.dto.response.AppropriateMedicineResponse
-import com.itmo.mpa.entity.Contraindications
+import com.itmo.mpa.entity.Contradiction
 import com.itmo.mpa.entity.Patient
 import com.itmo.mpa.entity.Status
-import com.itmo.mpa.repository.ContraindicationsRepository
+import com.itmo.mpa.repository.ContradictionsRepository
 import com.itmo.mpa.service.MedicineService
 import com.itmo.mpa.service.PredicateService
 import com.itmo.mpa.service.impl.entityservice.PatientStatusEntityService
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service
 @Service
 class MedicineServiceImpl(
         private val patientStatusEntityService: PatientStatusEntityService,
-        private val contraindicationsRepository: ContraindicationsRepository,
+        private val contradictionsRepository: ContradictionsRepository,
         private val predicateService: PredicateService
 ) : MedicineService {
 
@@ -23,13 +23,13 @@ class MedicineServiceImpl(
 
     override fun getAppropriateMedicine(patientId: Long): List<AppropriateMedicineResponse> {
         val (draft, patient) = patientStatusEntityService.requireDraftWithPatient(patientId)
-        return contraindicationsRepository.findAll()
+        return contradictionsRepository.findAll()
                 .groupBy { it.medicine.id }
-                .map { (_, contraindications) -> contraindications.formResponse(patient, draft) }
+                .map { (_, contradictions) -> contradictions.formResponse(patient, draft) }
                 .also { logger.debug("getAvailableTransitions: result {}", it) }
     }
 
-    private fun List<Contraindications>.formResponse(
+    private fun List<Contradiction>.formResponse(
             patient: Patient,
             draft: Status
     ): AppropriateMedicineResponse {
@@ -48,7 +48,7 @@ class MedicineServiceImpl(
         return AppropriateMedicineResponse(medicineResponse, isNotRecommended, errorsList)
     }
 
-    private fun Contraindications.isNotRecommended(
+    private fun Contradiction.isNotRecommended(
             patient: Patient,
             draft: Status
     ): Pair<Boolean?, String?> {
