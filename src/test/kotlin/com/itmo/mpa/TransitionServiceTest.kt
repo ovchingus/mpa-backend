@@ -54,7 +54,7 @@ class TransitionServiceTest {
             currentStatus = Status().apply {
                 id = 1L
                 patient = this@patient
-                submittedOn = java.time.Instant.now()
+                submittedOn = Instant.now()
                 draft = false
                 state = State().apply {
                     id = 1L
@@ -67,7 +67,7 @@ class TransitionServiceTest {
         statusDraft = Status().apply draft@{
             id = 2L
             patient = this@TransitionServiceTest.patient
-            submittedOn = java.time.Instant.now()
+            submittedOn = Instant.now()
             diseaseAttributeValues = setOf(
                     DiseaseAttributeValue().apply {
                         id = 1L
