@@ -10,7 +10,7 @@ interface TransitionService {
      *  current state for patient by [patientId].
      *  [AvailableTransitionResponse.isRecommended] will be set according to the
      *  value produced by predicate of state's transition. It wil be set to `null` in case of any error occurred.
-     *  If that's the case, [AvailableTransitionResponse.errorCause] will be populated with description
+     *  If that's the case, [AvailableTransitionResponse.errors] will be populated with description
      *
      *  @param patientId patient id
      *  @return found available transitions
