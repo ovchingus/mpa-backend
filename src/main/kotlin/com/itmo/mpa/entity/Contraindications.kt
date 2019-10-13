@@ -1,5 +1,6 @@
 package com.itmo.mpa.entity
 
+import com.itmo.mpa.entity.medicine.Medicine
 import java.time.Instant
 import javax.persistence.*
 

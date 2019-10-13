@@ -1,5 +1,7 @@
-package com.itmo.mpa.entity
+package com.itmo.mpa.entity.states
 
+import com.itmo.mpa.entity.Disease
+import com.itmo.mpa.entity.LongIdEntity
 import javax.persistence.*
 
 @Entity

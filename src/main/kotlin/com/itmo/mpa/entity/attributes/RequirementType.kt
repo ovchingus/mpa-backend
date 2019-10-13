@@ -1,4 +1,4 @@
-package com.itmo.mpa.entity
+package com.itmo.mpa.entity.attributes
 
 enum class RequirementType {
 

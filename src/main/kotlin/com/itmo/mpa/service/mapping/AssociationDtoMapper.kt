@@ -2,7 +2,7 @@ package com.itmo.mpa.service.mapping
 
 import com.itmo.mpa.dto.request.AssociationRequest
 import com.itmo.mpa.dto.response.AssociationResponse
-import com.itmo.mpa.entity.Association
+import com.itmo.mpa.entity.associations.Association
 import com.itmo.mpa.entity.Doctor
 
 fun AssociationRequest.toEntity(doctor: Doctor) = Association().also {

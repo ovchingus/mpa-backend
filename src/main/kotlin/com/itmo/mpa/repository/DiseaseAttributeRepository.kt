@@ -1,7 +1,7 @@
 package com.itmo.mpa.repository
 
-import com.itmo.mpa.entity.DiseaseAttribute
-import com.itmo.mpa.entity.RequirementType
+import com.itmo.mpa.entity.attributes.DiseaseAttribute
+import com.itmo.mpa.entity.attributes.RequirementType
 import org.springframework.data.repository.CrudRepository
 
 interface DiseaseAttributeRepository : CrudRepository<DiseaseAttribute, Long> {

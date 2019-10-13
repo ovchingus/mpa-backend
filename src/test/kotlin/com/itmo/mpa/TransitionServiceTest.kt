@@ -3,6 +3,11 @@ package com.itmo.mpa
 import com.itmo.mpa.dto.response.AvailableTransitionResponse
 import com.itmo.mpa.dto.response.PredicateErrorResponse
 import com.itmo.mpa.entity.*
+import com.itmo.mpa.entity.attributes.Attribute
+import com.itmo.mpa.entity.attributes.DiseaseAttribute
+import com.itmo.mpa.entity.attributes.DiseaseAttributeValue
+import com.itmo.mpa.entity.states.State
+import com.itmo.mpa.entity.states.Transition
 import com.itmo.mpa.repository.TransitionRepository
 import com.itmo.mpa.service.TransitionService
 import com.itmo.mpa.service.impl.entityservice.PatientStatusEntityService

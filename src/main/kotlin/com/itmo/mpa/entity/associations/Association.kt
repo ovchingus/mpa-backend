@@ -1,5 +1,7 @@
-package com.itmo.mpa.entity
+package com.itmo.mpa.entity.associations
 
+import com.itmo.mpa.entity.Doctor
+import com.itmo.mpa.entity.LongIdEntity
 import java.time.Instant
 import javax.persistence.*
 

@@ -1,7 +1,7 @@
 package com.itmo.mpa.service.impl.entityservice
 
 import com.itmo.mpa.entity.Disease
-import com.itmo.mpa.entity.State
+import com.itmo.mpa.entity.states.State
 import com.itmo.mpa.repository.StateRepository
 import com.itmo.mpa.service.exception.NoInitialStateException
 import org.springframework.stereotype.Service
