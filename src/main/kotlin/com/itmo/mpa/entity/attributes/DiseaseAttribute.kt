@@ -4,7 +4,7 @@ import com.itmo.mpa.entity.LongIdEntity
 import javax.persistence.*
 
 @Entity
-@Table(name = "DiseaseAttributes")
+@Table(name = "disease_attributes")
 class DiseaseAttribute : LongIdEntity() {
 
     @ManyToOne
