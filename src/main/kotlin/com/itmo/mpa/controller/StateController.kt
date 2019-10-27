@@ -13,19 +13,19 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping
 class StateController(
-        private val attributeService: AttributeService,
-        private val stateMachineService: StateMachineService
+    private val attributeService: AttributeService,
+    private val stateMachineService: StateMachineService
 ) {
 
     @GetMapping("diseases/{diseaseId}/states")
     @ApiOperation("Get state machine")
     fun getStateMachineForDisease(
-            @PathVariable diseaseId: Long
+        @PathVariable diseaseId: Long
     ): StateMachineResponse = stateMachineService.getStateMachineForDisease(diseaseId)
 
     @GetMapping("states/{stateId}/attributes")
     @ApiOperation("Find attributes for state by id")
     fun findAttributes(
-            @PathVariable stateId: Long
+        @PathVariable stateId: Long
     ): List<DiseaseAttributeResponse> = attributeService.getForState(stateId)
 }

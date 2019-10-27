@@ -4,6 +4,6 @@ import javax.validation.constraints.NotEmpty
 
 data class DoctorRequest(
 
-        @field:NotEmpty
-        val name: String?
+    @field:NotEmpty
+    val name: String?
 )

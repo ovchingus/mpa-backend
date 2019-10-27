@@ -4,10 +4,10 @@ import javax.validation.constraints.NotNull
 
 data class StatusRequest(
 
-        @field:NotNull
-        val stateId: Long?,
+    @field:NotNull
+    val stateId: Long?,
 
-        val medicines: List<Long> = emptyList(),
+    val medicines: List<Long> = emptyList(),
 
-        val attributes: List<DiseaseAttributeValueRequest> = emptyList()
+    val attributes: List<DiseaseAttributeValueRequest> = emptyList()
 )

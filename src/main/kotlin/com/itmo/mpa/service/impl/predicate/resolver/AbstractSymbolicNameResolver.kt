@@ -4,7 +4,7 @@ import arrow.core.Either
 import arrow.core.left
 
 abstract class AbstractSymbolicNameResolver(
-        private val referenceName: String
+    private val referenceName: String
 ) : SymbolicNameResolver {
 
     private val referenceDelimiter = '.'
@@ -29,7 +29,7 @@ abstract class AbstractSymbolicNameResolver(
      *  Resolves given property name
      */
     protected abstract fun resolveValue(
-            parameters: ResolvingParameters,
-            propertyName: String
+        parameters: ResolvingParameters,
+        propertyName: String
     ): Either<ResolvingError, String>
 }

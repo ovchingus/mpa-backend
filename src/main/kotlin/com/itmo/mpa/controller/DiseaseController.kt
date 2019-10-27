@@ -22,7 +22,7 @@ class DiseaseController(private val diseaseService: DiseaseService) {
     @GetMapping("{id}/medicine")
     @ApiOperation("Get medicine for diseases by disease id")
     fun getMedicineByDiseaseId(
-            @PathVariable id: Long
+        @PathVariable id: Long
     ): List<MedicineResponse> = diseaseService.getMedicineByDiseaseId(id)
 
     @PostMapping

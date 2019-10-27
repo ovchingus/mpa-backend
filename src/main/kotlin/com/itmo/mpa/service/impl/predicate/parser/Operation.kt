@@ -1,8 +1,8 @@
 package com.itmo.mpa.service.impl.predicate.parser
 
 enum class Operation(
-        val token: String,
-        val type: OperationType
+    val token: String,
+    val type: OperationType
 ) {
 
     NOT("not", UnaryOperation),

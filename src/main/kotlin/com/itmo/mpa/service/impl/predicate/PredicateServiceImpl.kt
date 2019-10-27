@@ -10,26 +10,22 @@ import com.itmo.mpa.service.impl.predicate.parser.Parser
 import com.itmo.mpa.service.impl.predicate.parser.asString
 import com.itmo.mpa.service.impl.predicate.parser.collectReferences
 import com.itmo.mpa.service.impl.predicate.parser.evaluate
-import com.itmo.mpa.service.impl.predicate.resolver.NoMatchedResolverError
-import com.itmo.mpa.service.impl.predicate.resolver.ResolvingParameters
-import com.itmo.mpa.service.impl.predicate.resolver.SymbolicNameResolverFacade
-import com.itmo.mpa.service.impl.predicate.resolver.UnresolvedPropertyError
-import com.itmo.mpa.service.impl.predicate.resolver.IllegalResolvingStateError
+import com.itmo.mpa.service.impl.predicate.resolver.*
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
 class PredicateServiceImpl(
-        private val parser: Parser,
-        private val symbolicNameResolverFacade: SymbolicNameResolverFacade
+    private val parser: Parser,
+    private val symbolicNameResolverFacade: SymbolicNameResolverFacade
 ) : PredicateService {
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun testPredicate(
-            patient: Patient?,
-            draft: Status?,
-            predicate: String
+        patient: Patient?,
+        draft: Status?,
+        predicate: String
     ): Either<PredicateEvaluatingError, Boolean> {
         logger.info("testPredicate: parses predicate {}", predicate)
         val parsedExpression = parser.parse(predicate)
@@ -52,8 +48,8 @@ class PredicateServiceImpl(
     }
 
     private fun resolveReferences(
-            referenceNames: Set<String>,
-            resolverParameters: ResolvingParameters
+        referenceNames: Set<String>,
+        resolverParameters: ResolvingParameters
     ): Either<PredicateEvaluatingError, Map<String, String>> {
 
         val (errors, resolved) = referenceNames
@@ -72,7 +68,7 @@ class PredicateServiceImpl(
     }
 
     private fun String.resolveReference(
-            resolverParameters: ResolvingParameters
+        resolverParameters: ResolvingParameters
     ): Either<PredicateError, Pair<String, String>> {
         return symbolicNameResolverFacade.resolve(resolverParameters, this)
                 .mapLeft { err ->

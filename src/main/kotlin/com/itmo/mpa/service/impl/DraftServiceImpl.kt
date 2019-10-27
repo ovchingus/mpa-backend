@@ -19,11 +19,11 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class DraftServiceImpl(
-        private val statusRepository: StatusRepository,
-        private val stateRepository: StateRepository,
-        private val medicineRepository: MedicineRepository,
-        private val patientStatusEntityService: PatientStatusEntityService,
-        private val attributesEntityService: DiseaseAttributesEntityService
+    private val statusRepository: StatusRepository,
+    private val stateRepository: StateRepository,
+    private val medicineRepository: MedicineRepository,
+    private val patientStatusEntityService: PatientStatusEntityService,
+    private val attributesEntityService: DiseaseAttributesEntityService
 ) : DraftService {
 
     private val logger = LoggerFactory.getLogger(javaClass)

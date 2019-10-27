@@ -18,10 +18,10 @@ import javax.validation.Valid
 @Api(value = "/patients/{patientId}/status/draft")
 @RequestMapping("patients/{patientId}/status/draft")
 class DraftController(
-        private val statusService: StatusService,
-        private val draftService: DraftService,
-        private val transitionService: TransitionService,
-        private val medicineService: MedicineService
+    private val statusService: StatusService,
+    private val draftService: DraftService,
+    private val transitionService: TransitionService,
+    private val medicineService: MedicineService
 ) {
 
     @PostMapping
@@ -32,8 +32,8 @@ class DraftController(
     @ApiOperation("Create draft")
     @ResponseStatus(HttpStatus.CREATED)
     fun createDraft(
-            @PathVariable patientId: Long,
-            @Valid @RequestBody draftRequest: StatusRequest
+        @PathVariable patientId: Long,
+        @Valid @RequestBody draftRequest: StatusRequest
     ): Unit = draftService.rewriteDraft(patientId, draftRequest)
 
     @GetMapping
@@ -43,12 +43,12 @@ class DraftController(
     @GetMapping("states")
     @ApiOperation("Get available transitions from current state")
     fun getAvailableTransitionsByPatientId(
-            @PathVariable patientId: Long
+        @PathVariable patientId: Long
     ): List<AvailableTransitionResponse> = transitionService.getAvailableTransitions(patientId)
 
     @GetMapping("medicine")
     @ApiOperation("Get medicine compatibility info from current state")
     fun getAppropriateMedicinesByPatientId(
-            @PathVariable patientId: Long
+        @PathVariable patientId: Long
     ): List<AppropriateMedicineResponse> = medicineService.getAppropriateMedicine(patientId)
 }

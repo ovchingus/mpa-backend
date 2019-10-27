@@ -16,10 +16,10 @@ import java.time.Instant
 
 @Service
 class StatusServiceImpl(
-        private val patientRepository: PatientRepository,
-        private val statusRepository: StatusRepository,
-        private val patientStatusEntityService: PatientStatusEntityService,
-        private val attributesEntityService: DiseaseAttributesEntityService
+    private val patientRepository: PatientRepository,
+    private val statusRepository: StatusRepository,
+    private val patientStatusEntityService: PatientStatusEntityService,
+    private val attributesEntityService: DiseaseAttributesEntityService
 ) : StatusService {
 
     private val logger = LoggerFactory.getLogger(javaClass)

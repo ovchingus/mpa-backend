@@ -14,9 +14,9 @@ import org.springframework.stereotype.Service
 
 @Service
 class MedicineServiceImpl(
-        private val patientStatusEntityService: PatientStatusEntityService,
-        private val contradictionsRepository: ContradictionsRepository,
-        private val predicateService: PredicateService
+    private val patientStatusEntityService: PatientStatusEntityService,
+    private val contradictionsRepository: ContradictionsRepository,
+    private val predicateService: PredicateService
 ) : MedicineService {
 
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -30,8 +30,8 @@ class MedicineServiceImpl(
     }
 
     private fun List<Contradiction>.formResponse(
-            patient: Patient,
-            draft: Status
+        patient: Patient,
+        draft: Status
     ): AppropriateMedicineResponse {
         val medicineResponse = this.first().medicine.toResponse()
         val notRecommendedResults = this.map { it.isNotRecommended(patient, draft) }
@@ -49,8 +49,8 @@ class MedicineServiceImpl(
     }
 
     private fun Contradiction.isNotRecommended(
-            patient: Patient,
-            draft: Status
+        patient: Patient,
+        draft: Status
     ): Pair<Boolean?, String?> {
         return predicateService.testPredicate(patient, draft, predicate)
                 .mapLeft { it.toString() }

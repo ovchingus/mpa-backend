@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
-import java.lang.Exception
 
 @ControllerAdvice
 class RestExceptionHandler : ResponseEntityExceptionHandler() {
@@ -42,10 +41,10 @@ class RestExceptionHandler : ResponseEntityExceptionHandler() {
     }
 
     override fun handleHttpMessageNotReadable(
-            ex: HttpMessageNotReadableException,
-            headers: HttpHeaders,
-            status: HttpStatus,
-            request: WebRequest
+        ex: HttpMessageNotReadableException,
+        headers: HttpHeaders,
+        status: HttpStatus,
+        request: WebRequest
     ): ResponseEntity<Any> {
         return handleExceptionInternal(
                 ex,

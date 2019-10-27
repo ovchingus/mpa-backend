@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class MedicineSymbolicNameResolver(
-        @Value("\${mpa.predicate.prefix.medicine}") prefix: String
+    @Value("\${mpa.predicate.prefix.medicine}") prefix: String
 ) : AbstractSymbolicNameResolver(prefix) {
 
     private val medicineId = "id"

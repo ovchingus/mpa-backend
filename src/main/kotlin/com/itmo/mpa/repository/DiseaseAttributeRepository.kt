@@ -9,7 +9,7 @@ interface DiseaseAttributeRepository : CrudRepository<DiseaseAttribute, Long> {
     fun findAllByAttributeIdIn(ids: Collection<Long>): List<DiseaseAttribute>
 
     fun findByRequirementTypeAndRequirementId(
-            requirementType: RequirementType,
-            requirementId: Long
+        requirementType: RequirementType,
+        requirementId: Long
     ): List<DiseaseAttribute>
 }

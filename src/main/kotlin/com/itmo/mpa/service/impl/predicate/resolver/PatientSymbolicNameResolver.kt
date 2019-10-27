@@ -12,7 +12,7 @@ import java.time.ZoneId
 
 @Component
 class PatientSymbolicNameResolver(
-        @Value("\${mpa.predicate.prefix.patient}") prefix: String
+    @Value("\${mpa.predicate.prefix.patient}") prefix: String
 ) : AbstractSymbolicNameResolver(prefix) {
 
     private val patientAge = "age"
