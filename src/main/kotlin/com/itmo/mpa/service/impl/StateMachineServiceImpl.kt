@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service
 
 @Service
 class StateMachineServiceImpl(
-        private val diseaseEntityService: DiseaseEntityService,
-        private val stateRepository: StateRepository,
-        private val transitionRepository: TransitionRepository
+    private val diseaseEntityService: DiseaseEntityService,
+    private val stateRepository: StateRepository,
+    private val transitionRepository: TransitionRepository
 ) : StateMachineService {
 
     override fun getStateMachineForDisease(diseaseId: Long): StateMachineResponse {

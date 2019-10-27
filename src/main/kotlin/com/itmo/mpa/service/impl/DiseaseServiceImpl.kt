@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class DiseaseServiceImpl(
-        private val diseaseRepository: DiseaseRepository,
-        private val diseaseEntityService: DiseaseEntityService
+    private val diseaseRepository: DiseaseRepository,
+    private val diseaseEntityService: DiseaseEntityService
 ) : DiseaseService {
 
     private val logger = LoggerFactory.getLogger(javaClass)

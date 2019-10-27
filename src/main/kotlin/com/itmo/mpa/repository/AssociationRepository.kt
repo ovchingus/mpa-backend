@@ -1,7 +1,7 @@
 package com.itmo.mpa.repository
 
-import com.itmo.mpa.entity.associations.Association
 import com.itmo.mpa.entity.Doctor
+import com.itmo.mpa.entity.associations.Association
 import org.springframework.data.repository.CrudRepository
 
 interface AssociationRepository : CrudRepository<Association, Long> {

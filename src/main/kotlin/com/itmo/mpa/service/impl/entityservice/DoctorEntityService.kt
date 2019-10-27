@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class DoctorEntityService(
-        private val doctorRepository: DoctorRepository
+    private val doctorRepository: DoctorRepository
 ) {
 
     fun findById(id: Long): Doctor {

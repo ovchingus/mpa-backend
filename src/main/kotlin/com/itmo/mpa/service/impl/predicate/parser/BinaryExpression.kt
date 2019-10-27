@@ -1,4 +1,5 @@
 @file:Suppress("ComplexMethod")
+
 package com.itmo.mpa.service.impl.predicate.parser
 
 import com.itmo.mpa.service.impl.predicate.parser.exception.ArgumentsCountMismatchException
@@ -47,7 +48,7 @@ fun <T : Comparable<T>> BinaryExpression<T>.evaluate(resolver: (String) -> T): B
 }
 
 fun <T : Comparable<T>> BinaryExpression<T>.collectReferences(
-        destination: MutableSet<String> = HashSet()
+    destination: MutableSet<String> = HashSet()
 ): Set<String> {
     when (this) {
         is Equal -> {

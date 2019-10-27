@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class AttributeServiceImpl(
-        private val attributesEntityService: DiseaseAttributesEntityService,
-        private val patientStatusEntityService: PatientStatusEntityService
+    private val attributesEntityService: DiseaseAttributesEntityService,
+    private val patientStatusEntityService: PatientStatusEntityService
 ) : AttributeService {
 
     override fun getDiseaseAttributes(patientId: Long): List<DiseaseAttributeResponse> {

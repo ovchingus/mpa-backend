@@ -18,7 +18,7 @@ class PatientController(private val patientService: PatientService) {
     @ApiOperation("Create patient")
     @ResponseStatus(HttpStatus.CREATED)
     fun create(
-            @Valid @RequestBody patientRequest: PatientRequest
+        @Valid @RequestBody patientRequest: PatientRequest
     ): PatientResponse = patientService.createPatient(patientRequest)
 
     @GetMapping

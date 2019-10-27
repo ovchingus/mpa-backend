@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class StatusSymbolicNameResolver(
-        @Value("\${mpa.predicate.prefix.status}") prefix: String
+    @Value("\${mpa.predicate.prefix.status}") prefix: String
 ) : AbstractSymbolicNameResolver(prefix) {
 
     companion object {

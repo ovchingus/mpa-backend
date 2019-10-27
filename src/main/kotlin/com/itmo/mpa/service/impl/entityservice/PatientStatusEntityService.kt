@@ -1,8 +1,8 @@
 package com.itmo.mpa.service.impl.entityservice
 
 import com.itmo.mpa.entity.Patient
-import com.itmo.mpa.entity.states.State
 import com.itmo.mpa.entity.Status
+import com.itmo.mpa.entity.states.State
 import com.itmo.mpa.repository.PatientRepository
 import com.itmo.mpa.repository.StatusRepository
 import com.itmo.mpa.service.exception.NoPendingDraftException
@@ -17,8 +17,8 @@ import java.time.Instant
 
 @Service
 class PatientStatusEntityService(
-        private val patientRepository: PatientRepository,
-        private val statusRepository: StatusRepository
+    private val patientRepository: PatientRepository,
+    private val statusRepository: StatusRepository
 ) {
 
     private val logger = LoggerFactory.getLogger(javaClass)

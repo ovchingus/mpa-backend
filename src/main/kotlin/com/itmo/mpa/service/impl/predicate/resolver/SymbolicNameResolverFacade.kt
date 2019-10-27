@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component
 
 @Component
 class SymbolicNameResolverFacade(
-        patientSymbolicNameResolver: SymbolicNameResolver,
-        medicineSymbolicNameResolver: SymbolicNameResolver,
-        statusSymbolicNameResolver: SymbolicNameResolver
+    patientSymbolicNameResolver: SymbolicNameResolver,
+    medicineSymbolicNameResolver: SymbolicNameResolver,
+    statusSymbolicNameResolver: SymbolicNameResolver
 ) {
 
     private val log = LoggerFactory.getLogger(javaClass)

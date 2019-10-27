@@ -11,33 +11,33 @@ import javax.validation.Valid
 @RestController
 @RequestMapping("associations")
 class AssociationController(
-        private val associationService: AssociationService
+    private val associationService: AssociationService
 ) {
 
     @GetMapping
     @ApiOperation("Get relevant associations")
     fun getAllAssociations(
-            @RequestParam patientId: Long
+        @RequestParam patientId: Long
     ): List<AssociationResponse> = associationService.getRelevantAssociations(patientId)
 
     @PostMapping("{doctorId}")
     @ApiOperation("Save new association")
     @ResponseStatus(HttpStatus.CREATED)
     fun createAssociation(
-            @PathVariable doctorId: Long,
-            @Valid @RequestBody request: AssociationRequest
+        @PathVariable doctorId: Long,
+        @Valid @RequestBody request: AssociationRequest
     ): AssociationResponse = associationService.createAssociation(doctorId, request)
 
     @PutMapping("{associationId}")
     @ApiOperation("Replace existing association")
     fun replaceAssociation(
-            @PathVariable associationId: Long,
-            @Valid @RequestBody request: AssociationRequest
+        @PathVariable associationId: Long,
+        @Valid @RequestBody request: AssociationRequest
     ): AssociationResponse = associationService.replaceAssociation(associationId, request)
 
     @DeleteMapping("{associationId}")
     @ApiOperation("Delete an association")
     fun deleteAssociation(
-            @PathVariable associationId: Long
+        @PathVariable associationId: Long
     ): Unit = associationService.deleteAssociation(associationId)
 }

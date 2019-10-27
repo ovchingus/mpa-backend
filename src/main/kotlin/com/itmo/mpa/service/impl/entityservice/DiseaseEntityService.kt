@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class DiseaseEntityService(
-        private val diseaseRepository: DiseaseRepository
+    private val diseaseRepository: DiseaseRepository
 ) {
 
     fun findDisease(diseaseId: Long): Disease {

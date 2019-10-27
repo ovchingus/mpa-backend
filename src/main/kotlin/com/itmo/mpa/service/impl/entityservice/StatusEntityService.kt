@@ -9,8 +9,8 @@ import java.time.Instant
 
 @Service
 class StatusEntityService(
-        private val stateEntityService: StateEntityService,
-        private val statusRepository: StatusRepository
+    private val stateEntityService: StateEntityService,
+    private val statusRepository: StatusRepository
 ) {
 
     fun createInitialStatus(patient: Patient, disease: Disease): Status {

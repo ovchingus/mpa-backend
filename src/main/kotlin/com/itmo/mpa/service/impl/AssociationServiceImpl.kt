@@ -3,10 +3,10 @@ package com.itmo.mpa.service.impl
 import arrow.core.getOrElse
 import com.itmo.mpa.dto.request.AssociationRequest
 import com.itmo.mpa.dto.response.AssociationResponse
-import com.itmo.mpa.entity.associations.Association
-import com.itmo.mpa.entity.associations.AssociationType
 import com.itmo.mpa.entity.Patient
 import com.itmo.mpa.entity.Status
+import com.itmo.mpa.entity.associations.Association
+import com.itmo.mpa.entity.associations.AssociationType
 import com.itmo.mpa.repository.AssociationRepository
 import com.itmo.mpa.service.AssociationService
 import com.itmo.mpa.service.PredicateService
@@ -23,10 +23,10 @@ import java.time.Instant
 
 @Service
 class AssociationServiceImpl(
-        private val doctorEntityService: DoctorEntityService,
-        private val associationRepository: AssociationRepository,
-        private val predicateService: PredicateService,
-        private val patientStatusEntityService: PatientStatusEntityService
+    private val doctorEntityService: DoctorEntityService,
+    private val associationRepository: AssociationRepository,
+    private val predicateService: PredicateService,
+    private val patientStatusEntityService: PatientStatusEntityService
 ) : AssociationService {
 
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -56,8 +56,8 @@ class AssociationServiceImpl(
     }
 
     override fun replaceAssociation(
-            associationId: Long,
-            request: AssociationRequest
+        associationId: Long,
+        request: AssociationRequest
     ): AssociationResponse {
         predicateService.checkPredicate(request.predicate!!)
         val association = associationRepository.findByIdOrNull(associationId)

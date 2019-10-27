@@ -16,11 +16,11 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class PatientServiceImpl(
-        private val patientRepository: PatientRepository,
-        private val doctorEntityService: DoctorEntityService,
-        private val diseaseEntityService: DiseaseEntityService,
-        private val patientStatusEntityService: PatientStatusEntityService,
-        private val statusEntityService: StatusEntityService
+    private val patientRepository: PatientRepository,
+    private val doctorEntityService: DoctorEntityService,
+    private val diseaseEntityService: DiseaseEntityService,
+    private val patientStatusEntityService: PatientStatusEntityService,
+    private val statusEntityService: StatusEntityService
 ) : PatientService {
 
     private val logger = LoggerFactory.getLogger(javaClass)

@@ -28,9 +28,9 @@ class Parser {
      *   begin    end
      */
     private fun parseExpression(
-            expression: String,
-            begin: Int = 0,
-            end: Int = expression.length - 1
+        expression: String,
+        begin: Int = 0,
+        end: Int = expression.length - 1
     ): BinaryExpression<PredicateValue> {
         var head = begin
         var expressionCandidate = ""
@@ -111,9 +111,9 @@ class Parser {
     }
 
     private fun parseValue(
-            expression: String,
-            begin: Int,
-            end: Int
+        expression: String,
+        begin: Int,
+        end: Int
     ): Value<PredicateValue> {
         val inclusiveEnd = end + 1
         if (expression[begin] == REFERENCE_PREFIX) {

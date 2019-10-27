@@ -15,9 +15,9 @@ import org.springframework.stereotype.Service
 
 @Service
 class TransitionServiceImpl(
-        private val transitionRepository: TransitionRepository,
-        private val predicateService: PredicateService,
-        private val patientStatusEntityService: PatientStatusEntityService
+    private val transitionRepository: TransitionRepository,
+    private val predicateService: PredicateService,
+    private val patientStatusEntityService: PatientStatusEntityService
 ) : TransitionService {
 
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -30,8 +30,8 @@ class TransitionServiceImpl(
     }
 
     private fun Transition.formResponse(
-            patient: Patient,
-            draft: Status?
+        patient: Patient,
+        draft: Status?
     ): AvailableTransitionResponse {
         val stateResponse = stateTo.toResponse()
         return predicateService.testPredicate(patient, draft, predicate)

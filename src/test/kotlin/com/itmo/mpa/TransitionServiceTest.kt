@@ -2,7 +2,8 @@ package com.itmo.mpa
 
 import com.itmo.mpa.dto.response.AvailableTransitionResponse
 import com.itmo.mpa.dto.response.PredicateErrorResponse
-import com.itmo.mpa.entity.*
+import com.itmo.mpa.entity.Patient
+import com.itmo.mpa.entity.Status
 import com.itmo.mpa.entity.attributes.Attribute
 import com.itmo.mpa.entity.attributes.DiseaseAttribute
 import com.itmo.mpa.entity.attributes.DiseaseAttributeValue
