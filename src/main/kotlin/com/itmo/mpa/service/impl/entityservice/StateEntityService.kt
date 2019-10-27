@@ -12,7 +12,7 @@ class StateEntityService(
 ) {
 
     fun findInitialState(disease: Disease): State {
-        return stateRepository.findInitialState(disease)
+        return runCatching { stateRepository.findInitialState(disease) }.getOrNull()
                 ?: throw NoInitialStateException(disease.name)
     }
 }
