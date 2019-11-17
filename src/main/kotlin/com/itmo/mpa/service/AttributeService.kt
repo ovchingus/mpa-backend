@@ -1,6 +1,7 @@
 package com.itmo.mpa.service
 
 import com.itmo.mpa.dto.response.DiseaseAttributeResponse
+import com.itmo.mpa.dto.response.StateImageResponse
 import com.itmo.mpa.service.exception.PatientNotFoundException
 
 interface AttributeService {
@@ -22,4 +23,6 @@ interface AttributeService {
      *  @return found attributes
      */
     fun getForState(stateId: Long): List<DiseaseAttributeResponse>
+
 }
+
