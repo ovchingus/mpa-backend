@@ -1,6 +1,7 @@
 package com.itmo.mpa.service.impl
 
 import com.itmo.mpa.dto.response.DiseaseAttributeResponse
+import com.itmo.mpa.dto.response.StateImageResponse
 import com.itmo.mpa.service.AttributeService
 import com.itmo.mpa.service.impl.entityservice.DiseaseAttributesEntityService
 import com.itmo.mpa.service.impl.entityservice.PatientStatusEntityService
@@ -23,4 +24,5 @@ class AttributeServiceImpl(
         return attributesEntityService.getForState(stateId)
                 .map { it.toResponse() }
     }
+
 }

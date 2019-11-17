@@ -1,6 +1,7 @@
 package com.itmo.mpa.controller
 
 import com.itmo.mpa.dto.response.DiseaseAttributeResponse
+import com.itmo.mpa.dto.response.StateImageResponse
 import com.itmo.mpa.dto.response.StateMachineResponse
 import com.itmo.mpa.service.AttributeService
 import com.itmo.mpa.service.StateMachineService
@@ -28,4 +29,10 @@ class StateController(
     fun findAttributes(
         @PathVariable stateId: Long
     ): List<DiseaseAttributeResponse> = attributeService.getForState(stateId)
+
+    @GetMapping("states/{stateId}/images")
+    @ApiOperation("Get image for state by id")
+    fun findImage(
+            @PathVariable stateId: Long
+    ): StateImageResponse = stateMachineService.getImageState(stateId)
 }
