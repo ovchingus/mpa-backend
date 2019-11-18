@@ -34,8 +34,11 @@ class StateController(
     @ResponseBody
     fun findImage(
             @PathVariable stateId: Long
-    ): ResponseEntity<ClassPathResource> = ResponseEntity
-            .ok()
-            .body(ClassPathResource(stateMachineService.getImageState(stateId).canonicalPath))
+    ): ResponseEntity<ClassPathResource> {
+        println(stateMachineService.getImageState(stateId).canonicalPath)
+        return ResponseEntity
+                .ok()
+                .body(ClassPathResource(stateMachineService.getImageState(stateId).canonicalPath))
+    }
 }
 
