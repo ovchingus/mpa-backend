@@ -236,7 +236,7 @@ insert into state_image(id, state_id, algorithm_position, picture) values
 (11, 19, 'Psychotherapy, psychotropic drugs ', '/images/states/HS_11.png'),
 (12, 1, '1', '/images/states/HSt_1.png'),
 (13, 2, '2B', '/images/states/HSt_2.png'),
-(14, 3, 'Optimal Medical Therapy CAD, AAT, CA, ICD', '/images/states/HS_3.png'),
+(14, 3, 'Optimal Medical Therapy CAD, AAT, CA, ICD', '/images/states/HSt_3.png'),
 (15, 4, 'Optimal Medical Therapy CAD, AAT, CA, ICD', '/images/states/HSt_4.png'),
 (17, 5, 'Beta-blockers', '/images/states/HSt_5.png'),
 (18, 6, 'Optimal Medical Therapy CAD, AAT, CA, ICD', '/images/states/HSt_6.png');
