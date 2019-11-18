@@ -7,8 +7,11 @@ import com.itmo.mpa.repository.StateImageRepository
 import com.itmo.mpa.repository.StateRepository
 import com.itmo.mpa.repository.TransitionRepository
 import com.itmo.mpa.service.StateMachineService
+import com.itmo.mpa.service.exception.StateNotFoundException
 import com.itmo.mpa.service.impl.entityservice.DiseaseEntityService
+import com.itmo.mpa.service.impl.entityservice.StateEntityService
 import com.itmo.mpa.service.mapping.toResponse
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
@@ -19,7 +22,8 @@ class StateMachineServiceImpl(
         private val diseaseEntityService: DiseaseEntityService,
         private val stateRepository: StateRepository,
         private val transitionRepository: TransitionRepository,
-        private val stateImageRepository: StateImageRepository
+        private val stateImageRepository: StateImageRepository,
+        private val stateEntityService: StateEntityService
 ) : StateMachineService {
 
     override fun getStateMachineForDisease(diseaseId: Long): StateMachineResponse {
@@ -33,9 +37,9 @@ class StateMachineServiceImpl(
     }
 
     override fun getImageState(stateId: Long): StateImageResponse {
-        val state: State = stateRepository.findById(stateId).get()
+        val state: State = stateEntityService.findImageForState(stateId)
         val stateImage = stateImageRepository.findByMachineState(state.name)
-        val imageFile = File(stateImage.picture)
+        val imageFile = File("/src/main/resources${stateImage.picture}")
         return stateImage.toResponse(imageFile)
     }
 }
