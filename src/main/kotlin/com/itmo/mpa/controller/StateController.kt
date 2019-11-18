@@ -5,6 +5,7 @@ import com.itmo.mpa.dto.response.StateMachineResponse
 import com.itmo.mpa.service.AttributeService
 import com.itmo.mpa.service.StateMachineService
 import io.swagger.annotations.ApiOperation
+import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.Resource
 import org.springframework.core.io.ResourceLoader
 import org.springframework.http.MediaType
@@ -37,8 +38,7 @@ class StateController(
     fun findImage(
         @PathVariable stateId: Long
     ): Resource {
-        println(stateMachineService.getImageState(stateId).canonicalPath)
-        return resourceLoader.getResource(stateMachineService.getImageState(stateId).canonicalPath)
+        return resourceLoader.getResource("classpath:${stateMachineService.getImageState(stateId).canonicalPath}")
     }
 }
 
