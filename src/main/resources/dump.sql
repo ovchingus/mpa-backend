@@ -219,10 +219,10 @@ create table state_image
 
     constraint state_image_state_id_fkey foreign key (state_id)
         references state (id)
-        on update no action on delete cascade,
+        on update no action on delete cascade
 );
 
-insert into state_image(id, machine_state, algorithm_position, picture) values
+insert into state_image(id, state_id, algorithm_position, picture) values
 (1, 8, '1', '/images/states/HS_1.png'),
 (2, 9, '2', '/images/states/HS_2.png'),
 (3, 10, '3', '/images/states/HS_3.png'),
