@@ -1,8 +1,8 @@
 package com.itmo.mpa.service
 
-import com.itmo.mpa.dto.response.StateImageResponse
 import com.itmo.mpa.dto.response.StateMachineResponse
 import com.itmo.mpa.service.exception.DiseaseNotFoundException
+import java.io.File
 
 interface StateMachineService {
 
@@ -20,5 +20,5 @@ interface StateMachineService {
      *  @param stateId patient id
      *  @return found image
      */
-    fun getImageState(stateId: Long): StateImageResponse
+    fun getImageState(stateId: Long): File
 }

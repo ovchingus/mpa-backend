@@ -4,5 +4,5 @@ import com.itmo.mpa.entity.StateImage
 import org.springframework.data.repository.CrudRepository
 
 interface StateImageRepository : CrudRepository<StateImage, Long>{
-    fun findByMachineState(state: String): StateImage
+    fun findByStateId(stateId: Long): StateImage?
 }

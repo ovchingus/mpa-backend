@@ -1,7 +1,6 @@
 package com.itmo.mpa.service
 
 import com.itmo.mpa.dto.response.DiseaseAttributeResponse
-import com.itmo.mpa.dto.response.StateImageResponse
 import com.itmo.mpa.service.exception.PatientNotFoundException
 
 interface AttributeService {
