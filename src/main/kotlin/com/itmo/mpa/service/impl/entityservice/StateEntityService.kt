@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class StateEntityService(
-        private val stateRepository: StateRepository
+    private val stateRepository: StateRepository
 ) {
 
     fun findInitialState(disease: Disease): State {

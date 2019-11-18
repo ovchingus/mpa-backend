@@ -15,11 +15,11 @@ import java.io.File
 
 @Service
 class StateMachineServiceImpl(
-        private val diseaseEntityService: DiseaseEntityService,
-        private val stateRepository: StateRepository,
-        private val transitionRepository: TransitionRepository,
-        private val stateImageRepository: StateImageRepository,
-        private val stateEntityService: StateEntityService
+    private val diseaseEntityService: DiseaseEntityService,
+    private val stateRepository: StateRepository,
+    private val transitionRepository: TransitionRepository,
+    private val stateImageRepository: StateImageRepository,
+    private val stateEntityService: StateEntityService
 ) : StateMachineService {
 
     override fun getStateMachineForDisease(diseaseId: Long): StateMachineResponse {
@@ -37,6 +37,5 @@ class StateMachineServiceImpl(
         val stateImage = stateImageRepository.findByStateId(state.id)
                 ?: throw ImageForStateIdNotFound(stateId)
         return File(stateImage.picture)
-
     }
 }
