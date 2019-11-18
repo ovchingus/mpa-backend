@@ -6,8 +6,8 @@ import javax.persistence.*
 @Table(name = "state_image")
 class StateImage : LongIdEntity() {
 
-    @Column(name = "machine_state", nullable = false)
-    lateinit var machineState: String
+    @Column(name = "stateId", nullable = false)
+    var stateId: Long = 0
 
     @Column(name = "algorithm_position", nullable = false)
     lateinit var algorithmPosition: String

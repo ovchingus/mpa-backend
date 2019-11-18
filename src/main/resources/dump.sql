@@ -213,26 +213,30 @@ create table disease_attribute_values
 create table state_image
 (
     id                  bigserial    primary key,
-    machine_state       varchar(10)  not null,
+    state_id            bigserial    not null,
     algorithm_position  varchar(128) not null,
-    picture             varchar(256) not null
+    picture             varchar(256) not null,
+
+    constraint state_image_state_id_fkey foreign key (state_id)
+        references state (id)
+        on update no action on delete cascade,
 );
 
 insert into state_image(id, machine_state, algorithm_position, picture) values
-(1, 'HS 1', '1', '/images/Target_v3_2/HS_1.png'),
-(2, 'HS 2', '2', '/images/Target_v3_2/HS_2.png'),
-(3, 'HS 3', '3', '/images/Target_v3_2/HS_3.png'),
-(4, 'HS 3.1', '3B*', '/images/Target_v3_2/HS_3_1.png'),
-(5, 'HS 4', '4', '/images/Target_v3_2/HS_4.png'),
-(6, 'HS 5', '4A', '/images/Target_v3_2/HS_5.png'),
-(7, 'HS 6', '6', '/images/Target_v3_2/HS_6.png'),
-(8, 'HS 1', 'Exercise stress echocardiography test', '/images/Target_v3_2/HS_8.png'),
-(9, 'HS 9', 'Psychodiagnostics', '/images/Target_v3_2/HS_10.png'),
-(10, 'HS 10', 'Psychodiagnostics', '/images/Target_v3_2/HS_10.png'),
-(11, 'HS 11', 'Psychotherapy, psychotropic drugs ', '/images/Target_v3_2/HS_11.png'),
-(12, 'HSt 1', '1', '/images/Target_v3_2/HSt_1.png'),
-(13, 'HSt 2', '2B', '/images/Target_v3_2/HSt_2.png'),
-(14, 'HSt 3', 'Optimal Medical Therapy CAD, AAT, CA, ICD', '/images/Target_v3_2/HS_3.png'),
-(15, 'HSt 4', 'Optimal Medical Therapy CAD, AAT, CA, ICD', '/images/Target_v3_2/HSt_4.png'),
-(17, 'HSt 5', 'Beta-blockers', '/images/Target_v3_2/HSt_5.png'),
-(15, 'HSt 6', 'Optimal Medical Therapy CAD, AAT, CA, ICD', '/images/Target_v3_2/HSt_6.png');
+(1, 8, '1', '/images/Target_v3_2/HS_1.png'),
+(2, 9, '2', '/images/Target_v3_2/HS_2.png'),
+(3, 10, '3', '/images/Target_v3_2/HS_3.png'),
+(4, 11, '3B*', '/images/Target_v3_2/HS_3_1.png'),
+(5, 12, '4', '/images/Target_v3_2/HS_4.png'),
+(6, 13, '4A', '/images/Target_v3_2/HS_5.png'),
+(7, 14, '6', '/images/Target_v3_2/HS_6.png'),
+(8, 15, 'Exercise stress echocardiography test', '/images/Target_v3_2/HS_8.png'),
+(9, 17, 'Psychodiagnostics', '/images/Target_v3_2/HS_10.png'),
+(10, 18, 'Psychodiagnostics', '/images/Target_v3_2/HS_10.png'),
+(11, 19, 'Psychotherapy, psychotropic drugs ', '/images/Target_v3_2/HS_11.png'),
+(12, 1, '1', '/images/Target_v3_2/HSt_1.png'),
+(13, 2, '2B', '/images/Target_v3_2/HSt_2.png'),
+(14, 3, 'Optimal Medical Therapy CAD, AAT, CA, ICD', '/images/Target_v3_2/HS_3.png'),
+(15, 4, 'Optimal Medical Therapy CAD, AAT, CA, ICD', '/images/Target_v3_2/HSt_4.png'),
+(17, 5, 'Beta-blockers', '/images/Target_v3_2/HSt_5.png'),
+(18, 6, 'Optimal Medical Therapy CAD, AAT, CA, ICD', '/images/Target_v3_2/HSt_6.png');

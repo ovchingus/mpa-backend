@@ -1,21 +1,17 @@
 package com.itmo.mpa.service.impl
 
-import com.itmo.mpa.dto.response.StateImageResponse
 import com.itmo.mpa.dto.response.StateMachineResponse
 import com.itmo.mpa.entity.states.State
 import com.itmo.mpa.repository.StateImageRepository
 import com.itmo.mpa.repository.StateRepository
 import com.itmo.mpa.repository.TransitionRepository
 import com.itmo.mpa.service.StateMachineService
-import com.itmo.mpa.service.exception.StateNotFoundException
+import com.itmo.mpa.service.exception.ImageForStateIdNotFound
 import com.itmo.mpa.service.impl.entityservice.DiseaseEntityService
 import com.itmo.mpa.service.impl.entityservice.StateEntityService
 import com.itmo.mpa.service.mapping.toResponse
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import org.springframework.web.multipart.MultipartFile
 import java.io.File
-import java.util.*
 
 @Service
 class StateMachineServiceImpl(
@@ -36,10 +32,11 @@ class StateMachineServiceImpl(
         )
     }
 
-    override fun getImageState(stateId: Long): StateImageResponse {
+    override fun getImageState(stateId: Long): File {
         val state: State = stateEntityService.findImageForState(stateId)
-        val stateImage = stateImageRepository.findByMachineState(state.name)
-        val imageFile = File("/src/main/resources${stateImage.picture}")
-        return stateImage.toResponse(imageFile)
+        val stateImage = stateImageRepository.findByStateId(state.id)
+                ?: throw ImageForStateIdNotFound(stateId)
+        return File(stateImage.picture)
+
     }
 }
