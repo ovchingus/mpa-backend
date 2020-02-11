@@ -17,6 +17,8 @@ services:
     image: mpa-server
     build:
       .
+    depends_on:
+      - db
     links:
       - db
     ports:
