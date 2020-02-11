@@ -5,12 +5,10 @@ import com.itmo.mpa.dto.response.StateMachineResponse
 import com.itmo.mpa.service.AttributeService
 import com.itmo.mpa.service.StateMachineService
 import io.swagger.annotations.ApiOperation
-import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.Resource
 import org.springframework.core.io.ResourceLoader
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
-
 
 @RestController
 @RequestMapping
