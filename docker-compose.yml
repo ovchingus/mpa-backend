@@ -1,29 +1,40 @@
 version: '3'
 
 services:
-  db:
-    image: postgres:latest
-    restart: always
-    ports:
-      - 5432:5432
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=mpa
-    volumes:
-      - /var/lib/postgresql/data
+   db:
+     image: postgres:latest
+     restart: always
+     ports:
+       - 5432:5432
+     environment:
+       - POSTGRES_USER=postgres
+       - POSTGRES_PASSWORD=password
+       - POSTGRES_DB=mpa
+     volumes:
+       - /var/lib/postgresql/data
 
-  server:
-    image: mpa-server
-    build:
-      .
-    depends_on:
-      - db
-    links:
-      - db
-    ports:
-      - 8080:8080
-    environment:
-      - DB_HOST=jdbc:postgresql://db:5432/mpa
-      - DB_USER=postgres
-      - DB_PASSWORD=password
+   cnn:
+     image: tensorflow/serving
+     volumes:
+       - './saved_model/cnnmodel/cnn_model:/models/cnn_model'
+     environment:
+       MODEL_NAME: 'cnn_model'
+     ports:
+       - "8501:8501"
+
+   server:
+     image: mpa-server
+     build:
+       .
+     depends_on:
+       - db
+       - cnn
+     links:
+       - db
+       - cnn
+     ports:
+       - 8080:8080
+     environment:
+       - DB_HOST=jdbc:postgresql://db:5432/mpa
+       - DB_USER=postgres
+       - DB_PASSWORD=password
