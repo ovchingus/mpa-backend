@@ -1,8 +1,9 @@
 package com.itmo.mpa.controller
 
-import com.itmo.mpa.dto.response.PredictionResponse
+import com.itmo.mpa.service.PredictionService
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -11,16 +12,19 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @Api("/predictions")
 @RequestMapping("predictions")
-class PredictionController {
+class PredictionController (
+        private val predictionService: PredictionService
+) {
 
     @PostMapping
-    @ApiOperation("Make prediction. WARNING: currently it is a stub")
+    @ApiOperation("Make prediction on CNN model.")
     fun predict(
             @RequestBody predictionData: String
-    ): PredictionResponse {
-        val innerList: List<Double> = listOf(0.998404324, 0.000147037499, 0.000262046466,
-                0.00102976453, 0.000156891823)
-        val upperList: List<List<Double>> = listOf(innerList)
-        return PredictionResponse(upperList)
+    ): ResponseEntity<String> {
+        val tensorResponse = predictionService.makePrediction(predictionData)
+        if( tensorResponse.isNotEmpty()) {
+            return ResponseEntity.ok(tensorResponse)
+        }
+        return ResponseEntity.badRequest().body("TensorFlow could not parse data")
     }
 }
