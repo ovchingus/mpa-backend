@@ -4,10 +4,8 @@ import com.itmo.mpa.service.PredictionService
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @Api("/predictions")
@@ -19,8 +17,9 @@ class PredictionController (
     @PostMapping
     @ApiOperation("Make prediction on CNN model.")
     fun predict(
-            @RequestBody predictionData: String
+            @RequestParam("file") multipartFile: MultipartFile
     ): ResponseEntity<String> {
+        val predictionData = multipartFile.bytes.toString(Charsets.UTF_8)
         val tensorResponse = predictionService.makePrediction(predictionData)
         if( tensorResponse.isNotEmpty()) {
             return ResponseEntity.ok(tensorResponse)
