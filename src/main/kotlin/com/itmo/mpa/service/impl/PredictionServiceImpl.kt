@@ -8,8 +8,7 @@ import java.util.stream.Collectors
 import kotlin.collections.HashMap
 
 @Service
-class PredictionService: PredictionService {
-
+class PredictionServiceImpl: PredictionService {
     private val restTemplate = RestTemplate()
 
     override fun makePrediction(csvData: String): String {
@@ -17,9 +16,9 @@ class PredictionService: PredictionService {
         val valueArr = csvData.split("\n")[1].split(",")
         val instancesList = Collections.singletonList(
                 valueArr.stream()
-                .map { str -> str.toDouble()}
-                .map { numb -> Collections.singletonList(numb) }
-                .collect(Collectors.toList())
+                        .map { str -> str.toDouble()}
+                        .map { numb -> Collections.singletonList(numb) }
+                        .collect(Collectors.toList())
         )
 
         val requestBody = HashMap<String, Any>()
@@ -31,6 +30,4 @@ class PredictionService: PredictionService {
         }
         return ""
     }
-
-
 }
