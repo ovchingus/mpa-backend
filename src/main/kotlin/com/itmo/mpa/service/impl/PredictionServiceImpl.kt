@@ -1,33 +1,26 @@
 package com.itmo.mpa.service.impl
 
+import com.itmo.mpa.repository.TensorflowRepository
 import com.itmo.mpa.service.PredictionService
 import org.springframework.stereotype.Service
-import org.springframework.web.client.RestTemplate
-import java.util.*
-import java.util.stream.Collectors
-import kotlin.collections.HashMap
 
 @Service
-class PredictionServiceImpl: PredictionService {
-    private val restTemplate = RestTemplate()
+class PredictionServiceImpl(
+        private val tensorflowRepository: TensorflowRepository
+): PredictionService {
 
     override fun makePrediction(csvData: String): String {
-        print(csvData.split("\n").size)
-        val valueArr = csvData.split("\n")[1].split(",")
-        val instancesList = Collections.singletonList(
-                valueArr.stream()
-                        .map { str -> str.toDouble()}
-                        .map { numb -> Collections.singletonList(numb) }
-                        .collect(Collectors.toList())
+        val splittedData = csvData.split("\n")
+        if(splittedData.size < 2) {
+            return "Error: Data malformed, expected CSV file of 2 lines, found " + splittedData.size
+        }
+        val valueArr = splittedData[1].split(",")
+        val instancesList : List<List<List<Double>>> = listOf(
+                valueArr.map { listOf(it.toDouble())}
         )
 
-        val requestBody = HashMap<String, Any>()
-        requestBody.put("instances", instancesList)
-        val response = restTemplate.postForObject("http://cnn:8501/v1/models/cnn_model:predict",
-                requestBody, String::class.java)
-        if(response != null) {
-            return response
-        }
-        return ""
+        val requestBody = mapOf("instances" to instancesList)
+        return tensorflowRepository.cnnPrediction(requestBody)?: "Error: Tensorflow could not make prediction " +
+        "on provided data"
     }
 }

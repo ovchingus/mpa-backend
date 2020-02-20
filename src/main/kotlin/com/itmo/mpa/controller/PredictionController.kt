@@ -21,9 +21,9 @@ class PredictionController (
     ): ResponseEntity<String> {
         val predictionData = multipartFile.bytes.toString(Charsets.UTF_8)
         val tensorResponse = predictionService.makePrediction(predictionData)
-        if( tensorResponse.isNotEmpty()) {
+        if( !tensorResponse.startsWith("Error")) {
             return ResponseEntity.ok(tensorResponse)
         }
-        return ResponseEntity.badRequest().body("TensorFlow could not parse data")
+        return ResponseEntity.badRequest().body(tensorResponse)
     }
 }
