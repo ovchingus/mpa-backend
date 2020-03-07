@@ -17,4 +17,7 @@ class Transition : LongIdEntity() {
 
     @Column(name = "predicate")
     lateinit var predicate: String
+
+    @Column(name = "description")
+    lateinit var description: String
 }
