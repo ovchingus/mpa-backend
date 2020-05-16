@@ -60,7 +60,6 @@ insert into state(id, name, description, disease_id) values (3, 'HSt 3', 'Medica
 insert into state(id, name, description, disease_id) values (4, 'HSt 4', 'Optimal Medical Therapy CAD, AAT, CA, ICD', 1);
 insert into state(id, name, description, disease_id) values (5, 'HSt 5', 'Beta-blockers', 1);
 insert into state(id, name, description, disease_id) values (6, 'HSt 6', 'Амбулаторное лечение', 1);
-
 insert into state(id, name, description, disease_id) values (8, 'HS1', 'ECG, ECG Monitoring', 1);
 insert into state(id, name, description, disease_id) values (9, 'HS2', 'Search for Trigger VA', 1);
 insert into state(id, name, description, disease_id) values (10, 'HS3', 'ECG exercise stress testing: TT, Bicycle testing', 1);
@@ -74,32 +73,33 @@ insert into state(id, name, description, disease_id) values (17, 'HS9', 'Psychod
 insert into state(id, name, description, disease_id) values (18, 'HS10', 'Psychodiagnostics', 1);
 insert into state(id, name, description, disease_id) values (19, 'HS11', 'Psychotherapy, psychotropic drugs', 1);
 
-insert into transition(id, state_from_id, state_to_id, predicate, description) select 1, 8, 9, 'eq ({status.1}, true)', subquery.conc_description from (select string_agg(description, ' => ') as conc_description from state where state.id in (8, 9)) as subquery;
-insert into transition(id, state_from_id, state_to_id, predicate, description) select 2, 9, 10, 'and (eq ({status.2}, true), and (eq ({status.3}, true), gte ({status.4}, 0.4)))', subquery.conc_description from (select string_agg(description, ' => ') as conc_description from state where state.id in (9, 10)) as subquery;
-insert into transition(id, state_from_id, state_to_id, predicate, description) select 3, 10, 12, 'eq ({status.5}, 1)', subquery.conc_description from (select string_agg(description, ' => ') as conc_description from state where state.id in (10, 12)) as subquery;
-insert into transition(id, state_from_id, state_to_id, predicate, description) select 4, 10, 11, 'eq ({status.5}, 3)', subquery.conc_description from (select string_agg(description, ' => ') as conc_description from state where state.id in (10, 11)) as subquery;
-insert into transition(id, state_from_id, state_to_id, predicate, description) select 5, 11, 12, 'eq ({status.6}, 4)', subquery.conc_description from (select string_agg(description, ' => ') as conc_description from state where state.id in (11, 12)) as subquery;
-insert into transition(id, state_from_id, state_to_id, predicate, description) select 6, 12, 13, 'eq ({status.7}, 6)', subquery.conc_description from (select string_agg(description, ' => ') as conc_description from state where state.id in (12, 13)) as subquery;
-insert into transition(id, state_from_id, state_to_id, predicate, description) select 7, 12, 17, 'and (eq ({status.7}, 7), eq ({status.8}, true))', subquery.conc_description from (select string_agg(description, ' => ') as conc_description from state where state.id in (12, 17)) as subquery;
-insert into transition(id, state_from_id, state_to_id, predicate, description) select 8, 12, 17, 'and (eq ({status.7}, 7), eq ({status.9}, true))', subquery.conc_description from (select string_agg(description, ' => ') as conc_description from state where state.id in (12, 17)) as subquery;
-insert into transition(id, state_from_id, state_to_id, predicate, description) select 10, 13, 14, 'eq ({status.10}, 8)', subquery.conc_description from (select string_agg(description, ' => ') as conc_description from state where state.id in (13, 14)) as subquery;
-insert into transition(id, state_from_id, state_to_id, predicate, description) select 11, 13, 17, 'and (eq ({status.10}, 9), eq ({status.8}, true))', subquery.conc_description from (select string_agg(description, ' => ') as conc_description from state where state.id in (13, 17)) as subquery;
-insert into transition(id, state_from_id, state_to_id, predicate, description) select 12, 13, 17, 'and (eq ({status.10}, 9), eq ({status.9}, true))', subquery.conc_description from (select string_agg(description, ' => ') as conc_description from state where state.id in (13, 17)) as subquery;
-insert into transition(id, state_from_id, state_to_id, predicate, description) select 13, 15, 3, 'eq ({status.11}, 10)', subquery.conc_description from (select string_agg(description, ' => ') as conc_description from state where state.id in (15, 3)) as subquery;
-insert into transition(id, state_from_id, state_to_id, predicate, description) select 14, 15, 16, 'and (eq ({status.11}, 11), eq ({status.9}, true))', subquery.conc_description from (select string_agg(description, ' => ') as conc_description from state where state.id in (15, 16)) as subquery;
-insert into transition(id, state_from_id, state_to_id, predicate, description) select 15, 15, 17, 'and (eq ({status.11}, 11), eq ({status.8}, true))', subquery.conc_description from (select string_agg(description, ' => ') as conc_description from state where state.id in (15, 17)) as subquery;
-insert into transition(id, state_from_id, state_to_id, predicate, description) select 16, 16, 13, 'eq ({status.12}, 12)', subquery.conc_description from (select string_agg(description, ' => ') as conc_description from state where state.id in (16, 13)) as subquery;
-insert into transition(id, state_from_id, state_to_id, predicate, description) select 17, 16, 4, 'eq ({status.12}, 13)', subquery.conc_description from (select string_agg(description, ' => ') as conc_description from state where state.id in (16, 4)) as subquery;
-insert into transition(id, state_from_id, state_to_id, predicate, description) select 18, 17, 4, 'eq ({status.13}, 15)', subquery.conc_description from (select string_agg(description, ' => ') as conc_description from state where state.id in (17, 4)) as subquery;
-insert into transition(id, state_from_id, state_to_id, predicate, description) select 19, 17, 18, 'eq ({status.13}, 14)', subquery.conc_description from (select string_agg(description, ' => ') as conc_description from state where state.id in (17, 18)) as subquery;
-insert into transition(id, state_from_id, state_to_id, predicate, description) select 22, 18, 5, 'eq ({status.14}, 17)', subquery.conc_description from (select string_agg(description, ' => ') as conc_description from state where state.id in (18, 5)) as subquery;
-insert into transition(id, state_from_id, state_to_id, predicate, description) select 23, 18, 19, 'eq ({status.14}, 16)', subquery.conc_description from (select string_agg(description, ' => ') as conc_description from state where state.id in (18, 19)) as subquery;
-insert into transition(id, state_from_id, state_to_id, predicate, description) select 24, 19, 5, 'eq ({status.15}, 19)', subquery.conc_description from (select string_agg(description, ' => ') as conc_description from state where state.id in (19, 5)) as subquery;
-insert into transition(id, state_from_id, state_to_id, predicate, description) select 25, 19, 6, 'eq ({status.15}, 18)', subquery.conc_description from (select string_agg(description, ' => ') as conc_description from state where state.id in (19, 6)) as subquery;
-insert into transition(id, state_from_id, state_to_id, predicate, description) select 26, 8, 1, 'eq ({status.1}, false)', subquery.conc_description from (select string_agg(description, ' => ') as conc_description from state where state.id in (8, 1)) as subquery;
-insert into transition(id, state_from_id, state_to_id, predicate, description) select 27, 9, 2, 'not(and (eq ({status.2}, true), and (eq ({status.3}, true), gte ({status.4}, 0.4))))', subquery.conc_description from (select string_agg(description, ' => ') as conc_description from state where state.id in (9, 2)) as subquery;
-insert into transition(id, state_from_id, state_to_id, predicate, description) select 28, 10, 2, 'eq ({status.5}, 2)', subquery.conc_description from (select string_agg(description, ' => ') as conc_description from state where state.id in (10, 2)) as subquery;
-insert into transition(id, state_from_id, state_to_id, predicate, description) select 29, 11, 2, 'eq ({status.6}, 5)', subquery.conc_description from (select string_agg(description, ' => ') as conc_description from state where state.id in (11, 2)) as subquery;
-insert into transition(id, state_from_id, state_to_id, predicate, description) select 30, 14, 15, 'eq (1, 1)', subquery.conc_description from (select string_agg(description, ' => ') as conc_description from state where state.id in (14, 15)) as subquery;
+insert into transition(id, state_from_id, state_to_id, predicate) values (1, 8, 9, 'eq ({status.1}, true)');
+insert into transition(id, state_from_id, state_to_id, predicate) values (2, 9, 10, 'and (eq ({status.2}, true), and (eq ({status.3}, true), gte ({status.4}, 0.4)))');
+insert into transition(id, state_from_id, state_to_id, predicate) values (3, 10, 12, 'eq ({status.5}, 1)');
+insert into transition(id, state_from_id, state_to_id, predicate) values (4, 10, 11, 'eq ({status.5}, 3)');
+insert into transition(id, state_from_id, state_to_id, predicate) values (5, 11, 12, 'eq ({status.6}, 4)');
+insert into transition(id, state_from_id, state_to_id, predicate) values (6, 12, 13, 'eq ({status.7}, 6)');
+insert into transition(id, state_from_id, state_to_id, predicate) values (7, 12, 17, 'and (eq ({status.7}, 7), eq ({status.8}, true))');
+insert into transition(id, state_from_id, state_to_id, predicate) values (8, 12, 17, 'and (eq ({status.7}, 7), eq ({status.9}, true))');
+insert into transition(id, state_from_id, state_to_id, predicate) values (10, 13, 14, 'eq ({status.10}, 8)');
+insert into transition(id, state_from_id, state_to_id, predicate) values (11, 13, 17, 'and (eq ({status.10}, 9), eq ({status.8}, true))');
+insert into transition(id, state_from_id, state_to_id, predicate) values (12, 13, 17, 'and (eq ({status.10}, 9), eq ({status.9}, true))');
+insert into transition(id, state_from_id, state_to_id, predicate) values (13, 15, 3, 'eq ({status.11}, 10)');
+insert into transition(id, state_from_id, state_to_id, predicate) values (14, 15, 16, 'and (eq ({status.11}, 11), eq ({status.9}, true))');
+insert into transition(id, state_from_id, state_to_id, predicate) values (15, 15, 17, 'and (eq ({status.11}, 11), eq ({status.8}, true))');
+insert into transition(id, state_from_id, state_to_id, predicate) values (16, 16, 13, 'eq ({status.12}, 12)');
+insert into transition(id, state_from_id, state_to_id, predicate) values (17, 16, 4, 'eq ({status.12}, 13)');
+insert into transition(id, state_from_id, state_to_id, predicate) values (18, 17, 4, 'eq ({status.13}, 15)');
+insert into transition(id, state_from_id, state_to_id, predicate) values (19, 17, 18, 'eq ({status.13}, 14)');
+insert into transition(id, state_from_id, state_to_id, predicate) values (22, 18, 5, 'eq ({status.14}, 17)');
+insert into transition(id, state_from_id, state_to_id, predicate) values (23, 18, 19, 'eq ({status.14}, 16)');
+insert into transition(id, state_from_id, state_to_id, predicate) values (24, 19, 5, 'eq ({status.15}, 19)');
+insert into transition(id, state_from_id, state_to_id, predicate) values (25, 19, 6, 'eq ({status.15}, 18)');
+
+insert into transition(id, state_from_id, state_to_id, predicate) values (26, 8, 1, 'eq ({status.1}, false)');
+insert into transition(id, state_from_id, state_to_id, predicate) values (27, 9, 2, 'not(and (eq ({status.2}, true), and (eq ({status.3}, true), gte ({status.4}, 0.4))))');
+insert into transition(id, state_from_id, state_to_id, predicate) values (28, 10, 2, 'eq ({status.5}, 2)');
+insert into transition(id, state_from_id, state_to_id, predicate) values (29, 11, 2, 'eq ({status.6}, 5)');
+insert into transition(id, state_from_id, state_to_id, predicate) values (30, 14, 15, 'eq (1, 1)');
 
 commit;
